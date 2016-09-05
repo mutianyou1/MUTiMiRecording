@@ -12,7 +12,7 @@ import UIKit
 
 class ViewController: UIViewController,TopBackgroundImageViewDelegate{
     private let topView = TopBackgroundImageView()
-    private lazy var detailItemTableView = AccountDetailItemTableView.init(frame: CGRectMake(0, 300 * KHeightScale, KWidth, KHeight - 300 * KHeightScale), style: .Grouped)
+    private lazy var detailItemTableView = AccountDetailItemTableView.init(frame: CGRectMake(0, 300 * KHeightScale, KWidth, KHeight - 300 * KHeightScale), style: .Plain)
     
     
     
@@ -26,6 +26,7 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
         topView.configSubViews()
         
         self.setUpTabelView()
+
     }
     private func setUpTabelView() {
 

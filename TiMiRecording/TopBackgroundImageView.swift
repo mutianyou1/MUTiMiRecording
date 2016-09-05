@@ -8,7 +8,7 @@
 
 import UIKit
 
-let KMiddleViewAddButtonHeight : CGFloat = 80
+
 public protocol TopBackgroundImageViewDelegate : NSObjectProtocol{
      func openCarmera()
      func presentAccountDetailEditingViewController()
@@ -83,7 +83,7 @@ class TopBackgroundImageView: UIView {
         self.addSubview(monthPaymentLabel)
         
         
-         placeHolderView.frame = CGRectMake(self.bounds.size.width * 0.5 - KMiddleViewAddButtonHeight * 0.5, self.bounds.size.height - KMiddleViewAddButtonHeight * KHeightScale, KMiddleViewAddButtonHeight * KHeightScale , KMiddleViewAddButtonHeight * KHeightScale)
+         placeHolderView.frame = CGRectMake(self.bounds.size.width * 0.5 - KMiddleViewAddButtonHeight * 0.5 * KHeightScale, self.bounds.size.height - KMiddleViewAddButtonHeight * KHeightScale, KMiddleViewAddButtonHeight * KHeightScale , KMiddleViewAddButtonHeight * KHeightScale)
         placeHolderView.backgroundColor = UIColor.whiteColor()
         placeHolderView.layer.cornerRadius = KMiddleViewAddButtonHeight * 0.5 * KHeightScale
         self.addSubview(placeHolderView)

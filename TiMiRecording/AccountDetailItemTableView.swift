@@ -12,7 +12,7 @@ let AccountDetailidentifier = "accountDetailItemCell"
 
 class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDataSource{
     
-    
+    private lazy var dataArray = NSMutableArray()
     override  init(frame: CGRect, style: UITableViewStyle) {
        super.init(frame: frame, style: style)
         
@@ -53,7 +53,7 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
         }
         let view = AccountDetailTableHeaderView()
         view.frame = CGRectMake(0, 0, KWidth, 40 * KHeightScale)
-        view.setUpDateAndMoneyAmount("0\(section)日", amount: "\((rand() % 1000) + 300)")
+        view.setUpDateAndMoneyAmount("0\(section+20)日", amount: "\((rand() % 100000) + 300)")
         return view
     }
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -61,6 +61,10 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
             return 0.0
         }
         return 40.0 * KHeightScale
+    }
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 40;
     }
     /*
     // Only override drawRect: if you perform custom drawing.

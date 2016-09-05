@@ -2,6 +2,15 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>编辑</key>
+	<dict>
+		<key>imageName</key>
+		<string>type_add_48x48_</string>
+		<key>statusCode</key>
+		<integer>-1</integer>
+		<key>editable</key>
+		<false/>
+	</dict>
 	<key>一般</key>
 	<dict>
 		<key>imageName</key>

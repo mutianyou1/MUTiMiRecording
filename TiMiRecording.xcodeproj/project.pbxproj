@@ -15,6 +15,10 @@
 		D25E4C981D79671000808EA6 /* AccountDetailItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E4C971D79671000808EA6 /* AccountDetailItemTableViewCell.swift */; };
 		D25E4C9B1D796B4400808EA6 /* AccountDetailItemTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E4C9A1D796B4400808EA6 /* AccountDetailItemTableView.swift */; };
 		D25E4C9D1D79799B00808EA6 /* AccountDetailTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E4C9C1D79799B00808EA6 /* AccountDetailTableHeaderView.swift */; };
+		D27B93361D7D143300E94562 /* MUAccountDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B93351D7D143300E94562 /* MUAccountDataManager.swift */; };
+		D27B93391D7D3DAC00E94562 /* MUAccountEditCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */; };
+		D27B933B1D7D452A00E94562 /* MUAccountEditItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */; };
+		D27B933D1D7D4D3E00E94562 /* MUAccountEditTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B933C1D7D4D3E00E94562 /* MUAccountEditTopView.swift */; };
 		D2B4501C1D78334200BC7D68 /* TopBackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B4501B1D78334200BC7D68 /* TopBackgroundImageView.swift */; };
 		D2B4501F1D78342D00BC7D68 /* TiMiHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B4501E1D78342D00BC7D68 /* TiMiHeader.swift */; };
 		D2E44E081D7670CC00CFF8AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E44E071D7670CC00CFF8AB /* AppDelegate.swift */; };
@@ -53,6 +57,10 @@
 		D25E4C971D79671000808EA6 /* AccountDetailItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDetailItemTableViewCell.swift; sourceTree = "<group>"; };
 		D25E4C9A1D796B4400808EA6 /* AccountDetailItemTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDetailItemTableView.swift; sourceTree = "<group>"; };
 		D25E4C9C1D79799B00808EA6 /* AccountDetailTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDetailTableHeaderView.swift; sourceTree = "<group>"; };
+		D27B93351D7D143300E94562 /* MUAccountDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountDataManager.swift; sourceTree = "<group>"; };
+		D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditCollectionView.swift; sourceTree = "<group>"; };
+		D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditItemCell.swift; sourceTree = "<group>"; };
+		D27B933C1D7D4D3E00E94562 /* MUAccountEditTopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditTopView.swift; sourceTree = "<group>"; };
 		D2B4501B1D78334200BC7D68 /* TopBackgroundImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopBackgroundImageView.swift; sourceTree = "<group>"; };
 		D2B4501E1D78342D00BC7D68 /* TiMiHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TiMiHeader.swift; sourceTree = "<group>"; };
 		D2E44E041D7670CC00CFF8AB /* TiMiRecording.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TiMiRecording.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -111,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				D25E4C8F1D79090300808EA6 /* MUAccountDetailModel.swift */,
+				D27B93351D7D143300E94562 /* MUAccountDataManager.swift */,
 				D25E4C911D79104600808EA6 /* MUAccountPayment.plist */,
 				D25E4C931D79107E00808EA6 /* MUAccoutIncome.plist */,
 			);
@@ -129,11 +138,22 @@
 			name = ViewController;
 			sourceTree = "<group>";
 		};
+		D27B93371D7D3D2900E94562 /* AccountDetailEditing */ = {
+			isa = PBXGroup;
+			children = (
+				D25E4C951D79610E00808EA6 /* AccountDetailEditingViewController.swift */,
+				D27B933C1D7D4D3E00E94562 /* MUAccountEditTopView.swift */,
+				D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */,
+				D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */,
+			);
+			name = AccountDetailEditing;
+			sourceTree = "<group>";
+		};
 		D2B450161D78316A00BC7D68 /* MiddleView */ = {
 			isa = PBXGroup;
 			children = (
 				D25E4C991D79671E00808EA6 /* ViewController */,
-				D25E4C951D79610E00808EA6 /* AccountDetailEditingViewController.swift */,
+				D27B93371D7D3D2900E94562 /* AccountDetailEditing */,
 				D25E4C8C1D79087400808EA6 /* AccountCellModel */,
 			);
 			name = MiddleView;
@@ -403,6 +423,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				D25E4C9D1D79799B00808EA6 /* AccountDetailTableHeaderView.swift in Sources */,
+				D27B93361D7D143300E94562 /* MUAccountDataManager.swift in Sources */,
+				D27B93391D7D3DAC00E94562 /* MUAccountEditCollectionView.swift in Sources */,
+				D27B933D1D7D4D3E00E94562 /* MUAccountEditTopView.swift in Sources */,
 				D25E4C901D79090300808EA6 /* MUAccountDetailModel.swift in Sources */,
 				D25E4C981D79671000808EA6 /* AccountDetailItemTableViewCell.swift in Sources */,
 				D25E4C9B1D796B4400808EA6 /* AccountDetailItemTableView.swift in Sources */,
@@ -410,6 +433,7 @@
 				D2E44E0A1D7670CC00CFF8AB /* ViewController.swift in Sources */,
 				D2E44E081D7670CC00CFF8AB /* AppDelegate.swift in Sources */,
 				D25E4C961D79610E00808EA6 /* AccountDetailEditingViewController.swift in Sources */,
+				D27B933B1D7D452A00E94562 /* MUAccountEditItemCell.swift in Sources */,
 				D2B4501F1D78342D00BC7D68 /* TiMiHeader.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -555,6 +579,8 @@
 			baseConfigurationReference = 22E65282A1C7E6E50D4228B9 /* Pods-TiMiRecording.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TiMiRecording/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -569,6 +595,8 @@
 			baseConfigurationReference = 32286F4D8A57194BE867622C /* Pods-TiMiRecording.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TiMiRecording/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

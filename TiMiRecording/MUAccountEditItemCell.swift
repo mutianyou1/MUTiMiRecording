@@ -11,7 +11,7 @@ import UIKit
 class MUAccountEditItemCell: UICollectionViewCell {
     private let thumbImageView = UIImageView.init()
     private let titleLabel = UILabel.init()
-    private lazy var  block = {(data :MUAccountDetailModel) in }
+    private  lazy  var   block = {(data :MUAccountDetailModel, layer : CALayer ) in }
     private lazy var data = MUAccountDetailModel()
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -31,11 +31,11 @@ class MUAccountEditItemCell: UICollectionViewCell {
         self.titleLabel.text = data.accountTitleName
         self.thumbImageView.image = UIImage.init(named: data.thumbnailName)
     }
-    func setBlock(block :  ((MUAccountDetailModel) -> Void)) {
+    func setBlock(block :  ((MUAccountDetailModel ,CALayer) -> Void)) {
         self.block = block
     }
     func tapCell() {
-        self.block(self.data)
+        self.block(self.data,self.thumbImageView.layer)
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

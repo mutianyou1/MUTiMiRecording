@@ -40,8 +40,10 @@ class MUAccountEditTopView: UIView {
          self.amontLabel.text = data.moneyAmount
          self.freshViewColor()
     }
-    
-     private  func freshViewColor() {
+    func getThumbnilImageRect() -> CGRect {
+       return CGRectMake(self.thumbImageView.frame.origin.x, self.thumbImageView.frame.origin.y + self.frame.origin.y, self.thumbImageView.frame.size.width, self.thumbImageView.frame.size.height)
+    }
+    private  func freshViewColor() {
         self.layerColorView.frame = CGRectMake(0, 0, 0, self.bounds.size.height)
         let color = self.getItemImageColor()
         self.layerColorView.backgroundColor = color
@@ -62,7 +64,7 @@ class MUAccountEditTopView: UIView {
     private func getItemImageColor() -> UIColor{
         let pixeData = CGDataProviderCopyData(CGImageGetDataProvider(self.thumbImageView.image!.CGImage))
         let data :UnsafePointer<UInt8> = CFDataGetBytePtr(pixeData)
-        let pixeInfo : Int = ((Int(self.bounds.size.width) * Int(10)) + Int(10)) * 4
+        let pixeInfo : Int = ((Int(self.bounds.size.width) * Int(5)) + Int(10)) * 4
         return UIColor.init(red: CGFloat.init(data[pixeInfo])/255.0, green: CGFloat.init(data[pixeInfo+1])/255.0, blue: CGFloat.init(data[pixeInfo+2])/255.0, alpha: CGFloat.init(data[pixeInfo+3])/255.0)
     }
     //MARK: animationDelegate

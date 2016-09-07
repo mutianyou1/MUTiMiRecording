@@ -68,7 +68,7 @@ class TopBackgroundImageView: UIView {
         
         self.monthIncomeLabel.text = "当月收入\n20000.0"
         self.monthIncomeLabel.numberOfLines = 0
-        self.monthIncomeLabel.frame = CGRectMake(30.0,self.bounds.size.height - KMiddleViewAddButtonHeight * KHeightScale * 0.5, 100, 50)
+        self.monthIncomeLabel.frame = CGRectMake(30.0,self.bounds.size.height - KMiddleViewAddButtonHeight * KHeightScale * 0.5, 100, 50 * KHeightScale)
         self.monthIncomeLabel.textColor = UIColor.lightGrayColor()
         self.monthIncomeLabel.textAlignment = .Left
         self.monthIncomeLabel.font = UIFont.systemFontOfSize(12 * KHeightScale)
@@ -76,7 +76,7 @@ class TopBackgroundImageView: UIView {
         
         self.monthPaymentLabel.text = "当月支出\n2000.00"
         self.monthPaymentLabel.numberOfLines = 0
-        self.monthPaymentLabel.frame = CGRectMake(self.bounds.size.width - 130, self.bounds.size.height - KMiddleViewAddButtonHeight * KHeightScale * 0.5, 100, 50)
+        self.monthPaymentLabel.frame = CGRectMake(self.bounds.size.width - 130, self.bounds.size.height - KMiddleViewAddButtonHeight * KHeightScale * 0.5, 100, 50 * KHeightScale)
         self.monthPaymentLabel.textColor = UIColor.lightGrayColor()
         self.monthPaymentLabel.textAlignment = NSTextAlignment.Right
         self.monthPaymentLabel.font = UIFont.systemFontOfSize(12 * KHeightScale)

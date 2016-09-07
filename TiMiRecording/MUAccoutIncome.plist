@@ -2,32 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>编辑</key>
-	<dict>
-		<key>imageName</key>
-		<string>type_add_48x48_</string>
-		<key>statusCode</key>
-		<integer>-1</integer>
-		<key>editable</key>
-		<false/>
-	</dict>
 	<key>一般</key>
 	<dict>
 		<key>imageName</key>
-		<string>type_big_0_48x48_</string>
+		<string>type_big_0_38x38_</string>
 		<key>statusCode</key>
 		<integer>0</integer>
 		<key>editable</key>
 		<false/>
-	</dict>
-	<key>报销</key>
-	<dict>
-		<key>imageName</key>
-		<string>type_big_n1_38x38_</string>
-		<key>statusCode</key>
-		<integer>1</integer>
-		<key>editable</key>
-		<false/>
+		<key>index</key>
+		<integer>0</integer>
+		<key>title</key>
+		<string>一般</string>
 	</dict>
 	<key>工资</key>
 	<dict>
@@ -37,6 +23,23 @@
 		<integer>1</integer>
 		<key>editable</key>
 		<false/>
+		<key>index</key>
+		<integer>1</integer>
+		<key>title</key>
+		<string>工资</string>
+	</dict>
+	<key>报销</key>
+	<dict>
+		<key>imageName</key>
+		<string>type_big_n1_38x38_</string>
+		<key>statusCode</key>
+		<integer>1</integer>
+		<key>editable</key>
+		<false/>
+		<key>index</key>
+		<integer>2</integer>
+		<key>title</key>
+		<string>报销</string>
 	</dict>
 	<key>红包</key>
 	<dict>
@@ -46,6 +49,10 @@
 		<integer>1</integer>
 		<key>editable</key>
 		<false/>
+		<key>index</key>
+		<integer>3</integer>
+		<key>title</key>
+		<string>红包</string>
 	</dict>
 	<key>兼职</key>
 	<dict>
@@ -55,6 +62,10 @@
 		<integer>1</integer>
 		<key>editable</key>
 		<false/>
+		<key>index</key>
+		<integer>4</integer>
+		<key>title</key>
+		<string>兼职</string>
 	</dict>
 	<key>奖金</key>
 	<dict>
@@ -64,6 +75,10 @@
 		<integer>1</integer>
 		<key>editable</key>
 		<false/>
+		<key>index</key>
+		<integer>5</integer>
+		<key>title</key>
+		<string>奖金</string>
 	</dict>
 	<key>投资</key>
 	<dict>
@@ -73,6 +88,23 @@
 		<integer>1</integer>
 		<key>editable</key>
 		<false/>
+		<key>index</key>
+		<integer>6</integer>
+		<key>title</key>
+		<string>投资</string>
+	</dict>
+	<key>编辑</key>
+	<dict>
+		<key>imageName</key>
+		<string>type_add_48x48_</string>
+		<key>statusCode</key>
+		<integer>-1</integer>
+		<key>editable</key>
+		<false/>
+		<key>index</key>
+		<integer>7</integer>
+		<key>title</key>
+		<string>编辑</string>
 	</dict>
 	<key>自定义1</key>
 	<dict>
@@ -82,6 +114,10 @@
 		<integer>2</integer>
 		<key>editable</key>
 		<true/>
+		<key>index</key>
+		<integer>0</integer>
+		<key>title</key>
+		<string>自定义</string>
 	</dict>
 	<key>自定义2</key>
 	<dict>
@@ -91,6 +127,10 @@
 		<integer>2</integer>
 		<key>editable</key>
 		<true/>
+		<key>index</key>
+		<integer>1</integer>
+		<key>title</key>
+		<string>自定义</string>
 	</dict>
 	<key>自定义3</key>
 	<dict>
@@ -100,6 +140,10 @@
 		<integer>2</integer>
 		<key>editable</key>
 		<true/>
+		<key>index</key>
+		<integer>2</integer>
+		<key>title</key>
+		<string>自定义</string>
 	</dict>
 	<key>自定义4</key>
 	<dict>
@@ -109,6 +153,10 @@
 		<integer>2</integer>
 		<key>editable</key>
 		<true/>
+		<key>index</key>
+		<integer>3</integer>
+		<key>title</key>
+		<string>自定义</string>
 	</dict>
 	<key>自定义5</key>
 	<dict>
@@ -118,6 +166,10 @@
 		<integer>2</integer>
 		<key>editable</key>
 		<true/>
+		<key>index</key>
+		<integer>4</integer>
+		<key>title</key>
+		<string>自定义</string>
 	</dict>
 	<key>自定义6</key>
 	<dict>
@@ -127,6 +179,10 @@
 		<integer>2</integer>
 		<key>editable</key>
 		<true/>
+		<key>index</key>
+		<integer>5</integer>
+		<key>title</key>
+		<string>自定义</string>
 	</dict>
 	<key>自定义7</key>
 	<dict>
@@ -136,6 +192,10 @@
 		<integer>2</integer>
 		<key>editable</key>
 		<true/>
+		<key>index</key>
+		<integer>6</integer>
+		<key>title</key>
+		<string>自定义</string>
 	</dict>
 </dict>
 </plist>

@@ -160,7 +160,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         
     }
     func openCalendar() {
-        
+       // setWindowType(windowType.alertWindow, rect: CGRectMake(, <#T##y: CGFloat##CGFloat#>, <#T##width: CGFloat##CGFloat#>, <#T##height: CGFloat##CGFloat#>), controller: <#T##UIViewController#>)
     }
     func addNumberOnKeyBoard(number: String) {
         self.topView.freshAmount(number)

@@ -19,6 +19,7 @@
 		D27B93391D7D3DAC00E94562 /* MUAccountEditCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */; };
 		D27B933B1D7D452A00E94562 /* MUAccountEditItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */; };
 		D27B933D1D7D4D3E00E94562 /* MUAccountEditTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B933C1D7D4D3E00E94562 /* MUAccountEditTopView.swift */; };
+		D2A267781D813C5E0069F7C6 /* MUAccountKeyBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A267771D813C5E0069F7C6 /* MUAccountKeyBoardView.swift */; };
 		D2B4501C1D78334200BC7D68 /* TopBackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B4501B1D78334200BC7D68 /* TopBackgroundImageView.swift */; };
 		D2B4501F1D78342D00BC7D68 /* TiMiHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B4501E1D78342D00BC7D68 /* TiMiHeader.swift */; };
 		D2E44E081D7670CC00CFF8AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E44E071D7670CC00CFF8AB /* AppDelegate.swift */; };
@@ -61,6 +62,7 @@
 		D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditCollectionView.swift; sourceTree = "<group>"; };
 		D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditItemCell.swift; sourceTree = "<group>"; };
 		D27B933C1D7D4D3E00E94562 /* MUAccountEditTopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditTopView.swift; sourceTree = "<group>"; };
+		D2A267771D813C5E0069F7C6 /* MUAccountKeyBoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountKeyBoardView.swift; sourceTree = "<group>"; };
 		D2B4501B1D78334200BC7D68 /* TopBackgroundImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopBackgroundImageView.swift; sourceTree = "<group>"; };
 		D2B4501E1D78342D00BC7D68 /* TiMiHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TiMiHeader.swift; sourceTree = "<group>"; };
 		D2E44E041D7670CC00CFF8AB /* TiMiRecording.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TiMiRecording.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -115,6 +117,35 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		D20A82941D80155A00350EB1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D25E4C9A1D796B4400808EA6 /* AccountDetailItemTableView.swift */,
+				D25E4C9C1D79799B00808EA6 /* AccountDetailTableHeaderView.swift */,
+				D25E4C971D79671000808EA6 /* AccountDetailItemTableViewCell.swift */,
+				D2B4501B1D78334200BC7D68 /* TopBackgroundImageView.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		D20A82951D80157C00350EB1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D27B933C1D7D4D3E00E94562 /* MUAccountEditTopView.swift */,
+				D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */,
+				D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */,
+				D2A267771D813C5E0069F7C6 /* MUAccountKeyBoardView.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		D20A82961D8015CE00350EB1 /* AccountItemEditing */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = AccountItemEditing;
+			sourceTree = "<group>";
+		};
 		D25E4C8C1D79087400808EA6 /* AccountCellModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,10 +161,9 @@
 			isa = PBXGroup;
 			children = (
 				D2E44E091D7670CC00CFF8AB /* ViewController.swift */,
-				D25E4C9A1D796B4400808EA6 /* AccountDetailItemTableView.swift */,
-				D25E4C9C1D79799B00808EA6 /* AccountDetailTableHeaderView.swift */,
-				D25E4C971D79671000808EA6 /* AccountDetailItemTableViewCell.swift */,
-				D2B4501B1D78334200BC7D68 /* TopBackgroundImageView.swift */,
+				D20A82941D80155A00350EB1 /* View */,
+				D27B93371D7D3D2900E94562 /* AccountDetailEditing */,
+				D20A82961D8015CE00350EB1 /* AccountItemEditing */,
 			);
 			name = ViewController;
 			sourceTree = "<group>";
@@ -142,9 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				D25E4C951D79610E00808EA6 /* AccountDetailEditingViewController.swift */,
-				D27B933C1D7D4D3E00E94562 /* MUAccountEditTopView.swift */,
-				D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */,
-				D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */,
+				D20A82951D80157C00350EB1 /* View */,
 			);
 			name = AccountDetailEditing;
 			sourceTree = "<group>";
@@ -153,7 +181,6 @@
 			isa = PBXGroup;
 			children = (
 				D25E4C991D79671E00808EA6 /* ViewController */,
-				D27B93371D7D3D2900E94562 /* AccountDetailEditing */,
 				D25E4C8C1D79087400808EA6 /* AccountCellModel */,
 			);
 			name = MiddleView;
@@ -427,6 +454,7 @@
 				D27B93391D7D3DAC00E94562 /* MUAccountEditCollectionView.swift in Sources */,
 				D27B933D1D7D4D3E00E94562 /* MUAccountEditTopView.swift in Sources */,
 				D25E4C901D79090300808EA6 /* MUAccountDetailModel.swift in Sources */,
+				D2A267781D813C5E0069F7C6 /* MUAccountKeyBoardView.swift in Sources */,
 				D25E4C981D79671000808EA6 /* AccountDetailItemTableViewCell.swift in Sources */,
 				D25E4C9B1D796B4400808EA6 /* AccountDetailItemTableView.swift in Sources */,
 				D2B4501C1D78334200BC7D68 /* TopBackgroundImageView.swift in Sources */,

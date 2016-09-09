@@ -109,7 +109,7 @@
 	<key>自定义1</key>
 	<dict>
 		<key>imageName</key>
-		<string>type_big_n6_38x38_</string>
+		<string>type_big_n6_38x39_</string>
 		<key>statusCode</key>
 		<integer>2</integer>
 		<key>editable</key>
@@ -122,7 +122,7 @@
 	<key>自定义2</key>
 	<dict>
 		<key>imageName</key>
-		<string>type_big_n7_38x38_</string>
+		<string>type_big_n7_38x39_</string>
 		<key>statusCode</key>
 		<integer>2</integer>
 		<key>editable</key>

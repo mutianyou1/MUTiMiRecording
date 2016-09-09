@@ -62,10 +62,12 @@ class MUAccountEditTopView: UIView {
       self.amontLabel.text = amont
     }
     private func getItemImageColor() -> UIColor{
+        if(self.thumbImageView.image != nil){
         let pixeData = CGDataProviderCopyData(CGImageGetDataProvider(self.thumbImageView.image!.CGImage))
         let data :UnsafePointer<UInt8> = CFDataGetBytePtr(pixeData)
-        let pixeInfo : Int = ((Int(self.bounds.size.width) * Int(5)) + Int(10)) * 4
-        return UIColor.init(red: CGFloat.init(data[pixeInfo])/255.0, green: CGFloat.init(data[pixeInfo+1])/255.0, blue: CGFloat.init(data[pixeInfo+2])/255.0, alpha: CGFloat.init(data[pixeInfo+3])/255.0)
+        let pixeInfo : Int = ((Int(self.bounds.size.width) * Int(5)) + Int(15)) * 4
+            return UIColor.init(red: CGFloat.init(data[pixeInfo])/255.0, green: CGFloat.init(data[pixeInfo+1])/255.0, blue: CGFloat.init(data[pixeInfo+2])/255.0, alpha: CGFloat.init(data[pixeInfo+3])/255.0)}
+        return UIColor.whiteColor()
     }
     //MARK: animationDelegate
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {

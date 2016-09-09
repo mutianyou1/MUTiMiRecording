@@ -12,11 +12,12 @@ class AccountDetailEditingViewController: UIViewController {
     private let incomeButton = UIButton.init(type: .Custom)
     private let paidButton = UIButton.init(type: .Custom)
     private lazy var topView = MUAccountEditTopView.init(frame: CGRectZero)
-    private let collectionView = MUAccountEditCollectionView.init(frame: CGRectMake(0, KAccoutTitleMarginToAmount * 1.5 + 30 + 45 * KHeightScale, KWidth, KHeight - KAccoutTitleMarginToAmount - 30 - 45 * KHeightScale - KKeyBoardHeight), collectionViewLayout: UICollectionViewFlowLayout.init())
+    private let collectionView = MUAccountEditCollectionView.init(frame: CGRectMake(0, KAccoutTitleMarginToAmount * 1.5 + 30 + 45 * KHeightScale, KWidth, KHeight - KAccoutTitleMarginToAmount * 1.5 - 30 - 45 * KHeightScale - KKeyBoardHeight), collectionViewLayout: UICollectionViewFlowLayout.init())
+    private let pageControl = UIPageControl.init()
     private var firstData = MUAccountDetailModel()
     private var thumbImageViewRect = CGRectZero
     private var thumbImageAniLayer = UIImageView()
-    
+    private let keyBoardView = MUAccountKeyBoardView.init(frame: CGRectMake(0, KHeight - KKeyBoardHeight + 10.0, KWidth, KKeyBoardHeight - 10.0))
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,9 +27,15 @@ class AccountDetailEditingViewController: UIViewController {
         self.view.addSubview(topView)
 
       
-
-    
+       //keyBoardView
+        self.view.addSubview(self.keyBoardView)
+        self.keyBoardView.setUpUI("2016\n9月7日", hiligtedMessageButton: "")
+        
+        
         self.view.addSubview(self.collectionView)
+       
+            
+            
         //self.collectionView.backgroundColor =  UIColor.greenColor()
         
         //data load
@@ -37,7 +44,24 @@ class AccountDetailEditingViewController: UIViewController {
         
         self.view.addSubview(self.thumbImageAniLayer)
         self.collectionView.setCollectionViewBlock { [unowned self](data, layer,row,offSize) -> Void in
-            //self.view.bringSubviewToFront(self.thumbImageAniLayer)
+            
+            if(data.statusCode == MUAccoutItemStatus.SHOW_EDIT.rawValue){
+                let vc = UIViewController.init()
+                vc.view.backgroundColor = KSkyColor
+                self.presentViewController(vc, animated: true, completion: nil)
+                return
+            }
+            
+          if(data.accountTitleName.containsString("test")){
+               let offx = offSize.x + KWidth
+                var page = Int.init(offx/KWidth)
+            if(offx - CGFloat.init(page) * KWidth > 0){
+                page += 1
+            }
+               print(page)
+                self.pageControl.currentPage = page - 1
+                return
+            }
             let animation = CABasicAnimation.init(keyPath: "transform.translation.x")
             let animationY = CABasicAnimation.init(keyPath: "transform.translation.y")
            
@@ -48,6 +72,7 @@ class AccountDetailEditingViewController: UIViewController {
             rect.origin.x += offSize.x
         
             rect.origin.y += CGFloat.init(row % KAccountItemNumTrue) * (KAccountItemHeight+itemHeightMargin)
+            
 
             
             animation.fromValue = 0.0
@@ -87,12 +112,25 @@ class AccountDetailEditingViewController: UIViewController {
             )) { () -> Void in
                 self.collectionView.itemArray.removeAllObjects()
                 self.collectionView.itemArray.addObjectsFromArray(MUAccountDataManager.manager.getDataFromPlist(plistName, isPayment: true))
+                self.firstData = self.collectionView.itemArray.firstObject as! MUAccountDetailModel
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                    self.firstData = self.collectionView.itemArray.firstObject as! MUAccountDetailModel
+                   
                     self.topView.loadData(self.firstData)
                     self.thumbImageViewRect = self.topView.getThumbnilImageRect();
-                    //self.collectionView.addSubview(self.thumbImageAniLayer)
                     self.collectionView.reloadData()
+                    
+                    self.pageControl.numberOfPages = self.collectionView.itemArray.count/12
+                    if(self.collectionView.itemArray.count % 12 > 0 ){
+                       self.pageControl.numberOfPages += 1
+                    }
+                    self.pageControl.removeFromSuperview()
+                    if(self.pageControl.numberOfPages > 1){
+                    self.pageControl.frame = CGRectMake(KWidth * 0.5 - 50, KHeight - KKeyBoardHeight , 100, 10.0)
+                    self.pageControl.currentPage = 0
+                    self.pageControl.currentPageIndicatorTintColor =  KOrangeColor
+                    self.pageControl.pageIndicatorTintColor = UIColor.lightGrayColor()
+                    self.view.addSubview(self.pageControl)
+                    }
                 }
         }
         
@@ -108,7 +146,7 @@ class AccountDetailEditingViewController: UIViewController {
         incomeButton.setTitle("收入", forState: .Normal)
         incomeButton.titleLabel?.font = UIFont.systemFontOfSize(KBigFont)
         incomeButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
-        incomeButton.setTitleColor(UIColor.init(red: 253 / 255.0, green: 165/255.0, blue: 65/255.0, alpha: 1.0), forState: .Selected)
+        incomeButton.setTitleColor(KOrangeColor, forState: .Selected)
         incomeButton.frame = CGRectMake(KWidth * 0.5 - 80 - KAccoutTitleMarginToAmount * 0.5, KAccoutTitleMarginToAmount, 80, 30)
         incomeButton.addTarget(self, action: "incomeOrPaidDataLoad:", forControlEvents: .TouchUpInside)
         self.view.addSubview(incomeButton)
@@ -119,7 +157,7 @@ class AccountDetailEditingViewController: UIViewController {
         paidButton.frame = CGRectMake(KWidth * 0.5 + KAccoutTitleMarginToAmount * 0.5, KAccoutTitleMarginToAmount, 80, 30)
         paidButton.addTarget(self, action: "incomeOrPaidDataLoad:", forControlEvents: .TouchUpInside)
         paidButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
-        paidButton.setTitleColor(UIColor.init(red: 253 / 255.0, green: 165/255.0, blue: 65/255.0, alpha: 1.0), forState: .Selected)
+        paidButton.setTitleColor(KOrangeColor , forState: .Selected)
         paidButton.selected = true
         self.view.addSubview(paidButton)
     }

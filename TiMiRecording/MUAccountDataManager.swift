@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum MUAccoutItemStatus : Int {case SHOW_ATLAST = -1,SHOW_ATFIRST, SHOW,HIDDEN}
+enum MUAccoutItemStatus : Int {case SHOW_EDIT = -1,SHOW_MUST, SHOW_NORAML,HIDDEN}
 class MUAccountDataManager: NSObject {
     
     static let manager = MUAccountDataManager()
@@ -36,6 +36,8 @@ class MUAccountDataManager: NSObject {
           subDict.setValue(isPayment, forKey: "isPayment")
           subDict.setValue( "¥\(rand()%3000+1000)", forKey: "moneyAmount")
           subDict.setValue(dict![key as! String]!["index"] as! NSNumber, forKey: "index")
+          subDict.setValue(dict![key as! String]!["statusCode"] as! NSNumber, forKey: "statusCode")
+          subDict.setValue(dict![key as! String]!["editable"] as! Bool, forKey: "editable")
           data.setValuesForKeysWithDictionary(subDict.copy() as! [String : AnyObject])
           array.append(data)
         }

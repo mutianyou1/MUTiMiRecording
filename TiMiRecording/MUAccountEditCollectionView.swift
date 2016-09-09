@@ -37,6 +37,7 @@ class MUAccountEditCollectionView: UICollectionView ,UICollectionViewDataSource,
     
     //MARK: collectionView delegate
     override func numberOfSections() -> Int {
+        
         return 1;
     }
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -59,6 +60,11 @@ class MUAccountEditCollectionView: UICollectionView ,UICollectionViewDataSource,
     func setCollectionViewBlock(block : (data : MUAccountDetailModel, layer : CALayer, row : Int, offSize : CGPoint) -> Void) {
        self.block = block
        
+    }
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let data = MUAccountDetailModel()
+        //let page : Int = scrollView.contentOffset.y
+        self.block(data,CALayer(),0, scrollView.contentOffset)
     }
     
     /*

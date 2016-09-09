@@ -8,13 +8,15 @@
 
 import UIKit
 
-class MUAccountEditItemCell: UICollectionViewCell {
+class MUAccountEditItemCell: UICollectionViewCell ,UITextViewDelegate{
     private let thumbImageView = UIImageView.init()
     private let titleLabel = UILabel.init()
+   
     private  lazy  var   block = {(data :MUAccountDetailModel, layer : CALayer ) in }
     private lazy var data = MUAccountDetailModel()
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
         thumbImageView.frame = CGRectMake(KAccoutTitleMarginToAmount * 0.5, 0, self.bounds.size.width - KAccoutTitleMarginToAmount, self.bounds.size.height - KAccoutTitleMarginToAmount);
         self.addSubview(thumbImageView)
         
@@ -25,6 +27,7 @@ class MUAccountEditItemCell: UICollectionViewCell {
         
         let tap = UITapGestureRecognizer.init(target: self, action: "tapCell")
         self.addGestureRecognizer(tap)
+     
     }
     func loadItemData(data : MUAccountDetailModel) {
         self.data = data

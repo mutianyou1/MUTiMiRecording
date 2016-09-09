@@ -12,6 +12,7 @@ import UIKit
 let KWidth  = UIScreen.mainScreen().bounds.size.width
 let KHeight  = UIScreen.mainScreen().bounds.size.height
 let KSkyColor = UIColor(red: 248/255.0, green: 197/255/0, blue: 0, alpha: 1.0)
+let KOrangeColor = UIColor(red: 253 / 255.0, green: 165/255.0, blue: 65/255.0, alpha: 1.0)
 let KHeightScale  = KHeight / 670
 let KWidthScale =  KWidth / 375
 let KAccoutTitleMarginToAmount = 20 * KWidthScale

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AccountDetailEditingViewController: UIViewController {
+class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardViewDelegate{
     private let incomeButton = UIButton.init(type: .Custom)
     private let paidButton = UIButton.init(type: .Custom)
     private lazy var topView = MUAccountEditTopView.init(frame: CGRectZero)
@@ -18,6 +18,8 @@ class AccountDetailEditingViewController: UIViewController {
     private var thumbImageViewRect = CGRectZero
     private var thumbImageAniLayer = UIImageView()
     private let keyBoardView = MUAccountKeyBoardView.init(frame: CGRectMake(0, KHeight - KKeyBoardHeight + 10.0, KWidth, KKeyBoardHeight - 10.0))
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -29,7 +31,8 @@ class AccountDetailEditingViewController: UIViewController {
       
        //keyBoardView
         self.view.addSubview(self.keyBoardView)
-        self.keyBoardView.setUpUI("2016\n9月7日", hiligtedMessageButton: "")
+        self.keyBoardView.delegate = self
+        self.keyBoardView.setUpUI("今天",hightlightedMessageButton: false,hightlightedDateButton: false)
         
         
         self.view.addSubview(self.collectionView)
@@ -40,12 +43,13 @@ class AccountDetailEditingViewController: UIViewController {
         
         //data load
         self.loadData("MUAccountPayment")
-        let itemHeightMargin = (self.collectionView.frame.size.height - 3 * KAccountItemHeight) / 2.0
         
+        let itemHeightMargin = (self.collectionView.frame.size.height - 3 * KAccountItemHeight) / 2.0
         self.view.addSubview(self.thumbImageAniLayer)
+        
         self.collectionView.setCollectionViewBlock { [unowned self](data, layer,row,offSize) -> Void in
             
-            if(data.statusCode == MUAccoutItemStatus.SHOW_EDIT.rawValue){
+            if(data.statusCode == MUAccountItemStatus.SHOW_EDIT.rawValue){
                 let vc = UIViewController.init()
                 vc.view.backgroundColor = KSkyColor
                 self.presentViewController(vc, animated: true, completion: nil)
@@ -95,7 +99,6 @@ class AccountDetailEditingViewController: UIViewController {
             self.thumbImageAniLayer.layer.addAnimation(groupAnimation, forKey: "layer")
             self.firstData = data
             //print("move  ---x\(animation.toValue)")
-            
             //print(offSize.x)
         }
     }
@@ -106,8 +109,6 @@ class AccountDetailEditingViewController: UIViewController {
         self.thumbImageAniLayer.frame = CGRectZero
     }
     private func loadData(plistName : String) {
-        
-        
         dispatch_async(dispatch_get_global_queue(0, 0
             )) { () -> Void in
                 self.collectionView.itemArray.removeAllObjects()
@@ -135,6 +136,39 @@ class AccountDetailEditingViewController: UIViewController {
         }
         
     }
+    func close() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func incomeOrPaidDataLoad(sender : UIButton){
+        if(sender == incomeButton && sender.selected == false) {
+            incomeButton.selected = true
+            paidButton.selected = false
+            self.loadData("MUAccoutIncome")
+        }else if(sender == paidButton && sender.selected == false) {
+            paidButton.selected = true
+            incomeButton.selected = false
+            self.loadData("MUAccountPayment")
+        }
+        
+    }
+    //MARK: keyboardViewDelegate
+    func clickOk() {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    func startEditMessage() {
+        
+    }
+    func openCalendar() {
+        
+    }
+    func addNumberOnKeyBoard(number: String) {
+        self.topView.freshAmount(number)
+    }
+    func clearAll() {
+        self.topView.freshAmount("¥00.00")
+    }
+    //MARK: addButtons
     private func addButtons() {
         let closeButton = UIButton.init(type: .Custom)
         closeButton.frame = CGRectMake(KAccoutTitleMarginToAmount * 0.5, KAccoutTitleMarginToAmount, 18 , 18)
@@ -161,36 +195,11 @@ class AccountDetailEditingViewController: UIViewController {
         paidButton.selected = true
         self.view.addSubview(paidButton)
     }
-    func close() {
-       self.dismissViewControllerAnimated(true, completion: nil)
-    }
-    
-    func incomeOrPaidDataLoad(sender : UIButton){
-        if(sender == incomeButton && sender.selected == false) {
-            incomeButton.selected = true
-            paidButton.selected = false
-            self.loadData("MUAccoutIncome")
-        }else if(sender == paidButton && sender.selected == false) {
-           paidButton.selected = true
-           incomeButton.selected = false
-           self.loadData("MUAccountPayment")
-        }
-        
-    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }

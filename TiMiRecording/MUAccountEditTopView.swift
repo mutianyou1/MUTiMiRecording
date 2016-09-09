@@ -28,7 +28,7 @@ class MUAccountEditTopView: UIView {
         self.titleLabel.textAlignment = .Left
         self.addSubview(titleLabel)
         
-        self.amontLabel.frame = CGRectMake(self.bounds.size.width - 100 * KWidthScale, self.bounds.size.height * 0.5 - KAccoutTitleMarginToAmount * 0.5, 80 * KWidthScale, KAccoutTitleMarginToAmount)
+        self.amontLabel.frame = CGRectMake(self.titleLabel.frame.width + self.titleLabel.frame.origin.x, self.bounds.size.height * 0.5 - KAccoutTitleMarginToAmount * 0.5, self.bounds.size.width - self.titleLabel.frame.width - self.titleLabel.frame.origin.x, KAccoutTitleMarginToAmount)
         self.amontLabel.textAlignment = .Right
         self.amontLabel.font = UIFont.systemFontOfSize(KTitleFont)
         self.amontLabel.textColor = UIColor.whiteColor()

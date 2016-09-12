@@ -19,7 +19,6 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     private var thumbImageAniLayer = UIImageView()
     private let keyBoardView = MUAccountKeyBoardView.init(frame: CGRectMake(0, KHeight - KKeyBoardHeight + 10.0, KWidth, KKeyBoardHeight - 10.0))
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -160,7 +159,18 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         
     }
     func openCalendar() {
-       // setWindowType(windowType.alertWindow, rect: CGRectMake(, <#T##y: CGFloat##CGFloat#>, <#T##width: CGFloat##CGFloat#>, <#T##height: CGFloat##CGFloat#>), controller: <#T##UIViewController#>)
+        let controller = MUPromtViewController()
+        let rect = CGRectMake(50 * KWidthScale, 100 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 200 * KHeightScale)
+        controller.contentView = MUAlertView.init(frame: rect)
+        controller.contentView._ViewType = viewType.calendarView
+        controller.contentView.setCertainBlock {[unowned controller] () -> Void in
+            let dateString = controller.contentView.getPickedDate()
+           if(!dateString.isEmpty){
+            self.keyBoardView.setUpUI(dateString, hightlightedMessageButton: true, hightlightedDateButton: true)
+            }
+           
+        }
+        setWindowType(windowType.alertWindow, rect: rect, controller: controller)
     }
     func addNumberOnKeyBoard(number: String) {
         self.topView.freshAmount(number)

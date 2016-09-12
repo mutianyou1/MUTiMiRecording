@@ -57,7 +57,7 @@ class MUAccountKeyBoardView: UIView {
         self.dateButton.setTitleColor(KOrangeColor, forState: .Selected)
         self.dateButton.titleLabel?.textAlignment = .Left
         self.dateButton.titleLabel?.numberOfLines = 0
-        //self.dateButton.backgroundColor = KSkyColor
+        self.dateButton.addTarget(self, action: "openCalendar", forControlEvents: .TouchUpInside)
         self.addSubview(backView)
         self.addSubview(dateButton)
         
@@ -87,7 +87,6 @@ class MUAccountKeyBoardView: UIView {
     
     self.dateButton.setTitle(date, forState: .Normal)
     self.dateButton.selected = hightlightedDateButton
-    self.editMessageButton.selected = hightlightedMessageButton
        
     
     }
@@ -139,6 +138,9 @@ class MUAccountKeyBoardView: UIView {
         self.dotIndex = 0
         self.amount = 1.00
         self.delegate?.clickOk()
+    }
+    func openCalendar() {
+       self.delegate?.openCalendar()
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -19,8 +19,9 @@ class MUAlertView: UIView {
     private lazy var  calendar = UIDatePicker.init()
     private lazy var  certainBlock = {()->Void in}
     private let dateFormatter = NSDateFormatter.init()
+    
     var message = "abc"
-   var _ViewType = viewType.alertView{
+    var _ViewType = viewType.alertView{
         didSet{
             
             }
@@ -91,9 +92,11 @@ class MUAlertView: UIView {
     private func clickButton(sender :UIButton){
         
         MUWindow.setWindowFinishBlock(self.certainBlock)
+        
     }
+    //MARK: set Block
     func setCertainBlock( block : () -> Void) {
-        self.certainBlock = block
+         self.certainBlock = block
     }
     func setCurrentDate(date : String) {
          self.calendar.date = self.dateFormatter.dateFromString(date)!

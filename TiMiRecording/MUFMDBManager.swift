@@ -10,9 +10,14 @@ import UIKit
 
 class MUFMDBManager: NSObject {
      static let manager = MUFMDBManager.init()
-     private var data = FMDatabase.init()
+     private var dataBase = FMDatabase.init()
+     private var thisYear = "2016"
+     private let dateFormatter = NSDateFormatter.init()
      private override init() {
         super.init()
+        self.dateFormatter.dateFormat = "YYYY年M月dd日"
+        thisYear = self.dateFormatter.stringFromDate(NSDate.init(timeIntervalSinceNow: 0.0))
+        thisYear = thisYear.substringToIndex(thisYear.startIndex.advancedBy(4))
         self.openDataBase()
         self.creatTable()
     }
@@ -20,39 +25,84 @@ class MUFMDBManager: NSObject {
 
       var path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
        path?.appendContentsOf("accountInfo.db")
-       self.data = FMDatabase.init(path: path)
-       self.data.open()
+       self.dataBase = FMDatabase.init(path: path)
+       self.dataBase.open()
     }
     private func creatTable() {
       
-        let statement = String.init(format: "create table if not exists %@(time text,date text,accountTitleName text,tipsString text,thumbnailName text,userPictureName text,moneyAmount text,monthAmount text,dayAmount text,primary key(time))", arguments: ["commonAccountTable"])
+        let statement = String.init(format: "create table if not exists %@(time double,date text,month text,accountTitleName text,tipsString text,thumbnailName text,userPictureName text,expend double,income double,primary key(time))", arguments: ["commonAccountTable"])
      
-        self.data.executeStatements(statement)
+        self.dataBase.executeStatements(statement)
     }
     func addTable(name:String) {
-        let statement = String.init(format: "create table if not exists %@(time text,date text,accountTitleName text,tipsString text,thumbnailName text,userPictureName text,moneyAmount text,monthAmount text,dayAmount text,primary key(time))", arguments: [name])
+        let statement = String.init(format: "create table if not exists %@(time double,date text,month text,accountTitleName text,tipsString text,thumbnailName text,userPictureName text,expend double,income double,primary key(time))", arguments: [name])
         
-        self.data.executeStatements(statement)
+        self.dataBase.executeStatements(statement)
     }
     func insetData(data: MUAccountDetailModel,tableName: String) -> Bool{
-        let statement = String.init(format: "insert into  %@(time ,date ,accountTitleName ,tipsString ,thumbnailName ,userPictureName ,moneyAmount ,monthAmount,dayAmount) values('%@','')", arguments: ["commonAccountTable"])
+        var dateString = self.dateFormatter.stringFromDate(NSDate.init(timeIntervalSince1970: data.time))
+        var month = dateString.substringToIndex(dateString.startIndex.advancedBy(7))
         
-       return self.data.executeStatements(statement)
-        
+        if (dateString.containsString(thisYear)){
+            dateString = dateString.substringFromIndex(dateString.startIndex.advancedBy(5))
+            month = month.substringFromIndex(month.startIndex.advancedBy(5))
+        }
+        let expend : Double = data.moneyAmount > 0.0 ? 0.0 : data.moneyAmount
+        let income : Double = data.moneyAmount > 0.0 ? data.moneyAmount : 0.0
+        let statement = String.init(format: "insert into  %@(time ,date ,month,accountTitleName ,tipsString ,thumbnailName ,userPictureName ,expend,income) values('%lf','%@','%@','%@','%@','%@','%@','%lf','%lf')", arguments: [tableName,data.time,dateString,month,data.accountTitleName,data.tipsString,data.thumbnailName,data.userPictureName,expend,income])
+       return self.dataBase.executeStatements(statement)
+       
     }
-    func removeData(data:MUAccountDetailModel,tableName: String)-> Bool {
-        let statement = String.init(format: "create table if not exists %@(time text,date text,accountTitleName text,tipsString text,thumbnailName text,userPictureName text,moneyAmount text,monthAmount text,dayAmount text,primary key(time))", arguments: ["commonAccountTable"])
+   
+    func selectDatas(tableName: String) -> [MUAccountDetailModel]{
+        //let statement = String.init(format: "select * from %@   order by time desc", arguments: [tableName])
+        let set = self.dataBase.executeQuery("select * from %@   order by time desc", withArgumentsInArray: [tableName])
+        let array = NSMutableArray()
+        while(set.next()){
+            let data = MUAccountDetailModel()
+             data.date = set.stringForColumn("date")
+             data.accountTitleName = set.stringForColumn("accountTitleName")
+             data.userPictureName = set.stringForColumn("userPictureName")
+             data.tipsString = set.stringForColumn("tipsString")
+             data.time = set.doubleForColumn("time")
+            let income : Double = set.doubleForColumn("income")
+            if(income > 0.0){
+               data.moneyAmount = income
+            }else{
+               data.moneyAmount = set.doubleForColumn("expand")
+            }
+            
+             array.addObject(data)
+            
+        }
         
-        return self.data.executeStatements(statement)
-    }
-    func removeAll(tableName: String) -> Bool{
-        let statement = String.init(format: "create table if not exists %@(time text,date text,accountTitleName text,tipsString text,thumbnailName text,userPictureName text,moneyAmount text,monthAmount text,dayAmount text,primary key(time))", arguments: ["commonAccountTable"])
-        
-        return self.data.executeStatements(statement)
-    }
-    func selectDatas(user : String,tableName: String) -> [MUAccountDetailModel]{
-      return [MUAccountDetailModel()]
+      return array.copy() as! [MUAccountDetailModel]
     }
     
+    func getDayItemsAccount(tableName : String) -> [MUAccountDayDetailModel] {
+      //let statement = String.init(format: "SELECT date,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY date ", arguments: [tableName])
+      let set = self.dataBase.executeQuery("SELECT date,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY date" ,withArgumentsInArray: [tableName])
+      
+      let countArray = NSMutableArray()
+       while(set.next()){
+           let data = MUAccountDayDetailModel()
+               data.date = set.stringForColumn("date")
+               data.allCount = set.intForColumn("count(expend)")
+               data.payment = set.doubleForColumn("sum(expend)")
+              countArray.addObject(data)
+        }
+         return countArray.copy() as! [MUAccountDayDetailModel]
+    }
+    //MARK: remove Data
+    func removeData(data:MUAccountDetailModel,tableName: String)-> Bool {
+        let statement = String.init(format: "delete from %@  where time = %lf", arguments: [tableName,data.time])
+        
+        return self.dataBase.executeStatements(statement)
+    }
+    func removeTable(tableName: String) -> Bool{
+        let statement = String.init(format: "drop table if exists  %@", arguments: [tableName])
+        
+        return self.dataBase.executeStatements(statement)
+    }
   
 }

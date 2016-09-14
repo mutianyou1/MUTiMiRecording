@@ -13,16 +13,26 @@ import UIKit
 
 class MUAccountDetailModel: NSObject {
     var accountTitleName = "家居test"
-    var isPayment = true
-    var moneyAmount = "7000"
+    var moneyAmount :Double = 0.00
     var tipsString = "我在星巴克消费的休闲时光"
     var thumbnailName = "image_"
     var userPictureName = "image_"
+    var date = "9月1日"
+    var time : Double = 20.00
+    
     var index : Int = 0
     var statusCode : Int = 0
     var editable = false
-    var time = "2016年12月5日21:56:34"
+    var isPayment = true
+    
     override func  setValue(value: AnyObject?, forUndefinedKey key: String) {
         
     }
+}
+
+class MUAccountDayDetailModel: NSObject {
+    var date = "9月1日"
+    var month = "9月"
+    var allCount : Int32 = 0
+    var payment : Double = 0.0
 }

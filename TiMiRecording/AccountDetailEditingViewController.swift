@@ -41,7 +41,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         //self.collectionView.backgroundColor =  UIColor.greenColor()
         
         //data load
-        self.loadData("MUAccountPayment")
+        self.loadData("MUAccountPayment",ispayment: true)
         
         let itemHeightMargin = (self.collectionView.frame.size.height - 3 * KAccountItemHeight) / 2.0
         self.view.addSubview(self.thumbImageAniLayer)
@@ -61,7 +61,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
             if(offx - CGFloat.init(page) * KWidth > 0){
                 page += 1
             }
-               print(page)
+               
                 self.pageControl.currentPage = page - 1
                 return
             }
@@ -107,12 +107,13 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         self.collectionView.pagingEnabled = true
         self.thumbImageAniLayer.frame = CGRectZero
         self.keyBoardView.resetAmount()
+        self.firstData.time = NSDate.init(timeIntervalSinceNow: 0.0).timeIntervalSince1970
     }
-    private func loadData(plistName : String) {
+    private func loadData(plistName : String, ispayment:Bool) {
         dispatch_async(dispatch_get_global_queue(0, 0
             )) { () -> Void in
                 self.collectionView.itemArray.removeAllObjects()
-                self.collectionView.itemArray.addObjectsFromArray(MUAccountDataManager.manager.getDataFromPlist(plistName, isPayment: true))
+                self.collectionView.itemArray.addObjectsFromArray(MUAccountDataManager.manager.getDataFromPlist(plistName, isPayment: ispayment))
                 self.firstData = self.collectionView.itemArray.firstObject as! MUAccountDetailModel
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
                    
@@ -144,11 +145,11 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         if(sender == incomeButton && sender.selected == false) {
             incomeButton.selected = true
             paidButton.selected = false
-            self.loadData("MUAccoutIncome")
+            self.loadData("MUAccoutIncome",ispayment: false)
         }else if(sender == paidButton && sender.selected == false) {
             paidButton.selected = true
             incomeButton.selected = false
-            self.loadData("MUAccountPayment")
+            self.loadData("MUAccountPayment",ispayment: true)
         }
         
     }
@@ -170,7 +171,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         }
     }
     func startEditMessage() {
-        
+          
     }
     func openCalendar() {
         let controller = MUPromtViewController()

@@ -19,6 +19,7 @@ class MUAlertView: UIView {
     private lazy var  calendar = UIDatePicker.init()
     private lazy var  certainBlock = {()->Void in}
     private let dateFormatter = NSDateFormatter.init()
+    var message = "abc"
    var _ViewType = viewType.alertView{
         didSet{
             
@@ -29,10 +30,11 @@ class MUAlertView: UIView {
         switch _ViewType {
         case .alertView:
             self.userInteractionEnabled = true
-            contentLabel.attributedText = self.getAttributedString( "系统消息：\n请明确以下信息么事都放回我饿复合物绥芬河互粉加哦方式寺佛诶设法二合一")
-            contentLabel.textColor = UIColor.blackColor()
+            contentLabel.attributedText = self.getAttributedString(self.message)
             contentLabel.numberOfLines = 0
-            contentLabel.frame = CGRectMake(0, 0, self.bounds.size.width, 120)
+            let height = self.message.getStringHeight(self.bounds.size.width - 20.0 * KWidthScale, content: self.contentLabel.attributedText!)
+            
+            contentLabel.frame = CGRectMake(10.0 * KWidthScale, 10 * KHeightScale, self.bounds.size.width - 20.0 * KWidthScale,height)
             self.addSubview(contentLabel)
             
             cancelButton.setTitle("取消", forState: UIControlState.Normal)
@@ -46,7 +48,7 @@ class MUAlertView: UIView {
             inputTextView.layer.borderWidth = 1
             inputTextView.frame = CGRectMake(20, 150, self.bounds.size.width - 40, 120)
             inputTextView.delegate = self
-            self.addSubview(inputTextView)
+           // self.addSubview(inputTextView)
         
         case .rightView:
             contentLabel.text = "dhuhu"
@@ -76,7 +78,8 @@ class MUAlertView: UIView {
         let style = NSMutableParagraphStyle.init()
         style.lineBreakMode = NSLineBreakMode.ByCharWrapping
         style.lineSpacing = 2//
-        let string = NSMutableAttributedString.init(string: content, attributes: [NSParagraphStyleAttributeName:style,NSFontAttributeName:UIFont(name: "Avenir-Light", size: 17)!,NSStrokeWidthAttributeName:-1.5])
+        let string = NSMutableAttributedString.init(string: content, attributes: [NSParagraphStyleAttributeName:style,NSFontAttributeName:UIFont(name: "Avenir-Light", size: 17 * KHeightScale)!,NSStrokeWidthAttributeName:-1.5])
+        string.addAttribute(NSForegroundColorAttributeName, value: UIColor.redColor(), range: NSMakeRange(0, 2))
         return string
     }
     override init(frame: CGRect) {
@@ -101,6 +104,20 @@ class MUAlertView: UIView {
           return "今天"
         }else{
          return self.dateFormatter.stringFromDate(self.calendar.date)
+        }
+    }
+    func getHeight() -> CGFloat {
+        switch self._ViewType {
+        case .alertView:
+            return 50 * KHeightScale + self.message.getStringHeight(self.bounds.size.width - 20.0 * KWidthScale, content: self.getAttributedString(self.message))
+        case .calendarView:
+            return 0.0
+        case .rightView:
+             return 0.0
+        case .sheetView:
+             return 0.0
+        case .upView:
+             return 0.0
         }
     }
     required init?(coder aDecoder: NSCoder) {

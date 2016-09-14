@@ -11,6 +11,8 @@
 		D20028151D82BA08004324DF /* MUAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20028121D82BA08004324DF /* MUAlertView.swift */; };
 		D20028161D82BA08004324DF /* MUPromtViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20028131D82BA08004324DF /* MUPromtViewController.swift */; };
 		D20028171D82BA08004324DF /* MUWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20028141D82BA08004324DF /* MUWindow.swift */; };
+		D207A7D51D87962300F1B639 /* MURectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D207A7D41D87962300F1B639 /* MURectModel.swift */; };
+		D207A7D91D87AD6500F1B639 /* MUFMDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D207A7D81D87AD6500F1B639 /* MUFMDBManager.swift */; };
 		D25E4C901D79090300808EA6 /* MUAccountDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E4C8F1D79090300808EA6 /* MUAccountDetailModel.swift */; };
 		D25E4C921D79104600808EA6 /* MUAccountPayment.plist in Resources */ = {isa = PBXBuildFile; fileRef = D25E4C911D79104600808EA6 /* MUAccountPayment.plist */; };
 		D25E4C941D79107E00808EA6 /* MUAccoutIncome.plist in Resources */ = {isa = PBXBuildFile; fileRef = D25E4C931D79107E00808EA6 /* MUAccoutIncome.plist */; };
@@ -57,6 +59,8 @@
 		D20028121D82BA08004324DF /* MUAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAlertView.swift; sourceTree = "<group>"; };
 		D20028131D82BA08004324DF /* MUPromtViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUPromtViewController.swift; sourceTree = "<group>"; };
 		D20028141D82BA08004324DF /* MUWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUWindow.swift; sourceTree = "<group>"; };
+		D207A7D41D87962300F1B639 /* MURectModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MURectModel.swift; sourceTree = "<group>"; };
+		D207A7D81D87AD6500F1B639 /* MUFMDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUFMDBManager.swift; sourceTree = "<group>"; };
 		D25E4C8F1D79090300808EA6 /* MUAccountDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountDetailModel.swift; sourceTree = "<group>"; };
 		D25E4C911D79104600808EA6 /* MUAccountPayment.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MUAccountPayment.plist; sourceTree = "<group>"; };
 		D25E4C931D79107E00808EA6 /* MUAccoutIncome.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MUAccoutIncome.plist; sourceTree = "<group>"; };
@@ -126,11 +130,29 @@
 		D20028111D82B9CD004324DF /* MUFrameWork */ = {
 			isa = PBXGroup;
 			children = (
+				D207A7D71D87AD4800F1B639 /* FMDB */,
+				D207A7D61D87AD3000F1B639 /* MUWindow */,
+			);
+			name = MUFrameWork;
+			sourceTree = "<group>";
+		};
+		D207A7D61D87AD3000F1B639 /* MUWindow */ = {
+			isa = PBXGroup;
+			children = (
 				D20028121D82BA08004324DF /* MUAlertView.swift */,
 				D20028131D82BA08004324DF /* MUPromtViewController.swift */,
 				D20028141D82BA08004324DF /* MUWindow.swift */,
+				D207A7D41D87962300F1B639 /* MURectModel.swift */,
 			);
-			name = MUFrameWork;
+			name = MUWindow;
+			sourceTree = "<group>";
+		};
+		D207A7D71D87AD4800F1B639 /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				D207A7D81D87AD6500F1B639 /* MUFMDBManager.swift */,
+			);
+			name = FMDB;
 			sourceTree = "<group>";
 		};
 		D20A82941D80155A00350EB1 /* View */ = {
@@ -475,6 +497,7 @@
 				D2A267781D813C5E0069F7C6 /* MUAccountKeyBoardView.swift in Sources */,
 				D25E4C981D79671000808EA6 /* AccountDetailItemTableViewCell.swift in Sources */,
 				D25E4C9B1D796B4400808EA6 /* AccountDetailItemTableView.swift in Sources */,
+				D207A7D91D87AD6500F1B639 /* MUFMDBManager.swift in Sources */,
 				D2B4501C1D78334200BC7D68 /* TopBackgroundImageView.swift in Sources */,
 				D20028161D82BA08004324DF /* MUPromtViewController.swift in Sources */,
 				D2E44E0A1D7670CC00CFF8AB /* ViewController.swift in Sources */,
@@ -483,6 +506,7 @@
 				D27B933B1D7D452A00E94562 /* MUAccountEditItemCell.swift in Sources */,
 				D20028151D82BA08004324DF /* MUAlertView.swift in Sources */,
 				D2B4501F1D78342D00BC7D68 /* TiMiHeader.swift in Sources */,
+				D207A7D51D87962300F1B639 /* MURectModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

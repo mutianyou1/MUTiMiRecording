@@ -24,7 +24,7 @@ class MUAccountKeyBoardView: UIView {
 
     
     private var amountString = "¥00.00"
-    private var amount : CGFloat = 1.00
+    private var amount : CGFloat = 0.00
     private let dateButton = UIButton.init(type: .Custom)
     private let editMessageButton = UIButton.init(type: .Custom)
     private var dotIndex = 0
@@ -41,6 +41,7 @@ class MUAccountKeyBoardView: UIView {
             button.titleLabel?.textAlignment = .Center
             button.setTitle(MUKeyBoardTitleArray[index], forState: .Normal)
             button.setTitleColor(UIColor.blackColor(), forState: .Normal)
+            button.exclusiveTouch = true
             //button.titleLabel?.font = UIFont.systemFontOfSize(28 * KHeightScale)
             button.titleLabel?.font = UIFont.init(name: "AppleSDGothicNeo-Thin", size: 28 * KHeightScale)
             button.setTitleColor(KOrangeColor, forState: .Highlighted)
@@ -58,10 +59,12 @@ class MUAccountKeyBoardView: UIView {
         self.dateButton.titleLabel?.textAlignment = .Left
         self.dateButton.titleLabel?.numberOfLines = 0
         self.dateButton.addTarget(self, action: "openCalendar", forControlEvents: .TouchUpInside)
+        self.dateButton.exclusiveTouch = true
         self.addSubview(backView)
         self.addSubview(dateButton)
         
         self.editMessageButton.frame = CGRectMake(KWidth - MUKeyBoardbuttonWidth,MUKeyBoardTopMargin ,MUKeyBoardbuttonWidth , MUKeyBoardbuttonHeight * 2.0)
+       self.editMessageButton.exclusiveTouch = true
        self.editMessageButton.setImage(UIImage.init(named: "addItem_remark_18x20_"), forState: .Normal)
        self.editMessageButton.setImage(UIImage.init(named: "addItem_remark_light_18x20_"), forState: .Selected)
        self.editMessageButton.setImage(UIImage.init(named: "addItem_remark_light_18x20_"), forState: .Highlighted)
@@ -79,14 +82,17 @@ class MUAccountKeyBoardView: UIView {
           okButton.setTitleColor(KOrangeColor, forState: .Highlighted)
           okButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
           okButton.addTarget(self, action: "clickOK", forControlEvents: .TouchUpInside)
+          okButton.exclusiveTouch = true
           self.addSubview(okButton)
         
         
     }
     func setUpUI(date : String , hightlightedMessageButton : Bool , hightlightedDateButton: Bool) {
-    
-    self.dateButton.setTitle(date, forState: .Normal)
-    self.dateButton.selected = hightlightedDateButton
+        if(!date.isEmpty){
+          self.dateButton.setTitle(date, forState: .Normal)
+        }
+          self.dateButton.selected = hightlightedDateButton
+          self.editMessageButton.selected = hightlightedMessageButton
        
     
     }
@@ -96,15 +102,13 @@ class MUAccountKeyBoardView: UIView {
         let title = sender.titleLabel?.text
        
         if((title!.containsString("清零"))){
-            self.amountString = "¥00.00"
-            self.dotIndex = 0
-            self.amount = 1.00
+            self.resetAmount()
             self.delegate?.clearAll()
         }else if((title!.containsString("."))){
             if(self.dotIndex == 2){
                self.dotIndex == 3
             }else{
-           self.dotIndex = self.dotIndex == 0 ? 1: 2
+              self.dotIndex = self.dotIndex == 0 ? 1: 2
             }
         }else{
             if(self.dotIndex == 2){
@@ -115,32 +119,48 @@ class MUAccountKeyBoardView: UIView {
                 self.dotIndex = 2
             }else if(self.dotIndex != 3){
                     
-                    if(amount > 1.00){
+                    if(amount >= 1.00 ){
                       amount *= 10.00
                       amount += CGFloat.init(Int.init(title!)!)
                     }else{
-                      amount *= CGFloat.init(Int.init(title!)!)
+                      amount += CGFloat.init(Int.init(title!)!)
                     }
                 
                 }
             self.amount *= 1.000
             self.amountString = "¥\(self.amount)"
             self.amountString = String(format: "¥%.02f", arguments: [self.amount])
+            if(self.amount > 100000000.00){
+                let controller = MUPromtViewController()
+                controller.contentView = MUAlertView.init(frame: CGRectMake(50.0 * KWidthScale , 200 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 400 * KHeightScale))
+                controller.contentView.message = "提示\n输入金额不能超过1亿"
+                controller.contentView._ViewType = viewType.alertView
+                let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
+                setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
+                return
+            }
+
+            
+            }
             self.delegate?.addNumberOnKeyBoard(self.amountString)
-        }
         
     }
     func startEditMessage() {
         self.delegate?.startEditMessage()
     }
     func clickOK() {
-        self.amountString = "¥00.00"
-        self.dotIndex = 0
-        self.amount = 1.00
         self.delegate?.clickOk()
     }
     func openCalendar() {
        self.delegate?.openCalendar()
+    }
+    func getAmount() -> CGFloat{
+         return self.amount
+    }
+    func resetAmount() {
+        self.amountString = "¥00.00"
+        self.dotIndex = 0
+        self.amount = 0.00
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

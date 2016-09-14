@@ -21,6 +21,7 @@ class MUAccountDetailModel: NSObject {
     var index : Int = 0
     var statusCode : Int = 0
     var editable = false
+    var time = "2016年12月5日21:56:34"
     override func  setValue(value: AnyObject?, forUndefinedKey key: String) {
         
     }

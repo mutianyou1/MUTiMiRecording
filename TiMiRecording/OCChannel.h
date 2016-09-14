@@ -10,4 +10,5 @@
 #define OCChannel_h
 #import "MUSlideHeader.h"
 #import "Masonry.h"
+#import "FMDB.h"
 #endif /* OCChannel_h */

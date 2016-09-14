@@ -106,6 +106,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         self.topView.loadData(self.firstData)
         self.collectionView.pagingEnabled = true
         self.thumbImageAniLayer.frame = CGRectZero
+        self.keyBoardView.resetAmount()
     }
     private func loadData(plistName : String) {
         dispatch_async(dispatch_get_global_queue(0, 0
@@ -153,7 +154,20 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     }
     //MARK: keyboardViewDelegate
     func clickOk() {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        let amount = self.keyBoardView.getAmount()
+        if(amount > CGFloat.init(0.0)){
+           self.dismissViewControllerAnimated(true, completion: nil)
+        }else{
+          let controller = MUPromtViewController()
+          controller.contentView = MUAlertView.init(frame: CGRectMake(50.0 * KWidthScale , 200 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 400 * KHeightScale))
+          controller.contentView.message = "提示\n输入金额必须大于0"
+          controller.contentView._ViewType = viewType.alertView
+          controller.contentView.setCertainBlock({ [unowned self]() -> Void in
+              self.topView.performSelector("shakeAmountLabel", withObject: self.topView, afterDelay: 1.8)
+          })
+            let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
+          setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
+        }
     }
     func startEditMessage() {
         
@@ -165,9 +179,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         controller.contentView._ViewType = viewType.calendarView
         controller.contentView.setCertainBlock {[unowned controller] () -> Void in
             let dateString = controller.contentView.getPickedDate()
-           if(!dateString.isEmpty){
-            self.keyBoardView.setUpUI(dateString, hightlightedMessageButton: true, hightlightedDateButton: true)
-            }
+            self.keyBoardView.setUpUI(dateString, hightlightedMessageButton: false, hightlightedDateButton: true)
            
         }
         setWindowType(windowType.alertWindow, rect: rect, controller: controller)

@@ -61,6 +61,14 @@ class MUAccountEditTopView: UIView {
     func freshAmount(amont : String) {
       self.amontLabel.text = amont
     }
+    func shakeAmountLabel() {
+       let keyAnimation = CAKeyframeAnimation.init(keyPath: "transform.translation.x")
+          keyAnimation.values = [-10,-5,0,5,10]
+          keyAnimation.duration = 0.1
+          keyAnimation.repeatCount = 2
+          keyAnimation.removedOnCompletion = true
+       self.amontLabel.layer.addAnimation(keyAnimation, forKey: "transformX")
+    }
     private func getItemImageColor() -> UIColor{
         if(self.thumbImageView.image != nil){
         let pixeData = CGDataProviderCopyData(CGImageGetDataProvider(self.thumbImageView.image!.CGImage))

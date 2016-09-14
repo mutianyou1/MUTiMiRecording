@@ -104,28 +104,36 @@ class MUWindow: NSObject {
             frame.origin.y = KHeight * 0.5
             MUWindow.WindowManger.window?.frame = frame
             }, completion: { (bool :Bool) -> Void in
-              destroy()
+                if(bool == true){
+                  destroy()
+            }
         })
     case .curtainWindow:
         UIView.animateWithDuration(NSTimeInterval.init(1.5), animations: { () -> Void in
             frame.origin.y = -MUWindow.WindowManger.rect.size.height
             MUWindow.WindowManger.window!.frame = frame
             }, completion: { (bool :Bool) -> Void in
-                destroy()
+                if(bool){
+                    destroy()
+                }
         })
     case .drawerWindow:
         UIView.animateWithDuration(NSTimeInterval.init(1.5), animations: { () -> Void in
             frame.origin.x = KWidth
-            MUWindow.WindowManger.window!.frame = frame
+             MUWindow.WindowManger.window!.frame = frame
             }, completion: { (bool :Bool) -> Void in
-                destroy()
+                if(bool){
+                    destroy()
+                }
         })
     case .sheetWindow:
         UIView.animateWithDuration(NSTimeInterval.init(1.5), animations: { () -> Void in
             frame.origin.y = KHeight
             MUWindow.WindowManger.window!.frame = frame
             }, completion: { (bool:Bool) -> Void in
-                destroy()
+                if(bool){
+                    destroy()
+                }
         })
     }
 }

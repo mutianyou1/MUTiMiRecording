@@ -26,6 +26,7 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
         topView.configSubViews()
         
         self.setUpTabelView()
+      
 
     }
     private func setUpTabelView() {

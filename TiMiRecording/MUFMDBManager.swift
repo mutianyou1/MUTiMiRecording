@@ -55,8 +55,8 @@ class MUFMDBManager: NSObject {
     }
    
     func selectDatas(tableName: String) -> [MUAccountDetailModel]{
-        //let statement = String.init(format: "select * from %@   order by time desc", arguments: [tableName])
-        let set = self.dataBase.executeQuery("select * from %@   order by time desc", withArgumentsInArray: [tableName])
+        let statement = String.init(format: "select * from %@   order by time desc", arguments: [tableName])
+        let set = self.dataBase.executeQuery(statement, withArgumentsInArray: [tableName])
         let array = NSMutableArray()
         while(set.next()){
             let data = MUAccountDetailModel()
@@ -69,7 +69,7 @@ class MUFMDBManager: NSObject {
             if(income > 0.0){
                data.moneyAmount = income
             }else{
-               data.moneyAmount = set.doubleForColumn("expand")
+               data.moneyAmount = set.doubleForColumn("expend")
             }
             
              array.addObject(data)
@@ -80,8 +80,8 @@ class MUFMDBManager: NSObject {
     }
     
     func getDayItemsAccount(tableName : String) -> [MUAccountDayDetailModel] {
-      //let statement = String.init(format: "SELECT date,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY date ", arguments: [tableName])
-      let set = self.dataBase.executeQuery("SELECT date,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY date" ,withArgumentsInArray: [tableName])
+      let statement = String.init(format: "SELECT date,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY date ", arguments: [tableName])
+      let set = self.dataBase.executeQuery(statement ,withArgumentsInArray: [tableName])
       
       let countArray = NSMutableArray()
        while(set.next()){

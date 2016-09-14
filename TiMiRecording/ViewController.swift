@@ -26,10 +26,17 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
         topView.configSubViews()
         
         self.setUpTabelView()
-//        let mudata = MUAccountDetailModel()
-//        mudata.time = NSDate.init(timeIntervalSince1970: 400).timeIntervalSince1970
-//        MUFMDBManager.manager.insetData(mudata, tableName: KAccountCommontTable)
-       // MUFMDBManager.manager.removeAll(KAccountCommontTable)
+        
+        
+        
+      let array = MUFMDBManager.manager.selectDatas(KAccountCommontTable)
+        for  data in array{
+            print(data.moneyAmount)
+            print(data.thumbnailName)
+            print(data.userPictureName)
+            print(data.date)
+            print(data.tipsString)
+        }
     }
     private func setUpTabelView() {
 

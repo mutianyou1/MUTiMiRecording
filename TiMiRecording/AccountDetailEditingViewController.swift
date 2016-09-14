@@ -36,8 +36,9 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         
         self.view.addSubview(self.collectionView)
        
-            
-            
+      
+        //notification
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeCalendar:", name: "currentTime", object: nil)
         //self.collectionView.backgroundColor =  UIColor.greenColor()
         
         //data load
@@ -101,6 +102,12 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
             //print(offSize.x)
         }
     }
+    //MARK: Notification
+    @objc
+    private func closeCalendar(noti : NSNotification){
+        let date : NSDate = noti.object as! NSDate
+        self.firstData.time = date.timeIntervalSince1970
+    }
     //MARK: animation delegate
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         self.topView.loadData(self.firstData)
@@ -155,8 +162,19 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     }
     //MARK: keyboardViewDelegate
     func clickOk() {
-        let amount = self.keyBoardView.getAmount()
+        var amount = self.keyBoardView.getAmount()
         if(amount > CGFloat.init(0.0)){
+            
+            self.firstData.moneyAmount = Double.init(amount)
+            
+            if(self.firstData.isPayment){
+                amount *= -1.0
+                self.firstData.moneyAmount = Double.init(amount)
+            }
+//            MUFMDBManager.manager.removeTable(KAccountCommontTable)
+            if(MUFMDBManager.manager.insetData(self.firstData, tableName: KAccountCommontTable)){
+               print("插入成功")
+            }
            self.dismissViewControllerAnimated(true, completion: nil)
         }else{
           let controller = MUPromtViewController()

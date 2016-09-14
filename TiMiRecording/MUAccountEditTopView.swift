@@ -37,7 +37,7 @@ class MUAccountEditTopView: UIView {
     func loadData(data :  MUAccountDetailModel) {
          self.titleLabel.text = data.accountTitleName
          self.thumbImageView.image = UIImage.init(named: data.thumbnailName)
-         self.amontLabel.text =  String.init(format: "%lf", arguments: [data.moneyAmount])
+         self.amontLabel.text =  String.init(format: "¥%.2lf", arguments: [data.moneyAmount])
          self.freshViewColor()
     }
     func getThumbnilImageRect() -> CGRect {

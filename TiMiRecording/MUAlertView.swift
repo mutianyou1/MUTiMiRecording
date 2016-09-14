@@ -91,7 +91,21 @@ class MUAlertView: UIView {
     @objc
     private func clickButton(sender :UIButton){
         
+        switch self._ViewType {
+        case .alertView:
+               break
+        case .calendarView:
+              NSNotificationCenter.defaultCenter().postNotificationName("currentTime", object: self.calendar.date)
+               break
+        case .rightView:
+               break
+        case .sheetView:
+               break
+        case .upView:
+               break
+        }
         MUWindow.setWindowFinishBlock(self.certainBlock)
+        
         
     }
     //MARK: set Block

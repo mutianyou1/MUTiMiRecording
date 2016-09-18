@@ -27,20 +27,19 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
         
         self.setUpTabelView()
         
-        
-        
-      let array = MUFMDBManager.manager.selectDatas(KAccountCommontTable)
-        for  data in array{
-            print(data.moneyAmount)
-            print(data.thumbnailName)
-            print(data.userPictureName)
-            print(data.date)
-            print(data.tipsString)
-        }
+     
     }
     private func setUpTabelView() {
 
       self.view.addSubview(self.detailItemTableView)
+      self.detailItemTableView.setSpringAnimationBlock {[unowned self] (height) -> Void in
+        
+        if height > 0.0 {
+            self.topView.animatiedAddButton(height/CGFloat.init(110.0))
+        }else{
+           self.topView.resetAccountAddButtonTrasnform()
+        }
+        }
       
     }
 
@@ -54,7 +53,9 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
 
 extension ViewController {
     func presentAccountDetailEditingViewController() {
-        self.presentViewController(AccountDetailEditingViewController(), animated: true, completion: nil)
+           self.presentViewController(AccountDetailEditingViewController(), animated: true, completion: nil)
+       
+        
     }
     func openCarmera() {
         print("open carmera")

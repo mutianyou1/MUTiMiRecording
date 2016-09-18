@@ -10,12 +10,19 @@ import UIKit
 
 
 
-class AccountDetailTableHeaderView: UIView {
+class AccountDetailTableHeaderView: UITableViewHeaderFooterView {
       private let lineView = UIView.init()
       private let moneyAmountLabel = UILabel.init()
       private let circleImageView = UIImageView.init()
       private let dateLabel = UILabel.init()
     
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        self.contentView.backgroundColor = UIColor.whiteColor()
+    }
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
     func setUpDateAndMoneyAmount(date : String, amount : String) {
        self.lineView.frame = CGRectMake(self.bounds.size.width * 0.5 - 0.5, 0, 1, self.bounds.size.height)
        self.lineView.backgroundColor = UIColor.lightGrayColor()

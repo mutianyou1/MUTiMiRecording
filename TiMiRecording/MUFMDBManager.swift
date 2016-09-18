@@ -50,10 +50,11 @@ class MUFMDBManager: NSObject {
         let expend : Double = data.moneyAmount > 0.0 ? 0.0 : data.moneyAmount
         let income : Double = data.moneyAmount > 0.0 ? data.moneyAmount : 0.0
         let statement = String.init(format: "insert into  %@(time ,date ,month,accountTitleName ,tipsString ,thumbnailName ,userPictureName ,expend,income) values('%lf','%@','%@','%@','%@','%@','%@','%lf','%lf')", arguments: [tableName,data.time,dateString,month,data.accountTitleName,data.tipsString,data.thumbnailName,data.userPictureName,expend,income])
+        
        return self.dataBase.executeStatements(statement)
        
     }
-   
+   //MARK: select
     func selectDatas(tableName: String) -> [MUAccountDetailModel]{
         let statement = String.init(format: "select * from %@   order by time desc", arguments: [tableName])
         let set = self.dataBase.executeQuery(statement, withArgumentsInArray: [tableName])
@@ -65,6 +66,7 @@ class MUFMDBManager: NSObject {
              data.userPictureName = set.stringForColumn("userPictureName")
              data.tipsString = set.stringForColumn("tipsString")
              data.time = set.doubleForColumn("time")
+             data.thumbnailName = set.stringForColumn("thumbnailName")
             let income : Double = set.doubleForColumn("income")
             if(income > 0.0){
                data.moneyAmount = income
@@ -96,7 +98,6 @@ class MUFMDBManager: NSObject {
     //MARK: remove Data
     func removeData(data:MUAccountDetailModel,tableName: String)-> Bool {
         let statement = String.init(format: "delete from %@  where time = %lf", arguments: [tableName,data.time])
-        
         return self.dataBase.executeStatements(statement)
     }
     func removeTable(tableName: String) -> Bool{

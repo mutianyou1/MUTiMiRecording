@@ -11,7 +11,7 @@ import UIKit
 
 public protocol TopBackgroundImageViewDelegate : NSObjectProtocol{
      func openCarmera()
-     func presentAccountDetailEditingViewController()
+    func presentAccountDetailEditingViewController()
 }
 class TopBackgroundImageView: UIView {
     private let backImageView = UIImageView.init()
@@ -107,7 +107,7 @@ class TopBackgroundImageView: UIView {
         if(sender == accountTitleButton){
            self.balanceButton.hidden = false
         }else{
-          self.accountTitleButton.hidden = false
+           self.accountTitleButton.hidden = false
         }
         sender.hidden = true
     }
@@ -122,6 +122,29 @@ class TopBackgroundImageView: UIView {
         }
 
 
+    }
+    func animatiedAddButton(scale : CGFloat) {
+        
+        if (scale > 0.91){
+           return
+        }
+        let trasnfrom = CGAffineTransformMakeRotation(CGFloat.init(M_PI_4 * 2) + CGFloat.init(M_PI * 3 / 2) * scale )
+        UIView.animateWithDuration(0.0, animations: { () -> Void in
+            self.accountAddButton.transform = trasnfrom
+            }) { (isdone : Bool) -> Void in
+                
+                
+                if(scale > 0.9 && isdone){
+                self.accountAddButton.transform = CGAffineTransformIdentity
+                self.delegate?.presentAccountDetailEditingViewController()
+                }
+        }
+    }
+    func resetAccountAddButtonTrasnform() {
+         UIView.animateWithDuration(0.2) { () -> Void in
+             self.accountAddButton.transform = CGAffineTransformIdentity
+        }
+        
     }
     override func didMoveToSuperview() {
         super.didMoveToSuperview()

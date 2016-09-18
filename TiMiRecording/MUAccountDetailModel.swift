@@ -14,7 +14,7 @@ import UIKit
 class MUAccountDetailModel: NSObject {
     var accountTitleName = "家居test"
     var moneyAmount :Double = 0.00
-    var tipsString = "我在星巴克消费的休闲时光"
+    var tipsString = "我在星巴克消费的休闲时光，时间静止唯有想你"
     var thumbnailName = "image_"
     var userPictureName = "image_"
     var date = "9月1日"

@@ -30,7 +30,7 @@ class MUAccountDataManager: NSObject {
            let subDict = NSMutableDictionary()
             let string = key as! String
             if(!string.containsString("自定义")){
-          subDict.setValue("tipsString", forKey: "tipsString")
+          subDict.setValue("", forKey: "tipsString")
           subDict.setValue(key, forKey: "accountTitleName")
           subDict.setValue(dict![key as! String]!["imageName"] as! String, forKey: "thumbnailName")
           subDict.setValue(isPayment, forKey: "isPayment")

@@ -158,10 +158,10 @@
 		D20A82941D80155A00350EB1 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D2B4501B1D78334200BC7D68 /* TopBackgroundImageView.swift */,
 				D25E4C9A1D796B4400808EA6 /* AccountDetailItemTableView.swift */,
 				D25E4C9C1D79799B00808EA6 /* AccountDetailTableHeaderView.swift */,
 				D25E4C971D79671000808EA6 /* AccountDetailItemTableViewCell.swift */,
-				D2B4501B1D78334200BC7D68 /* TopBackgroundImageView.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";

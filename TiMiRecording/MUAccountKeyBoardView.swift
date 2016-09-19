@@ -23,7 +23,7 @@ public protocol MUAccountKeyBoardViewDelegate : NSObjectProtocol {
 class MUAccountKeyBoardView: UIView {
 
     
-    private var amountString = "¥00.00"
+    private var amountString = "¥0.00"
     private var amount : CGFloat = 0.00
     private let dateButton = UIButton.init(type: .Custom)
     private let editMessageButton = UIButton.init(type: .Custom)
@@ -158,7 +158,7 @@ class MUAccountKeyBoardView: UIView {
          return self.amount
     }
     func resetAmount() {
-        self.amountString = "¥00.00"
+        self.amountString = "¥0.00"
         self.dotIndex = 0
         self.amount = 0.00
     }

@@ -28,3 +28,6 @@ let KAccountItemWidthMargin = 20 * KWidthScale
 let KAccountItemNum : Int = 5
 let KAccountItemNumTrue : Int = 3
 let KAccountCommontTable = "commonAccountTable"
+let KNotificationCurrentTime  = "CurrentTimeNotification"
+let KNotificationAddAccountDetail = "AddAccountDetailNotification"
+let KNotificationCellAnimationEnd = "AccountDetailCellAnimationEnd"

@@ -19,38 +19,42 @@ class AccountDetailTableHeaderView: UITableViewHeaderFooterView {
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
         self.contentView.backgroundColor = UIColor.whiteColor()
+        
+        
+        self.lineView.backgroundColor = UIColor.lightGrayColor()
+        self.addSubview(lineView)
+        
+        
+        self.circleImageView.image = UIImage.init(named: "day_indicator_6x6_")
+        self.addSubview(circleImageView)
+        
+        
+        self.dateLabel.textAlignment = .Right
+        self.dateLabel.numberOfLines = 1
+        self.dateLabel.textColor = UIColor.lightGrayColor()
+        self.dateLabel.font = UIFont.systemFontOfSize(KLittleFont)
+        
+        self.addSubview(dateLabel)
+        
+       
+        self.moneyAmountLabel.textAlignment = .Left
+        self.moneyAmountLabel.numberOfLines = 1
+        self.moneyAmountLabel.textColor = UIColor.lightGrayColor()
+        self.moneyAmountLabel.font = UIFont.systemFontOfSize(KLittleFont)
+        
+        self.addSubview(moneyAmountLabel)
+
     }
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     func setUpDateAndMoneyAmount(date : String, amount : String) {
-       self.lineView.frame = CGRectMake(self.bounds.size.width * 0.5 - 0.5, 0, 1, self.bounds.size.height)
-       self.lineView.backgroundColor = UIColor.lightGrayColor()
-       self.addSubview(lineView)
-        
-       self.circleImageView.frame = CGRectMake(self.bounds.size.width * 0.5 - 3, self.bounds.size.height * 0.5 - 3, 6, 6)
-       self.circleImageView.image = UIImage.init(named: "day_indicator_6x6_")
-       self.addSubview(circleImageView)
-       
-       self.dateLabel.frame = CGRectMake(0,self.bounds.size.height * 0.5 - KAccoutTitleMarginToAmount * 0.5, self.bounds.size.width * 0.5 -  KAccoutTitleMarginToAmount,  KAccoutTitleMarginToAmount)
-       self.dateLabel.textAlignment = .Right
-       self.dateLabel.numberOfLines = 1
-       self.dateLabel.textColor = UIColor.lightGrayColor()
-       self.dateLabel.font = UIFont.systemFontOfSize(KLittleFont)
-       self.dateLabel.text = date
-       self.addSubview(dateLabel)
- 
-       self.moneyAmountLabel.frame = CGRectMake(self.bounds.size.width * 0.5 +  KAccoutTitleMarginToAmount,self.bounds.size.height * 0.5 - KAccoutTitleMarginToAmount * 0.5, self.bounds.size.width * 0.5 - KAccoutTitleMarginToAmount, KAccoutTitleMarginToAmount)
-       self.moneyAmountLabel.textAlignment = .Left
-       self.moneyAmountLabel.numberOfLines = 1
-       self.moneyAmountLabel.textColor = UIColor.lightGrayColor()
-       self.moneyAmountLabel.font = UIFont.systemFontOfSize(KLittleFont)
-       self.moneyAmountLabel.text = amount
-       self.addSubview(moneyAmountLabel)
-
-        
-        
-    
+     self.lineView.frame = CGRectMake(self.bounds.size.width * 0.5 - 0.5, 0, 1, self.bounds.size.height)
+     self.circleImageView.frame = CGRectMake(self.bounds.size.width * 0.5 - 3, self.bounds.size.height * 0.5 - 3, 6, 6)
+     self.dateLabel.frame = CGRectMake(0,self.bounds.size.height * 0.5 - KAccoutTitleMarginToAmount * 0.5, self.bounds.size.width * 0.5 -  KAccoutTitleMarginToAmount,  KAccoutTitleMarginToAmount)
+     self.moneyAmountLabel.frame = CGRectMake(self.bounds.size.width * 0.5 +  KAccoutTitleMarginToAmount,self.bounds.size.height * 0.5 - KAccoutTitleMarginToAmount * 0.5, self.bounds.size.width * 0.5 - KAccoutTitleMarginToAmount, KAccoutTitleMarginToAmount)
+      self.dateLabel.text = date
+      self.moneyAmountLabel.text = amount
     }
     /*
     // Only override drawRect: if you perform custom drawing.

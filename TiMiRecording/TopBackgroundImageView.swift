@@ -11,7 +11,7 @@ import UIKit
 
 public protocol TopBackgroundImageViewDelegate : NSObjectProtocol{
      func openCarmera()
-    func presentAccountDetailEditingViewController()
+     func presentAccountDetailEditingViewController()
 }
 class TopBackgroundImageView: UIView {
     private let backImageView = UIImageView.init()

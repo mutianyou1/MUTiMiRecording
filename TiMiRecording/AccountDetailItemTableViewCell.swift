@@ -17,7 +17,12 @@ class AccountDetailItemTableViewCell: UITableViewCell {
     private let typeImageView = UIImageView.init()
     private let tipsImageView = UIImageView.init()
     private let lineView = UIView.init()
-    
+    private let tap = UITapGestureRecognizer.init()
+    private var tapTime : Int = 0
+    private let editButton = UIButton.init(type: .Custom)
+    private let deleteButton = UIButton.init(type: .Custom)
+    private lazy var editBlock = {(modle:MUAccountDetailModel, isDelete: Bool) in}
+    private lazy var data = MUAccountDetailModel()
     override func awakeFromNib() {
         super.awakeFromNib()
         
@@ -34,6 +39,16 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         tipsImageView.layer.cornerRadius = 5.0 * KWidthScale
         tipsImageView.clipsToBounds = true
         
+        typeImageView.userInteractionEnabled = true
+        typeImageView.exclusiveTouch = true
+        self.tap.addTarget(self, action: "tapStartAnimation")
+        typeImageView.addGestureRecognizer(self.tap)
+        
+        editButton.setImage(UIImage.init(named: "item_edit_27x27_"), forState: .Normal)
+        deleteButton.setImage(UIImage.init(named: "item_delete_27x27_"), forState: .Normal)
+        editButton.addTarget(self, action: "cellEdit", forControlEvents: .TouchUpInside)
+        deleteButton.addTarget(self, action: "cellDelete", forControlEvents: .TouchUpInside)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "endAnimation", name: KNotificationCellAnimationEnd, object: nil)
 
     }
     override func updateConstraints() {
@@ -47,6 +62,8 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         titleLabel.frame = CGRectMake(self.bounds.size.width * 0.5 + KAccountItemWidthMargin, 0, self.bounds.size.width * 0.5 - KAccountItemWidthMargin, 15 * KHeightScale)
         
         tipsLabel.frame = CGRectMake(self.bounds.size.width * 0.5 +  KAccountItemWidthMargin, 15 * KHeightScale, self.bounds.size.width * 0.5 -  KAccountItemWidthMargin, 15 * KHeightScale)
+        tipsLabel.textAlignment = .Left
+       
         
         tipsImageView.frame = CGRectMake(self.bounds.size.width * 0.5 -   KAccountItemWidthMargin - KAccountDetailTipsImgaeViewHeight,0, KAccountDetailTipsImgaeViewHeight, KAccountDetailTipsImgaeViewHeight)
         
@@ -58,7 +75,7 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         self.addSubview(tipsImageView)
     }
     func setContentData(data : MUAccountDetailModel) {
-        
+        self.data = data
         self.updateConstraints()
         self.setNeedsDisplay()
         
@@ -66,7 +83,7 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         let money = data.moneyAmount < 0 ? data.moneyAmount * (-1.0):data.moneyAmount
         
         titleLabel.textAlignment = .Left
-        if(data.moneyAmount < 0.0){
+        if(data.moneyAmount > 0.0){
            var titleFrame = self.titleLabel.frame
                titleFrame.origin.x = 0.0
                titleLabel.textAlignment = .Right
@@ -83,6 +100,8 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         self.typeImageView.image = UIImage.init(named: data.thumbnailName)
         self.tipsImageView.image = UIImage.init(named:data.userPictureName)
         
+        self.addSubview(editButton)
+        self.addSubview(deleteButton)
        
     
         
@@ -95,10 +114,71 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         str.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange.init(location: 4, length: Int(String(text.endIndex))!-4))
         return str
     }
+    //MARK: TapGesture
+    @objc
+    private func tapStartAnimation() {
+      self.tapTime += 1
+      
+      var frameLeft = self.typeImageView.frame
+      var frameRight = self.typeImageView.frame
+       deleteButton.frame = frameLeft
+       editButton.frame = frameRight
+       
+       self.titleLabel.hidden = true
+       self.tipsImageView.hidden = true
+       self.tipsLabel.hidden = true
+       self.deleteButton.hidden = false
+       self.editButton.hidden = false
+       frameLeft.origin.x = KAccountItemWidthMargin
+       frameRight.origin.x = KWidth - KAccountItemWidthMargin - frameLeft.size.width
+        
+        if self.tapTime >= 2 {
+        deleteButton.frame = frameLeft
+        editButton.frame = frameRight
+         UIView.animateWithDuration(NSTimeInterval.init(0.5),animations: { [unowned self]() -> Void in
+                self.deleteButton.frame = self.typeImageView.frame
+                self.editButton.frame = self.typeImageView.frame
+            }, completion: { (isdone:Bool) -> Void in
+                if(isdone == true){
+                self.tapTime = 0
+                self.titleLabel.hidden = false
+                self.tipsImageView.hidden = false
+                self.tipsLabel.hidden = false
+                self.deleteButton.hidden = true
+                self.editButton.hidden = true
+                }
+            })
+        }else{
+          UIView.animateWithDuration(NSTimeInterval.init(0.5)) { () -> Void in
+        self.deleteButton.frame = frameLeft
+        self.editButton.frame = frameRight
+        }
+        }
+       
+    }
+    func setCellItmeEditeBlock(block: (data : MUAccountDetailModel,isDelete: Bool) -> Void) {
+        self.editBlock = block
+    }
+    @objc
+    private func cellEdit() {
+      self.editBlock(self.data,false)
+    }
+    @objc
+    private func cellDelete() {
+     self.editBlock(self.data,true)
+    }
+    @objc
+    private func endAnimation() {
+      self.tapTime = 2
+      self.tapStartAnimation()
+    }
+    deinit {
+      self.removeObserver(self, forKeyPath: KNotificationCellAnimationEnd)
+    }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 

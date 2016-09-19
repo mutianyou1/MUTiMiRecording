@@ -50,7 +50,6 @@ class MUFMDBManager: NSObject {
         let expend : Double = data.moneyAmount > 0.0 ? 0.0 : data.moneyAmount
         let income : Double = data.moneyAmount > 0.0 ? data.moneyAmount : 0.0
         let statement = String.init(format: "insert into  %@(time ,date ,month,accountTitleName ,tipsString ,thumbnailName ,userPictureName ,expend,income) values('%lf','%@','%@','%@','%@','%@','%@','%lf','%lf')", arguments: [tableName,data.time,dateString,month,data.accountTitleName,data.tipsString,data.thumbnailName,data.userPictureName,expend,income])
-        
        return self.dataBase.executeStatements(statement)
        
     }
@@ -82,7 +81,7 @@ class MUFMDBManager: NSObject {
     }
     
     func getDayItemsAccount(tableName : String) -> [MUAccountDayDetailModel] {
-      let statement = String.init(format: "SELECT date,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY date ", arguments: [tableName])
+      let statement = String.init(format: "SELECT date,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY time desc ", arguments: [tableName])
       let set = self.dataBase.executeQuery(statement ,withArgumentsInArray: [tableName])
       
       let countArray = NSMutableArray()
@@ -91,7 +90,7 @@ class MUFMDBManager: NSObject {
                data.date = set.stringForColumn("date")
                data.allCount = set.intForColumn("count(expend)")
                data.payment = set.doubleForColumn("sum(expend)")
-              countArray.addObject(data)
+               countArray.addObject(data)
         }
          return countArray.copy() as! [MUAccountDayDetailModel]
     }

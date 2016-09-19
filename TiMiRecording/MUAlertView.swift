@@ -19,7 +19,7 @@ class MUAlertView: UIView {
     private lazy var  calendar = UIDatePicker.init()
     private lazy var  certainBlock = {()->Void in}
     private let dateFormatter = NSDateFormatter.init()
-    
+    var ShowCancelButton = false
     var message = "abc"
     var _ViewType = viewType.alertView{
         didSet{
@@ -28,6 +28,12 @@ class MUAlertView: UIView {
     }
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
+        certainButton.layer.borderWidth = 0.5
+        certainButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+        certainButton.setTitle("确定", forState: UIControlState.Normal)
+        certainButton.addTarget(self, action: "clickButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        certainButton.frame = CGRectMake(-1, self.bounds.size.height - 40 * KHeightScale, self.bounds.size.width+2, 40 * KHeightScale)
+      
         switch _ViewType {
         case .alertView:
             self.userInteractionEnabled = true
@@ -40,8 +46,8 @@ class MUAlertView: UIView {
             
             cancelButton.setTitle("取消", forState: UIControlState.Normal)
             cancelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-            cancelButton.layer.borderWidth = 1
-            cancelButton.frame = CGRectMake(-1, self.bounds.size.height - 85, self.bounds.size.width+2, 30)
+            cancelButton.layer.borderWidth = 0.5
+            cancelButton.frame = CGRectMake(self.bounds.size.width * 0.5, self.bounds.size.height - 40 * KHeightScale, self.bounds.size.width * 0.5 + 1, 40 * KHeightScale)
             cancelButton.addTarget(self, action: "clickButton:", forControlEvents: UIControlEvents.TouchUpInside)
            
             inputTextView.layer.cornerRadius = 5
@@ -50,6 +56,11 @@ class MUAlertView: UIView {
             inputTextView.frame = CGRectMake(20, 150, self.bounds.size.width - 40, 120)
             inputTextView.delegate = self
            // self.addSubview(inputTextView)
+            if self.ShowCancelButton {
+               certainButton.frame = CGRectMake(-1, self.bounds.size.height - 40 * KHeightScale, self.bounds.size.width * 0.5 + 1, 40 * KHeightScale)
+               self.addSubview(cancelButton)
+               self.addSubview(certainButton)
+            }
         
         case .rightView:
             contentLabel.text = "dhuhu"
@@ -64,14 +75,9 @@ class MUAlertView: UIView {
             self.calendar.datePickerMode = .Date
             self.addSubview(calendar)
             self.dateFormatter.dateFormat = "YYYY年\nM月dd日"
-            
+            self.addSubview(certainButton)
         }
-        certainButton.layer.borderWidth = 1
-        certainButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        certainButton.setTitle("确定", forState: UIControlState.Normal)
-        certainButton.addTarget(self, action: "clickButton:", forControlEvents: UIControlEvents.TouchUpInside)
-        certainButton.frame = CGRectMake(-1, self.bounds.size.height - 40 * KHeightScale, self.bounds.size.width+2, 40 * KHeightScale)
-        self.addSubview(certainButton)
+       
 
     }
     @objc
@@ -90,12 +96,12 @@ class MUAlertView: UIView {
     }
     @objc
     private func clickButton(sender :UIButton){
-        
+        if(sender == self.certainButton){
         switch self._ViewType {
         case .alertView:
                break
         case .calendarView:
-              NSNotificationCenter.defaultCenter().postNotificationName("currentTime", object: self.calendar.date)
+              NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCurrentTime, object: self.calendar.date)
                break
         case .rightView:
                break
@@ -104,7 +110,12 @@ class MUAlertView: UIView {
         case .upView:
                break
         }
-        MUWindow.setWindowFinishBlock(self.certainBlock)
+         MUWindow.setWindowFinishBlock(self.certainBlock)
+        }else{
+          MUWindow.setWindowFinishBlock({ () -> Void in
+            
+          })
+        }
         
         
     }

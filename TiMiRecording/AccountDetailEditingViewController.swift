@@ -8,6 +8,9 @@
 
 import UIKit
 
+
+
+
 class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardViewDelegate{
     private let incomeButton = UIButton.init(type: .Custom)
     private let paidButton = UIButton.init(type: .Custom)
@@ -15,10 +18,11 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     private let collectionView = MUAccountEditCollectionView.init(frame: CGRectMake(0, KAccoutTitleMarginToAmount * 1.5 + 30 + 45 * KHeightScale, KWidth, KHeight - KAccoutTitleMarginToAmount * 1.5 - 30 - 45 * KHeightScale - KKeyBoardHeight), collectionViewLayout: UICollectionViewFlowLayout.init())
     private let pageControl = UIPageControl.init()
     private var firstData = MUAccountDetailModel()
+    private var currentTime : Double = 0.0
     private var thumbImageViewRect = CGRectZero
     private var thumbImageAniLayer = UIImageView()
     private let keyBoardView = MUAccountKeyBoardView.init(frame: CGRectMake(0, KHeight - KKeyBoardHeight + 10.0, KWidth, KKeyBoardHeight - 10.0))
-    
+   
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -38,7 +42,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
        
       
         //notification
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeCalendar:", name: "currentTime", object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "closeCalendar:", name: KNotificationCurrentTime, object: nil)
         //self.collectionView.backgroundColor =  UIColor.greenColor()
         
         //data load
@@ -106,7 +110,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     @objc
     private func closeCalendar(noti : NSNotification){
         let date : NSDate = noti.object as! NSDate
-        self.firstData.time = date.timeIntervalSince1970
+        self.currentTime = date.timeIntervalSince1970
     }
     //MARK: animation delegate
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
@@ -114,7 +118,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         self.collectionView.pagingEnabled = true
         self.thumbImageAniLayer.frame = CGRectZero
         self.keyBoardView.resetAmount()
-        self.firstData.time = NSDate.init(timeIntervalSinceNow: 0.0).timeIntervalSince1970
+        
     }
     private func loadData(plistName : String, ispayment:Bool) {
         dispatch_async(dispatch_get_global_queue(0, 0
@@ -171,11 +175,26 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
                 amount *= -1.0
                 self.firstData.moneyAmount = Double.init(amount)
             }
+            if self.currentTime > 0.0 {
+                self.firstData.time = self.currentTime
+            }else{
+                self.firstData.time = NSDate.init(timeIntervalSinceNow: 0.0).timeIntervalSince1970
+            }
 //            MUFMDBManager.manager.removeTable(KAccountCommontTable)
             if(MUFMDBManager.manager.insetData(self.firstData, tableName: KAccountCommontTable)){
                print("插入成功")
+                self.dismissViewControllerAnimated(true, completion: { () -> Void in
+                    NSNotificationCenter.defaultCenter().postNotificationName(KNotificationAddAccountDetail, object: nil)
+                })
+            }else{
+                let controller = MUPromtViewController()
+                controller.contentView = MUAlertView.init(frame: CGRectMake(50.0 * KWidthScale , 200 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 400 * KHeightScale))
+                controller.contentView.message = "提示\n数据写入失败请稍后再试！"
+                controller.contentView._ViewType = viewType.alertView
+                let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
+                setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
             }
-           self.dismissViewControllerAnimated(true, completion: nil)
+          
         }else{
           let controller = MUPromtViewController()
           controller.contentView = MUAlertView.init(frame: CGRectMake(50.0 * KWidthScale , 200 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 400 * KHeightScale))
@@ -207,7 +226,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         self.topView.freshAmount(number)
     }
     func clearAll() {
-        self.topView.freshAmount("¥00.00")
+        self.topView.freshAmount("¥0.00")
     }
     //MARK: addButtons
     private func addButtons() {

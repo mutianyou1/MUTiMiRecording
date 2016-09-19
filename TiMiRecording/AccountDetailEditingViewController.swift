@@ -201,7 +201,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
           controller.contentView.message = "提示\n输入金额必须大于0"
           controller.contentView._ViewType = viewType.alertView
           controller.contentView.setCertainBlock({ [unowned self]() -> Void in
-              self.topView.performSelector("shakeAmountLabel", withObject: self.topView, afterDelay: 1.8)
+              self.topView.performSelector("shakeAmountLabel", withObject: self.topView, afterDelay: 0.0)
           })
             let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
           setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)

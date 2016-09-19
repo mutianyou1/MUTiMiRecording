@@ -48,7 +48,7 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         deleteButton.setImage(UIImage.init(named: "item_delete_27x27_"), forState: .Normal)
         editButton.addTarget(self, action: "cellEdit", forControlEvents: .TouchUpInside)
         deleteButton.addTarget(self, action: "cellDelete", forControlEvents: .TouchUpInside)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "endAnimation", name: KNotificationCellAnimationEnd, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "endAnimation:", name: KNotificationCellAnimationEnd, object: nil)
 
     }
     override func updateConstraints() {
@@ -168,9 +168,12 @@ class AccountDetailItemTableViewCell: UITableViewCell {
      self.editBlock(self.data,true)
     }
     @objc
-    private func endAnimation() {
+    private func endAnimation(noti : NSNotification) {
+      let data = noti.object as! MUAccountDetailModel
+     if(data.time == self.data.time){
       self.tapTime = 2
       self.tapStartAnimation()
+        }
     }
     deinit {
       self.removeObserver(self, forKeyPath: KNotificationCellAnimationEnd)

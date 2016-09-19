@@ -59,9 +59,9 @@ class MUAlertView: UIView {
             if self.ShowCancelButton {
                certainButton.frame = CGRectMake(-1, self.bounds.size.height - 40 * KHeightScale, self.bounds.size.width * 0.5 + 1, 40 * KHeightScale)
                self.addSubview(cancelButton)
-               self.addSubview(certainButton)
+               
             }
-        
+        self.addSubview(certainButton)
         case .rightView:
             contentLabel.text = "dhuhu"
         case .sheetView:

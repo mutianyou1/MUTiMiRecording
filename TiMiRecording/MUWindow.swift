@@ -92,7 +92,6 @@ class MUWindow: NSObject {
         
     }
   static  func setWindowFinishBlock(block:() -> Void){
-        block()
       let type = MUWindow.WindowManger._type!
       var frame = MUWindow.WindowManger.window!.frame
     switch type{
@@ -105,7 +104,8 @@ class MUWindow: NSObject {
             MUWindow.WindowManger.window?.frame = frame
             }, completion: { (bool :Bool) -> Void in
                 if(bool == true){
-                  destroy()
+                   destroy()
+                   block()
             }
         })
     case .curtainWindow:
@@ -115,6 +115,7 @@ class MUWindow: NSObject {
             }, completion: { (bool :Bool) -> Void in
                 if(bool){
                     destroy()
+                    block()
                 }
         })
     case .drawerWindow:
@@ -124,6 +125,7 @@ class MUWindow: NSObject {
             }, completion: { (bool :Bool) -> Void in
                 if(bool){
                     destroy()
+                    block()
                 }
         })
     case .sheetWindow:
@@ -133,6 +135,7 @@ class MUWindow: NSObject {
             }, completion: { (bool:Bool) -> Void in
                 if(bool){
                     destroy()
+                    block()
                 }
         })
     }

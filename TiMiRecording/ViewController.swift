@@ -59,7 +59,7 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
             let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
             controller.contentView.setCertainBlock({ () -> Void in
                 print("删除了",data.accountTitleName)
-               // NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: data)
             })
             setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
         }else{

@@ -23,10 +23,15 @@ class MUFMDBManager: NSObject {
     }
     private func openDataBase() {
 
-      var path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).first
-       path?.appendContentsOf("accountInfo.db")
-       self.dataBase = FMDatabase.init(path: path)
-       self.dataBase.open()
+//      var path = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true).last
+//           path?.appendContentsOf("accountInfo.db")
+        let path = NSHomeDirectory().stringByAppendingString("/Documents/KCommonAccountTable")
+       self.dataBase = FMDatabase(path: path)
+        if(self.dataBase.open()==false){
+          print("open failed",path)
+        }else{
+          print("open success")
+        }
     }
     private func creatTable() {
       
@@ -116,6 +121,31 @@ class MUFMDBManager: NSObject {
                countArray.addObject(data)
         }
          return countArray.copy() as! [MUAccountDayDetailModel]
+    }
+    //MARK: search amount
+    func searchTotoalAccountBalance(tableName : String, month:String)-> [Double] {
+        var incomeAmount = 0.0
+        var payment = 0.0
+        var statement = String.init(format: "SELECT sum(expend),sum(income)   from %@ ", arguments: [tableName])
+        if(!month.isEmpty) {
+             statement = String.init(format: "SELECT sum(expend),sum(income)   from %@ where month = '%@'", arguments: [tableName,month])
+        }
+        let set = self.dataBase.executeQuery(statement, withArgumentsInArray: [tableName])
+        while(set.next()) {
+             incomeAmount = set.doubleForColumn("sum(income)")
+             payment =  set.doubleForColumn("sum(expend)")
+        }
+        return [incomeAmount,payment,incomeAmount + payment]
+    }
+    
+    func searchForAccountMonth(date : String , tableName : String) -> String {
+      let statement = String.init(format: "SELECT  month  from %@   where date= '%@'", arguments: [tableName,date])
+       let set = self.dataBase.executeQuery(statement, withArgumentsInArray: [tableName])
+        while(set.next()){
+           return set.stringForColumn("month")
+        }
+        return "9月"
+     
     }
     //MARK: remove Data
     func removeData(data:MUAccountDetailModel,tableName: String)-> Bool {

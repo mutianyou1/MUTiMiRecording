@@ -26,5 +26,9 @@ extension String {
        let rect = content.boundingRectWithSize(CGSizeMake(stringWidth, CGFloat.init(MAXFLOAT)), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
         return rect.height
     }
+    func getStringWidth(stringHeight: CGFloat,content:NSAttributedString) -> CGFloat {
+        let rect = content.boundingRectWithSize(CGSizeMake( CGFloat.init(MAXFLOAT),stringHeight), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
+        return rect.width
+    }
     
 }

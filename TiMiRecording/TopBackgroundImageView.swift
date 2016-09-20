@@ -22,7 +22,7 @@ class TopBackgroundImageView: UIView {
     private let monthIncomeLabel = UILabel.init()
     private let monthPaymentLabel = UILabel.init()
     private let placeHolderView = UIView.init()
-    
+    var accountTableName = KAccountCommontTable
     //delegate
     weak var delegate : TopBackgroundImageViewDelegate?
     var backImageName :String {
@@ -45,7 +45,7 @@ class TopBackgroundImageView: UIView {
         self.balanceButton.layer.borderWidth = 1.0
         self.balanceButton.layer.borderColor = UIColor.lightGrayColor().CGColor
         self.balanceButton.setTitle("余额78000元", forState: .Normal)
-        self.balanceButton.titleLabel?.font = UIFont.systemFontOfSize(12.0 * KHeightScale)
+        self.balanceButton.titleLabel?.font = UIFont.systemFontOfSize(KMiddleFont)
         self.addSubview(balanceButton)
         self.balanceButton.addTarget(self, action: "changeTitle:", forControlEvents: .TouchUpInside)
 
@@ -55,7 +55,7 @@ class TopBackgroundImageView: UIView {
         self.accountTitleButton.layer.borderColor = UIColor.lightGrayColor().CGColor
         self.accountTitleButton.layer.borderWidth = 1.0
         self.accountTitleButton.setTitle("日常账本", forState: .Normal)
-        self.accountTitleButton.titleLabel?.font = UIFont.systemFontOfSize(12.0 * KHeightScale)
+        self.accountTitleButton.titleLabel?.font = UIFont.systemFontOfSize(KMiddleFont)
         self.addSubview(accountTitleButton)
         self.accountTitleButton.addTarget(self, action: "changeTitle:", forControlEvents: .TouchUpInside)
         self.accountTitleButton.hidden = true
@@ -98,6 +98,30 @@ class TopBackgroundImageView: UIView {
         self.accountAddButton.layer.borderWidth = 3
         self.addSubview(accountAddButton)
         
+    }
+    func loadAccountTableSumarize(date : String) {
+        
+        let balance = MUFMDBManager.manager.searchTotoalAccountBalance(self.accountTableName, month: "")[2]
+        let monthBalance = MUFMDBManager.manager.searchTotoalAccountBalance(self.accountTableName, month: date)
+        
+        let str = String.init(format: "余额%.2lf元", arguments: [balance])
+        let strAttribute = NSAttributedString.init(string: str, attributes: [NSFontAttributeName:UIFont.systemFontOfSize(KMiddleFont)])
+        self.balanceButton.setTitle(str, forState: .Normal)
+        let width = CGFloat.init(str.getStringWidth(30.0, content: strAttribute))
+        var frame = self.balanceButton.frame
+        frame.size.width = width + 20.0
+        frame.origin.x = self.bounds.size.width * 0.5 - width * 0.5 - 10.0
+        self.balanceButton.frame = frame
+        
+        self.monthIncomeLabel.text = String.init(format: "%@收入\n%.2lf", arguments: [date,monthBalance[0]])
+        self.monthPaymentLabel.text = String.init(format: "%@支出\n%.2lf", arguments: [date,monthBalance[1] * -1])
+        
+    }
+    func refreshMonthBalance(date : String) {
+        let monthBalance = MUFMDBManager.manager.searchTotoalAccountBalance(self.accountTableName, month: date)
+        self.monthIncomeLabel.text = String.init(format: "%@收入\n%.2lf", arguments: [date,monthBalance[0]])
+        self.monthPaymentLabel.text = String.init(format: "%@支出\n%.2lf", arguments: [date,monthBalance[1] * -1])
+       
     }
     //MARK: btn method
     func openCarmera() {

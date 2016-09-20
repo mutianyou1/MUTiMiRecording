@@ -375,6 +375,7 @@
 				TargetAttributes = {
 					D2E44E031D7670CC00CFF8AB = {
 						CreatedOnToolsVersion = 7.2.1;
+						DevelopmentTeam = ED8TE9ETB7;
 					};
 					D2E44E171D7670CC00CFF8AB = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -654,9 +655,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TiMiRecording/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pingan.TiMiRecording;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pingan.RunWitnessSystemTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = TiMiRecording/OCChannel.h;
 			};
@@ -670,9 +671,9 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = TiMiRecording/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.pingan.TiMiRecording;
+				PRODUCT_BUNDLE_IDENTIFIER = com.pingan.RunWitnessSystemTest;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = TiMiRecording/OCChannel.h;
 			};

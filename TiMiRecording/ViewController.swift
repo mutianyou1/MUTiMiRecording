@@ -27,7 +27,7 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
         topView.configSubViews()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userDidAddAccountDetail", name: KNotificationAddAccountDetail, object: nil)
-        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "refreshTopViewMonthBalance:", name: KNotificationCellRefreshMonthBalance, object: nil)
         self.setUpTabelView()
 
         
@@ -77,32 +77,47 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
       
     }
     func loadAccountData() {
-        for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
-            self.detailItemTableView.secitonDataArray.addObject(data)
-        }
+        
+//        for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
+//            self.detailItemTableView.secitonDataArray.addObject(data)
+//        }
+        
+      
         dispatch_async(dispatch_get_global_queue(0, 0)) { () -> Void in
-           
+            self.detailItemTableView.secitonDataArray = NSMutableArray.init(array: MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable))
+            if self.detailItemTableView.secitonDataArray.count == 0 {
+                return
+            }
             for data in self.detailItemTableView.secitonDataArray {
                
-                let data_ = data as! MUAccountDayDetailModel
                 
+                let data_ = data as! MUAccountDayDetailModel
                 self.detailItemTableView.dataArray.append(MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable, date: data_.date))
                 
             }
             
         }
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            
             self.detailItemTableView.reloadData()
             self.detailItemTableView.setNeedsDisplay()
             self.detailItemTableView.contentOffset = CGPointZero
+            let data = self.detailItemTableView.secitonDataArray.firstObject as? MUAccountDayDetailModel
             
+            self.topView.loadAccountTableSumarize(data!.month)
         }
     }
     //MARK: Notification
     func userDidAddAccountDetail() {
-    self.detailItemTableView.secitonDataArray.removeAllObjects()
+    //self.detailItemTableView.secitonDataArray.removeAllObjects()
        self.detailItemTableView.dataArray.removeAll()
        self.loadAccountData()
+    }
+    func refreshTopViewMonthBalance(noti:NSNotification) {
+        let date = noti.object as! String
+        
+        self.topView.refreshMonthBalance(MUFMDBManager.manager.searchForAccountMonth(date, tableName: KAccountCommontTable))
+       
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

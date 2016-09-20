@@ -48,13 +48,18 @@ class AccountDetailTableHeaderView: UITableViewHeaderFooterView {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    func setUpDateAndMoneyAmount(date : String, amount : String) {
+    func setUpDateAndMoneyAmount(date : String, amount : String)
+    {
      self.lineView.frame = CGRectMake(self.bounds.size.width * 0.5 - 0.5, 0, 1, self.bounds.size.height)
      self.circleImageView.frame = CGRectMake(self.bounds.size.width * 0.5 - 3, self.bounds.size.height * 0.5 - 3, 6, 6)
      self.dateLabel.frame = CGRectMake(0,self.bounds.size.height * 0.5 - KAccoutTitleMarginToAmount * 0.5, self.bounds.size.width * 0.5 -  KAccoutTitleMarginToAmount,  KAccoutTitleMarginToAmount)
      self.moneyAmountLabel.frame = CGRectMake(self.bounds.size.width * 0.5 +  KAccoutTitleMarginToAmount,self.bounds.size.height * 0.5 - KAccoutTitleMarginToAmount * 0.5, self.bounds.size.width * 0.5 - KAccoutTitleMarginToAmount, KAccoutTitleMarginToAmount)
       self.dateLabel.text = date
       self.moneyAmountLabel.text = amount
+        
+      if(amount.containsString("-0.00")){
+           self.moneyAmountLabel.text = ""
+        }
     }
     /*
     // Only override drawRect: if you perform custom drawing.

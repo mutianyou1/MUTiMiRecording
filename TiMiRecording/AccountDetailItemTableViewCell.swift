@@ -22,6 +22,7 @@ class AccountDetailItemTableViewCell: UITableViewCell {
     private let editButton = UIButton.init(type: .Custom)
     private let deleteButton = UIButton.init(type: .Custom)
     private lazy var editBlock = {(modle:MUAccountDetailModel, isDelete: Bool) in}
+    private lazy var refreshMonthBalanceBlock = {() in}
     private lazy var data = MUAccountDetailModel()
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -87,7 +88,7 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         self.setNeedsDisplay()
         
         self.tipsLabel.text = data.tipsString
-        let money = data.moneyAmount < 0 ? data.moneyAmount * (-1.0):data.moneyAmount
+        let money = data.moneyAmount >= 0 ? data.moneyAmount :data.moneyAmount * (-1.0)
         
         titleLabel.textAlignment = .Left
         if(data.moneyAmount > 0.0){
@@ -110,6 +111,7 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         self.addSubview(editButton)
         self.addSubview(deleteButton)
        
+        self.refreshMonthBalanceBlock()
        
     
         
@@ -186,6 +188,9 @@ class AccountDetailItemTableViewCell: UITableViewCell {
     }
     func setCellItmeEditeBlock(block: (data : MUAccountDetailModel,isDelete: Bool) -> Void) {
         self.editBlock = block
+    }
+    func setRefreshMonthBalanceBlock(block:() ->Void) {
+        self.refreshMonthBalanceBlock = block
     }
     @objc
     private func cellEdit() {

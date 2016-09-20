@@ -39,7 +39,9 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
     
     //MARK: TableViewDelegate
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        
+        if self.secitonDataArray.isKindOfClass(NSNull.self){
+           return 0
+        }
         return self.secitonDataArray.count + 1
     }
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -47,8 +49,12 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
             return 0;
         }else{
       
+            if self.dataArray.isEmpty {
+              return 0
+            }
         let data = secitonDataArray.objectAtIndex(section-1) as! MUAccountDayDetailModel
            return Int.init(data.allCount);
+         
         }
         
     }
@@ -64,6 +70,8 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
         
         if indexPath.section > 0 {
         
+        
+            
         let data = self.dataArray[indexPath.section - 1][indexPath.row]
         if (indexPath.row % 2 == 1){
           
@@ -77,6 +85,16 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
           cell.setCellItmeEditeBlock({ (data_, isDelete) -> Void in
                self.cellItemEditBlock(data,isDelete)
           })
+          if indexPath.row == 0 {
+              cell.setRefreshMonthBalanceBlock({ () -> Void in
+
+                 NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellRefreshMonthBalance, object: data.date)
+              })
+          }else{
+            cell.setRefreshMonthBalanceBlock({ () -> Void in
+                
+            })
+          }
         }
         return cell
     }
@@ -93,7 +111,8 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
         }
         headView!.frame = CGRectMake(0, 0, KWidth, 40 * KHeightScale)
         let data = self.secitonDataArray.objectAtIndex(section-1) as! MUAccountDayDetailModel
-        headView!.setUpDateAndMoneyAmount(data.date, amount: String.init(format: "%.02lf", arguments: [data.payment * (-1.0)]))
+      
+        headView!.setUpDateAndMoneyAmount(data.date, amount: String.init(format: "%.2lf", arguments: [data.payment * (-1.00)]))
         return headView
     }
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -114,6 +133,7 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
         
         //print(scrollView.contentOffset.y)
         NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
+        
         if scrollView.contentOffset.y <= 20.0 && scrollView.dragging{
           
             let sprinMargin = scrollView.contentOffset.y > 0.0 ? 0.0 : scrollView.contentOffset.y * -1.0

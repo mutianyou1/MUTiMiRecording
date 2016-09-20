@@ -49,7 +49,7 @@ class MUAccountEditCollectionView: UICollectionView ,UICollectionViewDataSource,
             cell = MUAccountEditItemCell.init(frame: CGRectMake(0, 0, KAccountItemHeight,KAccountItemHeight))
         }
         
-    cell.loadItemData(itemArray.objectAtIndex(indexPath.row) as! MUAccountDetailModel)
+       cell.loadItemData(itemArray.objectAtIndex(indexPath.row) as! MUAccountDetailModel)
         cell.setBlock {[unowned  self] (data : MUAccountDetailModel, layer :CALayer) -> Void in
            self.block(data,layer,indexPath.row, self.contentOffset)
            self.pagingEnabled = false

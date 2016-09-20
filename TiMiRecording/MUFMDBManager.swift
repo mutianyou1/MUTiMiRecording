@@ -79,7 +79,30 @@ class MUFMDBManager: NSObject {
         
       return array.copy() as! [MUAccountDetailModel]
     }
-    
+    func getDayItemsAccount(tableName:String , date : String)-> [MUAccountDetailModel] {
+        let statement = String.init(format: "select * from %@ where date ='%@' order by time desc", arguments: [tableName,date])
+        let set = self.dataBase.executeQuery(statement ,withArgumentsInArray: [tableName])
+        
+        let dataArray = NSMutableArray()
+        while(set.next()){
+            let data = MUAccountDetailModel()
+            data.date = set.stringForColumn("date")
+            data.accountTitleName = set.stringForColumn("accountTitleName")
+            data.userPictureName = set.stringForColumn("userPictureName")
+            data.tipsString = set.stringForColumn("tipsString")
+            data.time = set.doubleForColumn("time")
+            data.thumbnailName = set.stringForColumn("thumbnailName")
+            let income : Double = set.doubleForColumn("income")
+            if(income > 0.0){
+                data.moneyAmount = income
+            }else{
+                data.moneyAmount = set.doubleForColumn("expend")
+            }
+            
+           dataArray.addObject(data)
+        }
+        return dataArray.copy() as! [MUAccountDetailModel]
+    }
     func getDayItemsAccount(tableName : String) -> [MUAccountDayDetailModel] {
       let statement = String.init(format: "SELECT date,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY time desc ", arguments: [tableName])
       let set = self.dataBase.executeQuery(statement ,withArgumentsInArray: [tableName])

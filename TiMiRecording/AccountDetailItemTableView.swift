@@ -12,7 +12,7 @@ let AccountDetailidentifier = "accountDetailItemCell"
 let AccountDetailHeader = "accountDetailHeader"
 class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDataSource{
     
-    lazy var dataArray = NSMutableArray()
+    lazy var dataArray = Array<Array<MUAccountDetailModel>>()
     lazy var secitonDataArray = NSMutableArray()
     
     private var springLineView = UIView.init()
@@ -61,27 +61,21 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
             
         }
        
-        // 1 section 3  2section 2  3seciotn 1
+        
         if indexPath.section > 0 {
-        var sectionData = self.secitonDataArray.objectAtIndex(0)
-        var index  :  Int = 0
-        var sections = 0
-        while(sections < indexPath.section - 1){
-                index += Int.init(sectionData.allCount)
-                sections += 1
-                sectionData = self.secitonDataArray.objectAtIndex(sections)
-        }
-        //print(indexPath.row + index,"section\(indexPath.section)")
-        let data = self.dataArray.objectAtIndex(indexPath.row + index) as! MUAccountDetailModel
-            index = 0
-            sections = 0
-        if (indexPath.row == 1){
+        
+        let data = self.dataArray[indexPath.section - 1][indexPath.row]
+        if (indexPath.row % 2 == 1){
           
-          data.userPictureName = "kRecommendSaving_335x140_"
+            data.userPictureName = "kRecommendSaving_335x140_"
+            data.tipsString = "昨夜西风凋碧树……"
+        }else {
+            data.userPictureName = "redsky"
+            data.tipsString = "河汉清且浅 相去复几许"
         }
           cell.setContentData(data)
-          cell.setCellItmeEditeBlock({ (data, isDelete) -> Void in
-            self.cellItemEditBlock(data,isDelete)
+          cell.setCellItmeEditeBlock({ (data_, isDelete) -> Void in
+               self.cellItemEditBlock(data,isDelete)
           })
         }
         return cell
@@ -119,7 +113,7 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
     func scrollViewDidScroll(scrollView: UIScrollView) {
         
         //print(scrollView.contentOffset.y)
-        
+        NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
         if scrollView.contentOffset.y <= 20.0 && scrollView.dragging{
           
             let sprinMargin = scrollView.contentOffset.y > 0.0 ? 0.0 : scrollView.contentOffset.y * -1.0

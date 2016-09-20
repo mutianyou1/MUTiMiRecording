@@ -18,7 +18,7 @@ class AccountDetailItemTableViewCell: UITableViewCell {
     private let tipsImageView = UIImageView.init()
     private let lineView = UIView.init()
     private let tap = UITapGestureRecognizer.init()
-    private var tapTime : Int = 0
+    private var tapTime : NSNumber = 0
     private let editButton = UIButton.init(type: .Custom)
     private let deleteButton = UIButton.init(type: .Custom)
     private lazy var editBlock = {(modle:MUAccountDetailModel, isDelete: Bool) in}
@@ -49,7 +49,12 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         editButton.addTarget(self, action: "cellEdit", forControlEvents: .TouchUpInside)
         deleteButton.addTarget(self, action: "cellDelete", forControlEvents: .TouchUpInside)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "endAnimation:", name: KNotificationCellAnimationEnd, object: nil)
+        self.addObserver(self, forKeyPath: "tapTime", options: NSKeyValueObservingOptions.New, context: nil)
+        
 
+    }
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        print("tapTime 改变了",change!["new"],change!["old"],self.data.accountTitleName,self.data.moneyAmount)
     }
     override func updateConstraints() {
         super.updateConstraints()
@@ -73,6 +78,8 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         self.addSubview(tipsLabel)
         self.addSubview(titleLabel)
         self.addSubview(tipsImageView)
+        
+       
     }
     func setContentData(data : MUAccountDetailModel) {
         self.data = data
@@ -103,6 +110,7 @@ class AccountDetailItemTableViewCell: UITableViewCell {
         self.addSubview(editButton)
         self.addSubview(deleteButton)
        
+       
     
         
     }
@@ -117,8 +125,10 @@ class AccountDetailItemTableViewCell: UITableViewCell {
     //MARK: TapGesture
     @objc
     private func tapStartAnimation() {
-      self.tapTime += 1
-      
+        if self.tapTime.integerValue == 0{
+           self.tapTime = NSNumber.init(integer: 1)
+        }
+    
       var frameLeft = self.typeImageView.frame
       var frameRight = self.typeImageView.frame
        deleteButton.frame = frameLeft
@@ -129,31 +139,49 @@ class AccountDetailItemTableViewCell: UITableViewCell {
        self.tipsLabel.hidden = true
        self.deleteButton.hidden = false
        self.editButton.hidden = false
+//        if(self.tapTime == 0){
+//            self.titleLabel.hidden = false
+//            self.tipsImageView.hidden = false
+//            self.tipsLabel.hidden = false
+//            self.deleteButton.hidden = true
+//            self.editButton.hidden = true
+//        }else if(self.tapTime == 1){
+//            self.titleLabel.hidden = true
+//            self.tipsImageView.hidden = true
+//            self.tipsLabel.hidden = true
+//            self.deleteButton.hidden = false
+//            self.editButton.hidden = false
+//            print("tap ===",self.tapTime)
+//        }
        frameLeft.origin.x = KAccountItemWidthMargin
        frameRight.origin.x = KWidth - KAccountItemWidthMargin - frameLeft.size.width
         
-        if self.tapTime >= 2 {
+        if self.tapTime.integerValue >= 2 {
         deleteButton.frame = frameLeft
         editButton.frame = frameRight
          UIView.animateWithDuration(NSTimeInterval.init(0.5),animations: { [unowned self]() -> Void in
                 self.deleteButton.frame = self.typeImageView.frame
                 self.editButton.frame = self.typeImageView.frame
             }, completion: { (isdone:Bool) -> Void in
-                if(isdone == true){
+                //if(isdone == true){
                 self.tapTime = 0
                 self.titleLabel.hidden = false
                 self.tipsImageView.hidden = false
                 self.tipsLabel.hidden = false
                 self.deleteButton.hidden = true
                 self.editButton.hidden = true
-                }
+                self.deleteButton.frame = CGRectZero
+                self.editButton.frame = CGRectZero
+               // }
             })
-        }else{
+        }else if(self.tapTime == 1){
           UIView.animateWithDuration(NSTimeInterval.init(0.5)) { () -> Void in
-        self.deleteButton.frame = frameLeft
-        self.editButton.frame = frameRight
+               self.deleteButton.frame = frameLeft
+               self.editButton.frame = frameRight
+               self.tapTime = 2
         }
         }
+            
        
     }
     func setCellItmeEditeBlock(block: (data : MUAccountDetailModel,isDelete: Bool) -> Void) {
@@ -169,11 +197,10 @@ class AccountDetailItemTableViewCell: UITableViewCell {
     }
     @objc
     private func endAnimation(noti : NSNotification) {
-      let data = noti.object as! MUAccountDetailModel
-     if(data.time == self.data.time){
-      self.tapTime = 2
-      self.tapStartAnimation()
-        }
+     if(self.tapTime.integerValue > 0){
+       self.tapTime = 2
+       self.tapStartAnimation()
+      }
     }
     deinit {
       self.removeObserver(self, forKeyPath: KNotificationCellAnimationEnd)

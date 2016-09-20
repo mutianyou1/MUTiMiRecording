@@ -29,11 +29,7 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "userDidAddAccountDetail", name: KNotificationAddAccountDetail, object: nil)
         
         self.setUpTabelView()
-//        let array = MUFMDBManager.manager.selectDatas(KAccountCommontTable)
-//        for data  in array {
-//        print(data.date)
-//        print(data.moneyAmount)
-//        }
+
         
         
      
@@ -58,8 +54,17 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
             controller.contentView.ShowCancelButton = true
             let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
             controller.contentView.setCertainBlock({ () -> Void in
-                print("删除了",data.accountTitleName)
-                NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: data)
+                NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
+               
+                
+                 MUFMDBManager.manager.removeData(data, tableName: KAccountCommontTable)
+                 //NSThread.sleepForTimeInterval(1.0)
+                 self.userDidAddAccountDetail()
+               
+               
+            })
+            controller.contentView.setCancelBlock({ () -> Void in
+                 NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
             })
             setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
         }else{
@@ -72,21 +77,31 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
       
     }
     func loadAccountData() {
-        
+        for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
+            self.detailItemTableView.secitonDataArray.addObject(data)
+        }
         dispatch_async(dispatch_get_global_queue(0, 0)) { () -> Void in
            
-            self.detailItemTableView.secitonDataArray = NSMutableArray.init(array: MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable))
-            self.detailItemTableView.dataArray = NSMutableArray.init(array: MUFMDBManager.manager.selectDatas(KAccountCommontTable))
+            for data in self.detailItemTableView.secitonDataArray {
+               
+                let data_ = data as! MUAccountDayDetailModel
+                
+                self.detailItemTableView.dataArray.append(MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable, date: data_.date))
+                
+            }
             
         }
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             self.detailItemTableView.reloadData()
-            self.detailItemTableView.contentOffset = CGPointZero
             self.detailItemTableView.setNeedsDisplay()
+            self.detailItemTableView.contentOffset = CGPointZero
+            
         }
     }
     //MARK: Notification
     func userDidAddAccountDetail() {
+    self.detailItemTableView.secitonDataArray.removeAllObjects()
+       self.detailItemTableView.dataArray.removeAll()
        self.loadAccountData()
     }
     override func didReceiveMemoryWarning() {

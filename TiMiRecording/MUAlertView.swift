@@ -18,6 +18,7 @@ class MUAlertView: UIView {
     private lazy var  inputTextView = UITextView.init()
     private lazy var  calendar = UIDatePicker.init()
     private lazy var  certainBlock = {()->Void in}
+    private lazy var  cancelBlock = {() -> Void in}
     private let dateFormatter = NSDateFormatter.init()
     var ShowCancelButton = false
     var message = "abc"
@@ -112,9 +113,7 @@ class MUAlertView: UIView {
         }
          MUWindow.setWindowFinishBlock(self.certainBlock)
         }else{
-          MUWindow.setWindowFinishBlock({ () -> Void in
-            
-          })
+          MUWindow.setWindowFinishBlock(self.cancelBlock)
         }
         
         
@@ -122,6 +121,9 @@ class MUAlertView: UIView {
     //MARK: set Block
     func setCertainBlock( block : () -> Void) {
          self.certainBlock = block
+    }
+    func setCancelBlock( block : () -> Void) {
+         self.cancelBlock = block
     }
     func setCurrentDate(date : String) {
          self.calendar.date = self.dateFormatter.dateFromString(date)!

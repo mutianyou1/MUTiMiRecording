@@ -81,13 +81,20 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
 //        for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
 //            self.detailItemTableView.secitonDataArray.addObject(data)
 //        }
-        
-      
+//        
+//        if self.detailItemTableView.secitonDataArray.count == 0 {
+//            return
+//        }
         dispatch_async(dispatch_get_global_queue(0, 0)) { () -> Void in
-            self.detailItemTableView.secitonDataArray = NSMutableArray.init(array: MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable))
+            for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
+                self.detailItemTableView.secitonDataArray.addObject(data)
+            }
+            
             if self.detailItemTableView.secitonDataArray.count == 0 {
                 return
             }
+            //self.detailItemTableView.secitonDataArray = NSMutableArray.init(array: MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable))
+           
             for data in self.detailItemTableView.secitonDataArray {
                
                 
@@ -95,21 +102,22 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
                 self.detailItemTableView.dataArray.append(MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable, date: data_.date))
                 
             }
-            
-        }
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
+                
+                self.detailItemTableView.reloadData()
+                self.detailItemTableView.setNeedsDisplay()
+                self.detailItemTableView.contentOffset = CGPointZero
+                let data = self.detailItemTableView.secitonDataArray.firstObject as? MUAccountDayDetailModel
+                
+                self.topView.loadAccountTableSumarize(data!.month)
+            }
             
-            self.detailItemTableView.reloadData()
-            self.detailItemTableView.setNeedsDisplay()
-            self.detailItemTableView.contentOffset = CGPointZero
-            let data = self.detailItemTableView.secitonDataArray.firstObject as? MUAccountDayDetailModel
-            
-            self.topView.loadAccountTableSumarize(data!.month)
         }
+     
     }
     //MARK: Notification
     func userDidAddAccountDetail() {
-    //self.detailItemTableView.secitonDataArray.removeAllObjects()
+    self.detailItemTableView.secitonDataArray.removeAllObjects()
        self.detailItemTableView.dataArray.removeAll()
        self.loadAccountData()
     }

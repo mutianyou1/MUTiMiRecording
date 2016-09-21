@@ -18,7 +18,7 @@ class MUAccountDetailModel: NSObject {
     var thumbnailName = "image_"
     var userPictureName = "image_"
     var date = "9月1日"
-    var time : Double = 20.00
+    var time : Double = NSDate.init(timeIntervalSinceNow: 0).timeIntervalSince1970
     
     var index : Int = 0
     var statusCode : Int = 0

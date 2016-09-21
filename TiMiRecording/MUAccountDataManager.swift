@@ -8,6 +8,8 @@
 
 import UIKit
 
+let paymentItemPlist = "MUAccountPayment"
+let incomeItemPlist = "MUAccoutIncome"
 enum MUAccountItemStatus : Int {case SHOW_EDIT = -1,SHOW_MUST, SHOW_NORAML,HIDDEN}
 class MUAccountDataManager: NSObject {
     
@@ -16,8 +18,10 @@ class MUAccountDataManager: NSObject {
     private override init() {
         super.init()
     }
-    func getDataFromPlist(plistName: String, isPayment : Bool) -> [MUAccountDetailModel] {
-      let path = NSBundle.mainBundle().pathForResource(plistName, ofType: "plist")
+    func getDataFromPlist(isPayment : Bool) -> [MUAccountDetailModel] {
+      var path = NSBundle.mainBundle().pathForResource(paymentItemPlist, ofType: "plist")
+    
+     if isPayment == false { path = NSBundle.mainBundle().pathForResource(incomeItemPlist, ofType: "plist") }
         
       var array = Array<MUAccountDetailModel>()
         

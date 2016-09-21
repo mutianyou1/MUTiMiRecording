@@ -74,10 +74,10 @@ class MUFMDBManager: NSObject {
             let income : Double = set.doubleForColumn("income")
             if(income > 0.0){
                data.moneyAmount = income
+               data.isPayment = false
             }else{
                data.moneyAmount = set.doubleForColumn("expend")
             }
-            
              array.addObject(data)
             
         }
@@ -100,6 +100,7 @@ class MUFMDBManager: NSObject {
             let income : Double = set.doubleForColumn("income")
             if(income > 0.0){
                 data.moneyAmount = income
+                data.isPayment = false
             }else{
                 data.moneyAmount = set.doubleForColumn("expend")
             }
@@ -155,6 +156,20 @@ class MUFMDBManager: NSObject {
     func removeTable(tableName: String) -> Bool{
         let statement = String.init(format: "drop table if exists  %@", arguments: [tableName])
         
+        return self.dataBase.executeStatements(statement)
+    }
+    //MARK: update Data
+    func updateData(data: MUAccountDetailModel , tableName: String)-> Bool {
+        var dateString = self.dateFormatter.stringFromDate(NSDate.init(timeIntervalSince1970: data.time))
+        var month = dateString.substringToIndex(dateString.startIndex.advancedBy(7))
+        
+        if (dateString.containsString(thisYear)){
+            dateString = dateString.substringFromIndex(dateString.startIndex.advancedBy(5))
+            month = month.substringFromIndex(month.startIndex.advancedBy(5))
+        }
+        let expend : Double = data.moneyAmount > 0.0 ? 0.0 : data.moneyAmount
+        let income : Double = data.moneyAmount > 0.0 ? data.moneyAmount : 0.0
+        let statement = String.init(format: "insert into  %@(time ,date ,month,accountTitleName ,tipsString ,thumbnailName ,userPictureName ,expend,income) values('%lf','%@','%@','%@','%@','%@','%@','%lf','%lf')", arguments: [tableName,data.time,dateString,month,data.accountTitleName,data.tipsString,data.thumbnailName,data.userPictureName,expend,income])
         return self.dataBase.executeStatements(statement)
     }
   

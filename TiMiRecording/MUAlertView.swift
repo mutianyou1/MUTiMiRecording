@@ -19,7 +19,8 @@ class MUAlertView: UIView {
     private lazy var  calendar = UIDatePicker.init()
     private lazy var  certainBlock = {()->Void in}
     private lazy var  cancelBlock = {() -> Void in}
-    private let dateFormatter = NSDateFormatter.init()
+    
+    lazy var date = NSDate.init(timeIntervalSinceNow: 0)
     var ShowCancelButton = false
     var message = "abc"
     var _ViewType = viewType.alertView{
@@ -72,10 +73,9 @@ class MUAlertView: UIView {
         case .calendarView:
             self.calendar.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - 40 * KHeightScale)
             self.calendar.locale = NSLocale.init(localeIdentifier: "zh_CN")
-            self.calendar.date = NSDate(timeIntervalSinceNow: 0)
+            self.calendar.date = self.date
             self.calendar.datePickerMode = .Date
             self.addSubview(calendar)
-            self.dateFormatter.dateFormat = "YYYY年\nM月dd日"
             self.addSubview(certainButton)
         }
        
@@ -125,16 +125,17 @@ class MUAlertView: UIView {
     func setCancelBlock( block : () -> Void) {
          self.cancelBlock = block
     }
-    func setCurrentDate(date : String) {
-         self.calendar.date = self.dateFormatter.dateFromString(date)!
+    func setCurrentDate(timeInterVal : NSTimeInterval) {
+         self.date = NSDate.init(timeIntervalSince1970: timeInterVal)
     }
-    func getPickedDate() -> String {
+    func getPickedDateTimeInterval() -> NSTimeInterval {
         let durain = self.calendar.date.timeIntervalSinceNow
-        if(durain < 0 && durain > -24 * 60 * 60 ){
-          return "今天"
-        }else{
-         return self.dateFormatter.stringFromDate(self.calendar.date)
-        }
+        return durain
+//        if(durain < 0 && durain > -24 * 60 * 60 ){
+//          return "今天"
+//        }else{
+//         return self.dateFormatter.stringFromDate(self.calendar.date)
+//        }
     }
     func getHeight() -> CGFloat {
         switch self._ViewType {

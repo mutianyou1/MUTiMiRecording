@@ -22,7 +22,8 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     private var thumbImageViewRect = CGRectZero
     private var thumbImageAniLayer = UIImageView()
     private let keyBoardView = MUAccountKeyBoardView.init(frame: CGRectMake(0, KHeight - KKeyBoardHeight + 10.0, KWidth, KKeyBoardHeight - 10.0))
-   
+    var isPayment = true
+    var oldDataTime : Double = 0.0
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,7 +36,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
        //keyBoardView
         self.view.addSubview(self.keyBoardView)
         self.keyBoardView.delegate = self
-        self.keyBoardView.setUpUI("今天",hightlightedMessageButton: false,hightlightedDateButton: false)
+        self.keyBoardView.setUpUI(NSDate.init(timeIntervalSinceNow: 0).timeIntervalSince1970,hightlightedMessageButton: false,hightlightedDateButton: false)
         
         
         self.view.addSubview(self.collectionView)
@@ -46,7 +47,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         //self.collectionView.backgroundColor =  UIColor.greenColor()
         
         //data load
-        self.loadData("MUAccountPayment",ispayment: true)
+        self.loadData(ispayment: self.isPayment)
         
         let itemHeightMargin = (self.collectionView.frame.size.height - 3 * KAccountItemHeight) / 2.0
         self.view.addSubview(self.thumbImageAniLayer)
@@ -106,11 +107,18 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
             //print(offSize.x)
         }
     }
+    //MARK: edit old data
+    func changeNewFirstData(data : MUAccountDetailModel) {
+       self.firstData = data
+       self.topView.loadData(data)
+       self.keyBoardView.setUpUI(data.time, hightlightedMessageButton: data.tipsString.isEmpty, hightlightedDateButton: true)
+    }
     //MARK: Notification
     @objc
     private func closeCalendar(noti : NSNotification){
         let date : NSDate = noti.object as! NSDate
         self.currentTime = date.timeIntervalSince1970
+        self.firstData.time = self.currentTime
     }
     //MARK: animation delegate
     override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
@@ -120,11 +128,11 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         self.keyBoardView.resetAmount()
         
     }
-    private func loadData(plistName : String, ispayment:Bool) {
+    private func loadData(ispayment ispayment:Bool) {
         dispatch_async(dispatch_get_global_queue(0, 0
             )) { () -> Void in
                 self.collectionView.itemArray.removeAllObjects()
-                self.collectionView.itemArray.addObjectsFromArray(MUAccountDataManager.manager.getDataFromPlist(plistName, isPayment: ispayment))
+                self.collectionView.itemArray.addObjectsFromArray(MUAccountDataManager.manager.getDataFromPlist(ispayment))
                 self.firstData = self.collectionView.itemArray.firstObject as! MUAccountDetailModel
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
                    
@@ -156,11 +164,13 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         if(sender == incomeButton && sender.selected == false) {
             incomeButton.selected = true
             paidButton.selected = false
-            self.loadData("MUAccoutIncome",ispayment: false)
+            self.isPayment = false
+            self.loadData(ispayment: false)
         }else if(sender == paidButton && sender.selected == false) {
             paidButton.selected = true
             incomeButton.selected = false
-            self.loadData("MUAccountPayment",ispayment: true)
+            self.isPayment = true
+            self.loadData(ispayment: true)
         }
         
     }
@@ -175,52 +185,68 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
                 amount *= -1.0
                 self.firstData.moneyAmount = Double.init(amount)
             }
-            if self.currentTime > 0.0 {
-                self.firstData.time = self.currentTime
+//            if self.currentTime > 0.0 {
+//                self.firstData.time = self.currentTime
+//            }else{
+//                self.firstData.time = NSDate.init(timeIntervalSinceNow: 0.0).timeIntervalSince1970
+//            }
+//           
+            if(self.oldDataTime > 0){
+               
             }else{
-                self.firstData.time = NSDate.init(timeIntervalSinceNow: 0.0).timeIntervalSince1970
-            }
-//            MUFMDBManager.manager.removeTable(KAccountCommontTable)
             if(MUFMDBManager.manager.insetData(self.firstData, tableName: KAccountCommontTable)){
                print("插入成功")
-                self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    NSNotificationCenter.defaultCenter().postNotificationName(KNotificationAddAccountDetail, object: nil)
-                })
+               self.successSaveAndDismiss()
             }else{
-                let controller = MUPromtViewController()
-                controller.contentView = MUAlertView.init(frame: CGRectMake(50.0 * KWidthScale , 200 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 400 * KHeightScale))
-                controller.contentView.message = "提示\n数据写入失败请稍后再试！"
-                controller.contentView._ViewType = viewType.alertView
-                let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
-                setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
+               self.saveWithUNKnowError()
+            }
             }
           
         }else{
-          let controller = MUPromtViewController()
-          controller.contentView = MUAlertView.init(frame: CGRectMake(50.0 * KWidthScale , 200 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 400 * KHeightScale))
-          controller.contentView.message = "提示\n输入金额必须大于0"
-          controller.contentView._ViewType = viewType.alertView
-          controller.contentView.setCertainBlock({ [unowned self]() -> Void in
-              self.topView.performSelector("shakeAmountLabel", withObject: self.topView, afterDelay: 0.0)
-          })
-            let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
-          setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
+              self.saveWithErrorZeroAmount()
         }
     }
-    func startEditMessage() {
-          
+    private func successSaveAndDismiss() {
+        self.dismissViewControllerAnimated(true, completion: { () -> Void in
+            NSNotificationCenter.defaultCenter().postNotificationName(KNotificationAddAccountDetail, object: nil)
+        })
+    }
+    //MARK: saveError
+    private func saveWithUNKnowError() {
+        let controller = MUPromtViewController()
+        controller.contentView = MUAlertView.init(frame: CGRectMake(50.0 * KWidthScale , 200 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 400 * KHeightScale))
+        controller.contentView.message = "提示\n数据写入失败请稍后再试！"
+        controller.contentView._ViewType = viewType.alertView
+        let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
+        setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
+    }
+    //MARK: keyboardViewDelegate
+    private func saveWithErrorZeroAmount() {
+        let controller = MUPromtViewController()
+        controller.contentView = MUAlertView.init(frame: CGRectMake(50.0 * KWidthScale , 200 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 400 * KHeightScale))
+        controller.contentView.message = "提示\n输入金额必须大于0"
+        controller.contentView._ViewType = viewType.alertView
+        controller.contentView.setCertainBlock({ [unowned self]() -> Void in
+            self.topView.performSelector("shakeAmountLabel", withObject: self.topView, afterDelay: 0.0)
+            })
+        let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
+        setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
     }
     func openCalendar() {
         let controller = MUPromtViewController()
         let rect = CGRectMake(50 * KWidthScale, 100 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 200 * KHeightScale)
         controller.contentView = MUAlertView.init(frame: rect)
         controller.contentView._ViewType = viewType.calendarView
-        controller.contentView.setCertainBlock {[unowned controller] () -> Void in
-            let dateString = controller.contentView.getPickedDate()
-            self.keyBoardView.setUpUI(dateString, hightlightedMessageButton: false, hightlightedDateButton: true)
+       controller.contentView.date = NSDate.init(timeIntervalSince1970: self.firstData.time)
+        controller.contentView.setCertainBlock {[unowned self] () -> Void in
+            
+            self.keyBoardView.setUpUI(self.firstData.time, hightlightedMessageButton: false, hightlightedDateButton: true)
            
         }
         setWindowType(windowType.alertWindow, rect: rect, controller: controller)
+    }
+    func startEditMessage() {
+        
     }
     func addNumberOnKeyBoard(number: String) {
         self.topView.freshAmount(number)
@@ -252,7 +278,8 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         paidButton.addTarget(self, action: "incomeOrPaidDataLoad:", forControlEvents: .TouchUpInside)
         paidButton.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
         paidButton.setTitleColor(KOrangeColor , forState: .Selected)
-        paidButton.selected = true
+        paidButton.selected = self.isPayment
+        incomeButton.selected = !self.isPayment
         self.view.addSubview(paidButton)
     }
 

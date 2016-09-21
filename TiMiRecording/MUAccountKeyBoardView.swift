@@ -28,11 +28,13 @@ class MUAccountKeyBoardView: UIView {
     private let dateButton = UIButton.init(type: .Custom)
     private let editMessageButton = UIButton.init(type: .Custom)
     private var dotIndex = 0
+    private let dateFormatter = NSDateFormatter.init()
     weak var delegate :MUAccountKeyBoardViewDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.whiteColor()
+        self.dateFormatter.dateFormat = "YYYY年\nM月dd日"
         for   index   in 0...11  {
              let button = UIButton.init(type: .Custom)
                  button.frame = CGRectMake(CGFloat.init(index % 3) * MUKeyBoardbuttonWidth, MUKeyBoardTopMargin +  CGFloat.init(index / 3) * MUKeyBoardbuttonHeight, MUKeyBoardbuttonWidth, MUKeyBoardbuttonHeight)
@@ -87,9 +89,16 @@ class MUAccountKeyBoardView: UIView {
         
         
     }
-    func setUpUI(date : String , hightlightedMessageButton : Bool , hightlightedDateButton: Bool) {
-        if(!date.isEmpty){
-          self.dateButton.setTitle(date, forState: .Normal)
+    func setUpUI(date : NSTimeInterval , hightlightedMessageButton : Bool , hightlightedDateButton: Bool) {
+        var dateStr = "今天"
+        let durain = date - NSDate.init(timeIntervalSinceNow: 0).timeIntervalSince1970
+        if(durain < 0 && durain > -24 * 60 * 60 ){
+          dateStr = "今天"
+        }else{
+          dateStr = self.dateFormatter.stringFromDate(NSDate.init(timeIntervalSince1970: date))
+        }
+        if(date > 0.0){
+          self.dateButton.setTitle(dateStr, forState: .Normal)
         }
           self.dateButton.selected = hightlightedDateButton
           self.editMessageButton.selected = hightlightedMessageButton

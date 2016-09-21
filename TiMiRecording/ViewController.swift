@@ -38,7 +38,6 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
 
       self.view.addSubview(self.detailItemTableView)
       self.detailItemTableView.setSpringAnimationBlock {[unowned self] (height) -> Void in
-        
         if height > 0.0 {
             self.topView.animatiedAddButton(height/CGFloat.init(110.0))
         }else{
@@ -68,7 +67,14 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
             })
             setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
         }else{
-           print("编辑",data.accountTitleName)
+           let VC = AccountDetailEditingViewController()
+            NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
+            VC.isPayment = data.isPayment
+            self.presentViewController(VC, animated: true, completion: { () -> Void in
+                let data_ = data
+                data_.moneyAmount = data.moneyAmount < 0 ? data.moneyAmount * (-1.0) : data.moneyAmount
+                VC.changeNewFirstData(data_)
+            })
            
         }
         }
@@ -123,7 +129,6 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
     }
     func refreshTopViewMonthBalance(noti:NSNotification) {
         let date = noti.object as! String
-        
         self.topView.refreshMonthBalance(MUFMDBManager.manager.searchForAccountMonth(date, tableName: KAccountCommontTable))
        
     }

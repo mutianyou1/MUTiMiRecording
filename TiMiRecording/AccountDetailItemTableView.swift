@@ -73,11 +73,11 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
         
             
         let data = self.dataArray[indexPath.section - 1][indexPath.row]
-        if (indexPath.row % 2 == 1){
+        if (indexPath.row % 2 == 1 && data.tipsString.isEmpty){
           
             data.userPictureName = "kRecommendSaving_335x140_"
             data.tipsString = "昨夜西风凋碧树……"
-        }else {
+        }else if(indexPath.row % 2 == 0 && data.tipsString.isEmpty){
             data.userPictureName = "redsky"
             data.tipsString = "河汉清且浅 相去复几许"
         }

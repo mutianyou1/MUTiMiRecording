@@ -159,7 +159,7 @@ class MUFMDBManager: NSObject {
         return self.dataBase.executeStatements(statement)
     }
     //MARK: update Data
-    func updateData(data: MUAccountDetailModel , tableName: String)-> Bool {
+    func updateData(data: MUAccountDetailModel ,time : Double ,tableName: String )-> Bool {
         var dateString = self.dateFormatter.stringFromDate(NSDate.init(timeIntervalSince1970: data.time))
         var month = dateString.substringToIndex(dateString.startIndex.advancedBy(7))
         
@@ -169,7 +169,7 @@ class MUFMDBManager: NSObject {
         }
         let expend : Double = data.moneyAmount > 0.0 ? 0.0 : data.moneyAmount
         let income : Double = data.moneyAmount > 0.0 ? data.moneyAmount : 0.0
-        let statement = String.init(format: "insert into  %@(time ,date ,month,accountTitleName ,tipsString ,thumbnailName ,userPictureName ,expend,income) values('%lf','%@','%@','%@','%@','%@','%@','%lf','%lf')", arguments: [tableName,data.time,dateString,month,data.accountTitleName,data.tipsString,data.thumbnailName,data.userPictureName,expend,income])
+        let statement = String.init(format: "update  %@ set time = '%lf', date = '%@', month='%@',accountTitleName='%@', tipsString ='%@' ,thumbnailName='%@', userPictureName='%@', expend='%lf' ,income='%lf' where time = %lf", arguments: [tableName,data.time,dateString,month,data.accountTitleName,data.tipsString,data.thumbnailName,data.userPictureName,expend,income,time])
         return self.dataBase.executeStatements(statement)
     }
   

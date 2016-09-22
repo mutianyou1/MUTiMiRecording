@@ -11,9 +11,9 @@ import UIKit
 
 
 
-class MUAccountDetailModel: NSObject {
+class MUAccountDetailModel: NSObject ,NSCopying{
     var accountTitleName = "家居test"
-    var moneyAmount :Double = 0.00
+    var moneyAmount :Double = Double.init(floatLiteral: 0.0)
     var tipsString = "我在星巴克消费的休闲时光，时间静止唯有想你"
     var thumbnailName = "image_"
     var userPictureName = "image_"
@@ -27,6 +27,19 @@ class MUAccountDetailModel: NSObject {
     
     override func  setValue(value: AnyObject?, forUndefinedKey key: String) {
         
+    }
+    func copyWithZone(zone: NSZone) -> AnyObject {
+        let data = MUAccountDetailModel()
+        data.time = self.time
+        data.accountTitleName = self.accountTitleName
+        data.tipsString = self.tipsString
+        data.isPayment = self.isPayment
+        data.thumbnailName = self.thumbnailName
+        data.userPictureName = self.userPictureName
+        data.date = self.date
+        data.moneyAmount = self.moneyAmount
+        
+        return data
     }
 }
 

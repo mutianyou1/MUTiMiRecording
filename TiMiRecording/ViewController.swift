@@ -70,10 +70,10 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
            let VC = AccountDetailEditingViewController()
             NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
             VC.isPayment = data.isPayment
-            self.presentViewController(VC, animated: true, completion: { () -> Void in
-                let data_ = data
-                data_.moneyAmount = data.moneyAmount < 0 ? data.moneyAmount * (-1.0) : data.moneyAmount
-                VC.changeNewFirstData(data_)
+            self.presentViewController(VC, animated: true, completion: {[unowned VC] () -> Void in
+                //let data_ = data
+                data.moneyAmount = data.moneyAmount < 0 ? data.moneyAmount * (-1.0) : data.moneyAmount
+                VC.changeNewFirstData(data)
             })
            
         }

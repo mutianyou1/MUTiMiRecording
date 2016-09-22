@@ -23,7 +23,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     private var thumbImageAniLayer = UIImageView()
     private let keyBoardView = MUAccountKeyBoardView.init(frame: CGRectMake(0, KHeight - KKeyBoardHeight + 10.0, KWidth, KKeyBoardHeight - 10.0))
     var isPayment = true
-    var oldDataTime : Double = 0.0
+    var oldData : MUAccountDetailModel?
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -109,9 +109,10 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     }
     //MARK: edit old data
     func changeNewFirstData(data : MUAccountDetailModel) {
-       self.firstData = data
+       self.firstData = data.copy() as! MUAccountDetailModel 
+       self.oldData = data.copy() as? MUAccountDetailModel
        self.topView.loadData(data)
-       self.keyBoardView.setUpUI(data.time, hightlightedMessageButton: data.tipsString.isEmpty, hightlightedDateButton: true)
+       self.keyBoardView.setUpUI(data.time, hightlightedMessageButton: !data.tipsString.isEmpty, hightlightedDateButton: true)
     }
     //MARK: Notification
     @objc
@@ -137,7 +138,8 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
                 dispatch_async(dispatch_get_main_queue()) { () -> Void in
                    
                     self.topView.loadData(self.firstData)
-                    self.thumbImageViewRect = self.topView.getThumbnilImageRect();
+                    self.keyBoardView.resetAmount()
+                    self.thumbImageViewRect = self.topView.getThumbnilImageRect()
                     self.collectionView.reloadData()
                     
                     self.pageControl.numberOfPages = self.collectionView.itemArray.count/12
@@ -176,24 +178,32 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     }
     //MARK: keyboardViewDelegate
     func clickOk() {
+        
         var amount = self.keyBoardView.getAmount()
-        if(amount > CGFloat.init(0.0)){
-            
+        
+       
+        if(amount > CGFloat.init(0.0) || self.oldData != nil){
             self.firstData.moneyAmount = Double.init(amount)
             
             if(self.firstData.isPayment){
                 amount *= -1.0
                 self.firstData.moneyAmount = Double.init(amount)
             }
-//            if self.currentTime > 0.0 {
-//                self.firstData.time = self.currentTime
-//            }else{
-//                self.firstData.time = NSDate.init(timeIntervalSinceNow: 0.0).timeIntervalSince1970
-//            }
-//           
-            if(self.oldDataTime > 0){
-               
+         
+         
+            print(self.oldData!.moneyAmount)
+            if(self.oldData?.moneyAmount > 0.0){
+                let moneyAmount = self.isPayment ?  (self.oldData?.moneyAmount)! * (-1.0) : self.oldData?.moneyAmount
+                self.firstData.moneyAmount = amount.isZero ? moneyAmount! : self.firstData.moneyAmount
+                
+                 
+                if(MUFMDBManager.manager.updateData(self.firstData, time: (self.oldData?.time)!, tableName: KAccountCommontTable)){
+                  self.successSaveAndDismiss()
+                }else{
+                  self.saveWithUNKnowError()
+                }
             }else{
+                
             if(MUFMDBManager.manager.insetData(self.firstData, tableName: KAccountCommontTable)){
                print("插入成功")
                self.successSaveAndDismiss()

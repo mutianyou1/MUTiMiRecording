@@ -13,6 +13,7 @@
 		D20028171D82BA08004324DF /* MUWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = D20028141D82BA08004324DF /* MUWindow.swift */; };
 		D207A7D51D87962300F1B639 /* MURectModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D207A7D41D87962300F1B639 /* MURectModel.swift */; };
 		D207A7D91D87AD6500F1B639 /* MUFMDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D207A7D81D87AD6500F1B639 /* MUFMDBManager.swift */; };
+		D25BD6021D9511E900587757 /* RightChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25BD6011D9511E900587757 /* RightChartViewController.swift */; };
 		D25E4C901D79090300808EA6 /* MUAccountDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E4C8F1D79090300808EA6 /* MUAccountDetailModel.swift */; };
 		D25E4C921D79104600808EA6 /* MUAccountPayment.plist in Resources */ = {isa = PBXBuildFile; fileRef = D25E4C911D79104600808EA6 /* MUAccountPayment.plist */; };
 		D25E4C941D79107E00808EA6 /* MUAccoutIncome.plist in Resources */ = {isa = PBXBuildFile; fileRef = D25E4C931D79107E00808EA6 /* MUAccoutIncome.plist */; };
@@ -24,6 +25,7 @@
 		D27B93391D7D3DAC00E94562 /* MUAccountEditCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */; };
 		D27B933B1D7D452A00E94562 /* MUAccountEditItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */; };
 		D27B933D1D7D4D3E00E94562 /* MUAccountEditTopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B933C1D7D4D3E00E94562 /* MUAccountEditTopView.swift */; };
+		D29972961D951FE900F9AE94 /* MUPaymentAnlalyseChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D29972951D951FE900F9AE94 /* MUPaymentAnlalyseChart.swift */; };
 		D2A267781D813C5E0069F7C6 /* MUAccountKeyBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2A267771D813C5E0069F7C6 /* MUAccountKeyBoardView.swift */; };
 		D2B4501C1D78334200BC7D68 /* TopBackgroundImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B4501B1D78334200BC7D68 /* TopBackgroundImageView.swift */; };
 		D2B4501F1D78342D00BC7D68 /* TiMiHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2B4501E1D78342D00BC7D68 /* TiMiHeader.swift */; };
@@ -62,6 +64,7 @@
 		D20028141D82BA08004324DF /* MUWindow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUWindow.swift; sourceTree = "<group>"; };
 		D207A7D41D87962300F1B639 /* MURectModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MURectModel.swift; sourceTree = "<group>"; };
 		D207A7D81D87AD6500F1B639 /* MUFMDBManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUFMDBManager.swift; sourceTree = "<group>"; };
+		D25BD6011D9511E900587757 /* RightChartViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RightChartViewController.swift; sourceTree = "<group>"; };
 		D25E4C8F1D79090300808EA6 /* MUAccountDetailModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountDetailModel.swift; sourceTree = "<group>"; };
 		D25E4C911D79104600808EA6 /* MUAccountPayment.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MUAccountPayment.plist; sourceTree = "<group>"; };
 		D25E4C931D79107E00808EA6 /* MUAccoutIncome.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = MUAccoutIncome.plist; sourceTree = "<group>"; };
@@ -73,6 +76,7 @@
 		D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditCollectionView.swift; sourceTree = "<group>"; };
 		D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditItemCell.swift; sourceTree = "<group>"; };
 		D27B933C1D7D4D3E00E94562 /* MUAccountEditTopView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditTopView.swift; sourceTree = "<group>"; };
+		D29972951D951FE900F9AE94 /* MUPaymentAnlalyseChart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUPaymentAnlalyseChart.swift; sourceTree = "<group>"; };
 		D2A267771D813C5E0069F7C6 /* MUAccountKeyBoardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountKeyBoardView.swift; sourceTree = "<group>"; };
 		D2B4501B1D78334200BC7D68 /* TopBackgroundImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopBackgroundImageView.swift; sourceTree = "<group>"; };
 		D2B4501E1D78342D00BC7D68 /* TiMiHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TiMiHeader.swift; sourceTree = "<group>"; };
@@ -186,6 +190,15 @@
 			name = AccountItemEditing;
 			sourceTree = "<group>";
 		};
+		D25BD6001D95118200587757 /* RightAccountChart */ = {
+			isa = PBXGroup;
+			children = (
+				D25BD6011D9511E900587757 /* RightChartViewController.swift */,
+				D29972951D951FE900F9AE94 /* MUPaymentAnlalyseChart.swift */,
+			);
+			name = RightAccountChart;
+			sourceTree = "<group>";
+		};
 		D25E4C8C1D79087400808EA6 /* AccountCellModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -234,13 +247,6 @@
 			name = LeftAccountBook;
 			sourceTree = "<group>";
 		};
-		D2B450181D78327500BC7D68 /* RightDetailView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = RightDetailView;
-			sourceTree = "<group>";
-		};
 		D2E44DFB1D7670CB00CFF8AB = {
 			isa = PBXGroup;
 			children = (
@@ -269,10 +275,10 @@
 				D2E44E071D7670CC00CFF8AB /* AppDelegate.swift */,
 				D2B4501E1D78342D00BC7D68 /* TiMiHeader.swift */,
 				D2F9D9861D782A8C00BEB8D7 /* OCChannel.h */,
-				D20028111D82B9CD004324DF /* MUFrameWork */,
-				D2B450181D78327500BC7D68 /* RightDetailView */,
-				D2B450171D78325F00BC7D68 /* LeftAccountBook */,
 				D2B450161D78316A00BC7D68 /* MiddleView */,
+				D25BD6001D95118200587757 /* RightAccountChart */,
+				D20028111D82B9CD004324DF /* MUFrameWork */,
+				D2B450171D78325F00BC7D68 /* LeftAccountBook */,
 				D2E44E0B1D7670CC00CFF8AB /* Main.storyboard */,
 				D2E44E0E1D7670CC00CFF8AB /* Assets.xcassets */,
 				D2E44E101D7670CC00CFF8AB /* LaunchScreen.storyboard */,
@@ -493,6 +499,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D25E4C9D1D79799B00808EA6 /* AccountDetailTableHeaderView.swift in Sources */,
+				D25BD6021D9511E900587757 /* RightChartViewController.swift in Sources */,
 				D27B93361D7D143300E94562 /* MUAccountDataManager.swift in Sources */,
 				D27B93391D7D3DAC00E94562 /* MUAccountEditCollectionView.swift in Sources */,
 				D27B933D1D7D4D3E00E94562 /* MUAccountEditTopView.swift in Sources */,
@@ -511,6 +518,7 @@
 				D2FE2F7A1D93CAED0064B8D9 /* AccountTipsEditViewController.swift in Sources */,
 				D20028151D82BA08004324DF /* MUAlertView.swift in Sources */,
 				D2B4501F1D78342D00BC7D68 /* TiMiHeader.swift in Sources */,
+				D29972961D951FE900F9AE94 /* MUPaymentAnlalyseChart.swift in Sources */,
 				D207A7D51D87962300F1B639 /* MURectModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

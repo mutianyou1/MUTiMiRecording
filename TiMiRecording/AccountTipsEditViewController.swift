@@ -108,11 +108,13 @@ class AccountTipsEditViewController: UIViewController ,UITextViewDelegate{
     }
     @objc
     private func close() {
+      self.tipsTextView.resignFirstResponder()
       self.dismissViewControllerAnimated(true, completion: nil)
     }
     @objc
     private func done() {
     self.doneBlock(self.editData.userPictureName,self.tipsTextView.text)
+    self.tipsTextView.resignFirstResponder()
     self.dismissViewControllerAnimated(true, completion: nil)
     }
     @objc
@@ -120,7 +122,7 @@ class AccountTipsEditViewController: UIViewController ,UITextViewDelegate{
         self.tipsTextView.resignFirstResponder()
         self.keyBoardToolView.frame.origin.y = KHeight - 40
         let VC = MUPromtViewController()
-        let rect = CGRectMake(KAccoutTitleMarginToAmount, KHeight - 4 * 40 * KHeightScale - 10.0, KWidth - 2 * KAccoutTitleMarginToAmount,  4 * 40 * KHeightScale)
+        let rect = CGRectMake(30 * KWidthScale, KHeight - 3 * 40 * KHeightScale - 10.0, KWidth - 60 * KWidthScale,  3 * 40 * KHeightScale)
         VC.contentView = MUAlertView.init(frame: rect)
         VC.contentView._ViewType = viewType.sheetView
         VC.contentView.sheetButtonTitles = ["拍照","本地图片","删除本图片","取消"]

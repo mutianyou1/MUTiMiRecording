@@ -141,13 +141,25 @@ extension ViewController {
     }
     func openCarmera() {
        let VC = MUPromtViewController()
-       let rect = CGRectMake(KAccoutTitleMarginToAmount, KHeight - 3 * 40 * KHeightScale - 10.0, KWidth - 2 * KAccoutTitleMarginToAmount,  3 * 40 * KHeightScale)
+       let rect = CGRectMake(30 * KWidthScale, KHeight - 3 * 40 * KHeightScale - 10.0, KWidth - 60 * KWidthScale,  3 * 40 * KHeightScale)
        VC.contentView = MUAlertView.init(frame: rect)
        VC.contentView._ViewType = viewType.sheetView
        VC.contentView.sheetButtonTitles = ["拍照","本地图片","取消"]
-       VC.contentView.setSheetViewBlock { (tag) -> Void in
+       VC.contentView.setSheetViewBlock { [unowned self](tag) -> Void in
+        switch tag{
+            case 0:
+            self.topView.backImageName = "background12_375x155_"
+            break
+            case 1:
+                self.topView.backImageName =  "background1_375x155_"
+            break
+            case 2:
+            
+            break
+        default:
+            break
+        }
         
-           
         }
        setWindowType(windowType.sheetWindow, rect: rect, controller: VC)
     }

@@ -22,8 +22,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let midVC = ViewController()
         vc.view.backgroundColor = UIColor.yellowColor()
         let margin = Float.init(KWidthScale)
-        MUSlideMenuManager.manager().setLeftViewController(vc, leftMargin: margin * 90);
+        let rightVC = RightChartViewController()
+        MUSlideMenuManager.manager().setLeftViewController(vc, leftMargin: margin * 90)
         MUSlideMenuManager.manager().setMiddleViewController(midVC, backGroundImageWithName:NSString.init(string: "sunshine") as String)
+        MUSlideMenuManager.manager().setRigthViewController(rightVC, rightMargin: Float.init(KWidth))
         self.window?.rootViewController = MUSlideMenuManager.manager().rootViewController()
         
         

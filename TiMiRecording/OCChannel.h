@@ -11,4 +11,5 @@
 #import "MUSlideHeader.h"
 #import "Masonry.h"
 #import "FMDB.h"
+#import "SVProgressHUD.h"
 #endif /* OCChannel_h */

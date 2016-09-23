@@ -12,7 +12,7 @@ class MUFMDBManager: NSObject {
      static let manager = MUFMDBManager.init()
      private var dataBase = FMDatabase.init()
      private var thisYear = "2016"
-     private let dateFormatter = NSDateFormatter.init()
+     let dateFormatter = NSDateFormatter.init()
      private override init() {
         super.init()
         self.dateFormatter.dateFormat = "YYYY年M月dd日"

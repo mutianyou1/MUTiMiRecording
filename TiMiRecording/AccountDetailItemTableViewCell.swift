@@ -196,7 +196,8 @@ class AccountDetailItemTableViewCell: UITableViewCell {
      }
     }
     deinit {
-      self.removeObserver(self, forKeyPath: KNotificationCellAnimationEnd)
+      NSNotificationCenter.defaultCenter().removeObserver(self, name: KNotificationCellAnimationEnd, object: nil
+        )
     }
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

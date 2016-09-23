@@ -34,6 +34,7 @@
 		D2E44E121D7670CC00CFF8AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2E44E101D7670CC00CFF8AB /* LaunchScreen.storyboard */; };
 		D2E44E1D1D7670CC00CFF8AB /* TiMiRecordingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E44E1C1D7670CC00CFF8AB /* TiMiRecordingTests.swift */; };
 		D2E44E281D7670CC00CFF8AB /* TiMiRecordingUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2E44E271D7670CC00CFF8AB /* TiMiRecordingUITests.swift */; };
+		D2FE2F7A1D93CAED0064B8D9 /* AccountTipsEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2FE2F791D93CAED0064B8D9 /* AccountTipsEditViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		D2E44E271D7670CC00CFF8AB /* TiMiRecordingUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TiMiRecordingUITests.swift; sourceTree = "<group>"; };
 		D2E44E291D7670CC00CFF8AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		D2F9D9861D782A8C00BEB8D7 /* OCChannel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OCChannel.h; sourceTree = "<group>"; };
+		D2FE2F791D93CAED0064B8D9 /* AccountTipsEditViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTipsEditViewController.swift; sourceTree = "<group>"; };
 		D676AEF73B5595BC7B32D871 /* libPods-TiMiRecording.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TiMiRecording.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -210,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				D25E4C951D79610E00808EA6 /* AccountDetailEditingViewController.swift */,
+				D2FE2F791D93CAED0064B8D9 /* AccountTipsEditViewController.swift */,
 				D20A82951D80157C00350EB1 /* View */,
 			);
 			name = AccountDetailEditing;
@@ -505,6 +508,7 @@
 				D2E44E081D7670CC00CFF8AB /* AppDelegate.swift in Sources */,
 				D25E4C961D79610E00808EA6 /* AccountDetailEditingViewController.swift in Sources */,
 				D27B933B1D7D452A00E94562 /* MUAccountEditItemCell.swift in Sources */,
+				D2FE2F7A1D93CAED0064B8D9 /* AccountTipsEditViewController.swift in Sources */,
 				D20028151D82BA08004324DF /* MUAlertView.swift in Sources */,
 				D2B4501F1D78342D00BC7D68 /* TiMiHeader.swift in Sources */,
 				D207A7D51D87962300F1B639 /* MURectModel.swift in Sources */,

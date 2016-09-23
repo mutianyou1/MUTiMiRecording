@@ -81,7 +81,6 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
             data.userPictureName = "redsky"
             data.tipsString = "河汉清且浅 相去复几许"
         }
-          
           cell.setContentData(data)
           cell.setCellItmeEditeBlock({ (data_, isDelete) -> Void in
                self.cellItemEditBlock(data,isDelete)

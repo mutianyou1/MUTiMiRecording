@@ -181,7 +181,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         
         var amount = self.keyBoardView.getAmount()
         
-       
+      
         if(amount > CGFloat.init(0.0) || self.oldData != nil){
             self.firstData.moneyAmount = Double.init(amount)
             
@@ -191,7 +191,6 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
             }
          
          
-            print(self.oldData!.moneyAmount)
             if(self.oldData?.moneyAmount > 0.0){
                 let moneyAmount = self.isPayment ?  (self.oldData?.moneyAmount)! * (-1.0) : self.oldData?.moneyAmount
                 self.firstData.moneyAmount = amount.isZero ? moneyAmount! : self.firstData.moneyAmount
@@ -256,7 +255,14 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         setWindowType(windowType.alertWindow, rect: rect, controller: controller)
     }
     func startEditMessage() {
-        
+        let VC = AccountTipsEditViewController()
+         VC.editData = self.firstData.copy() as? MUAccountDetailModel
+        VC.setDoneBlock {[unowned self] (userImageName, tips) -> Void in
+            self.firstData.tipsString = tips
+            self.firstData.userPictureName = userImageName
+            
+        }
+        self.presentViewController(VC, animated: true, completion: nil)
     }
     func addNumberOnKeyBoard(number: String) {
         self.topView.freshAmount(number)

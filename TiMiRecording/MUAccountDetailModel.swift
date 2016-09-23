@@ -14,10 +14,10 @@ import UIKit
 class MUAccountDetailModel: NSObject ,NSCopying{
     var accountTitleName = "家居test"
     var moneyAmount :Double = Double.init(floatLiteral: 0.0)
-    var tipsString = "我在星巴克消费的休闲时光，时间静止唯有想你"
-    var thumbnailName = "image_"
-    var userPictureName = "image_"
-    var date = "9月1日"
+    var tipsString = ""
+    var thumbnailName = ""
+    var userPictureName = ""
+    var date = ""
     var time : Double = NSDate.init(timeIntervalSinceNow: 0).timeIntervalSince1970
     
     var index : Int = 0

@@ -102,7 +102,9 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
            
             self.thumbImageAniLayer.frame = newRect
             self.thumbImageAniLayer.layer.addAnimation(groupAnimation, forKey: "layer")
-            self.firstData = data
+            self.firstData.moneyAmount = data.moneyAmount
+            self.firstData.thumbnailName = data.thumbnailName
+            //self.firstData.time = data.time
             //print("move  ---x\(animation.toValue)")
             //print(offSize.x)
         }
@@ -257,7 +259,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     func startEditMessage() {
         let VC = AccountTipsEditViewController()
          VC.editData = self.firstData.copy() as? MUAccountDetailModel
-        VC.setDoneBlock {[unowned self] (userImageName, tips) -> Void in
+         VC.setDoneBlock {[unowned self] (userImageName, tips) -> Void in
             self.firstData.tipsString = tips
             self.firstData.userPictureName = userImageName
             

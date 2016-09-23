@@ -19,8 +19,9 @@ class MUAlertView: UIView {
     private lazy var  calendar = UIDatePicker.init()
     private lazy var  certainBlock = {()->Void in}
     private lazy var  cancelBlock = {() -> Void in}
-    
+    private lazy var  sheetBlock = {(tag: Int) -> Void in}
     lazy var date = NSDate.init(timeIntervalSinceNow: 0)
+    var sheetButtonTitles :[String]?
     var ShowCancelButton = false
     var message = "abc"
     var _ViewType = viewType.alertView{
@@ -36,6 +37,13 @@ class MUAlertView: UIView {
         certainButton.addTarget(self, action: "clickButton:", forControlEvents: UIControlEvents.TouchUpInside)
         certainButton.frame = CGRectMake(-1, self.bounds.size.height - 40 * KHeightScale, self.bounds.size.width+2, 40 * KHeightScale)
       
+        
+        cancelButton.setTitle("取消", forState: UIControlState.Normal)
+        cancelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
+        cancelButton.layer.borderWidth = 0.5
+        cancelButton.frame = CGRectMake(self.bounds.size.width * 0.5, self.bounds.size.height - 40 * KHeightScale, self.bounds.size.width * 0.5 + 1, 40 * KHeightScale)
+        cancelButton.addTarget(self, action: "clickButton:", forControlEvents: UIControlEvents.TouchUpInside)
+        
         switch _ViewType {
         case .alertView:
             self.userInteractionEnabled = true
@@ -46,11 +54,7 @@ class MUAlertView: UIView {
             contentLabel.frame = CGRectMake(10.0 * KWidthScale, 10 * KHeightScale, self.bounds.size.width - 20.0 * KWidthScale,height)
             self.addSubview(contentLabel)
             
-            cancelButton.setTitle("取消", forState: UIControlState.Normal)
-            cancelButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-            cancelButton.layer.borderWidth = 0.5
-            cancelButton.frame = CGRectMake(self.bounds.size.width * 0.5, self.bounds.size.height - 40 * KHeightScale, self.bounds.size.width * 0.5 + 1, 40 * KHeightScale)
-            cancelButton.addTarget(self, action: "clickButton:", forControlEvents: UIControlEvents.TouchUpInside)
+            
            
             inputTextView.layer.cornerRadius = 5
             inputTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
@@ -64,12 +68,32 @@ class MUAlertView: UIView {
                
             }
         self.addSubview(certainButton)
+            break
         case .rightView:
             contentLabel.text = "dhuhu"
+            break
         case .sheetView:
-            contentLabel.text = "dhuhu"
+           
+            var index = 0
+            for title in self.sheetButtonTitles! {
+                 let button = UIButton.init(type: .System)
+                 button.setTitle(title, forState: .Normal)
+                 let height = CGFloat.init(index) * 40 * KHeightScale
+                 button.frame = CGRectMake(-5,height, self.bounds.size.width+10, 40 * KHeightScale)
+                 button.tag = index
+                 button.addTarget(self, action: "sheetViewButtonAction:", forControlEvents: .TouchUpInside)
+                 button.layer.cornerRadius = 5.0
+                 button.layer.borderWidth = 0.25
+                 button.layer.borderColor = UIColor.lightGrayColor().CGColor
+                 button.clipsToBounds = true
+                 self.addSubview(button)
+                 index += 1
+            
+            }
+            break
         case .upView:
             contentLabel.text = "dhuhu"
+            break
         case .calendarView:
             self.calendar.frame = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height - 40 * KHeightScale)
             self.calendar.locale = NSLocale.init(localeIdentifier: "zh_CN")
@@ -77,6 +101,7 @@ class MUAlertView: UIView {
             self.calendar.datePickerMode = .Date
             self.addSubview(calendar)
             self.addSubview(certainButton)
+            break
         }
        
 
@@ -95,6 +120,7 @@ class MUAlertView: UIView {
         self.layer.cornerRadius = 10
         self.clipsToBounds = false
     }
+    //MARK: Buttons Method
     @objc
     private func clickButton(sender :UIButton){
         if(sender == self.certainButton){
@@ -118,6 +144,12 @@ class MUAlertView: UIView {
         
         
     }
+    @objc
+    private func sheetViewButtonAction(sender : UIButton) {
+         MUWindow.setWindowFinishBlock { () -> Void in
+            self.sheetBlock(sender.tag)
+        }
+    }
     //MARK: set Block
     func setCertainBlock( block : () -> Void) {
          self.certainBlock = block
@@ -128,14 +160,13 @@ class MUAlertView: UIView {
     func setCurrentDate(timeInterVal : NSTimeInterval) {
          self.date = NSDate.init(timeIntervalSince1970: timeInterVal)
     }
+    func setSheetViewBlock(block : (tag : Int) -> Void) {
+        self.sheetBlock = block
+    }
+    //MARK: datePicker
     func getPickedDateTimeInterval() -> NSTimeInterval {
         let durain = self.calendar.date.timeIntervalSinceNow
         return durain
-//        if(durain < 0 && durain > -24 * 60 * 60 ){
-//          return "今天"
-//        }else{
-//         return self.dateFormatter.stringFromDate(self.calendar.date)
-//        }
     }
     func getHeight() -> CGFloat {
         switch self._ViewType {

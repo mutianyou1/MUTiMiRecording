@@ -84,13 +84,6 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
     }
     func loadAccountData() {
         
-//        for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
-//            self.detailItemTableView.secitonDataArray.addObject(data)
-//        }
-//        
-//        if self.detailItemTableView.secitonDataArray.count == 0 {
-//            return
-//        }
         dispatch_async(dispatch_get_global_queue(0, 0)) { () -> Void in
             for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
                 self.detailItemTableView.secitonDataArray.addObject(data)
@@ -147,7 +140,16 @@ extension ViewController {
         
     }
     func openCarmera() {
-        print("open carmera")
+       let VC = MUPromtViewController()
+       let rect = CGRectMake(KAccoutTitleMarginToAmount, KHeight - 3 * 40 * KHeightScale - 10.0, KWidth - 2 * KAccoutTitleMarginToAmount,  3 * 40 * KHeightScale)
+       VC.contentView = MUAlertView.init(frame: rect)
+       VC.contentView._ViewType = viewType.sheetView
+       VC.contentView.sheetButtonTitles = ["拍照","本地图片","取消"]
+       VC.contentView.setSheetViewBlock { (tag) -> Void in
+        
+           
+        }
+       setWindowType(windowType.sheetWindow, rect: rect, controller: VC)
     }
    
 }

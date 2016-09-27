@@ -15,7 +15,7 @@ class AccountTipsEditViewController: UIViewController ,UITextViewDelegate{
     private let openCameraButton = UIButton.init(type: .Custom)
     private let keyBoardToolView = UILabel.init(frame: CGRectMake(0, KHeight - 40, KWidth, 40))
     private lazy var doneBlock = {(userImageName:String, tips : String) -> Void in}
-    var editData : MUAccountDetailModel!
+    var editData : MUAccountDetailModel?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = UIColor.whiteColor()
@@ -82,12 +82,12 @@ class AccountTipsEditViewController: UIViewController ,UITextViewDelegate{
        
        
         if (self.editData != nil) {
-            self.dateLabel.text = MUFMDBManager.manager.dateFormatter.stringFromDate(NSDate.init(timeIntervalSince1970: self.editData.time))
-            if(!self.editData.userPictureName.isEmpty){
-            self.openCameraButton.setImage(UIImage.init(named: (self.editData.userPictureName)), forState: .Normal)
+            self.dateLabel.text = MUFMDBManager.manager.dateFormatter.stringFromDate(NSDate.init(timeIntervalSince1970: self.editData!.time))
+            if(!self.editData!.userPictureName.isEmpty){
+            self.openCameraButton.setImage(UIImage.init(named: (self.editData!.userPictureName)), forState: .Normal)
             }
-            self.keyBoardToolView.text = String.init(format: "%d/40", arguments: [ Int(String(self.editData.tipsString.endIndex))!])
-            self.tipsTextView.text = self.editData.tipsString
+            self.keyBoardToolView.text = String.init(format: "%d/40", arguments: [ Int(String(self.editData!.tipsString.endIndex))!])
+            self.tipsTextView.text = self.editData!.tipsString
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyBoardShow:", name:UIKeyboardDidShowNotification, object: nil)
@@ -113,7 +113,7 @@ class AccountTipsEditViewController: UIViewController ,UITextViewDelegate{
     }
     @objc
     private func done() {
-    self.doneBlock(self.editData.userPictureName,self.tipsTextView.text)
+    self.doneBlock(self.editData!.userPictureName,self.tipsTextView.text)
     self.tipsTextView.resignFirstResponder()
     self.dismissViewControllerAnimated(true, completion: nil)
     }

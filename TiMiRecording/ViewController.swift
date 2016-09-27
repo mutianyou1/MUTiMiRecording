@@ -83,34 +83,65 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
       
     }
     func loadAccountData() {
-        
-        dispatch_async(dispatch_get_global_queue(0, 0)) { () -> Void in
-            for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
-                self.detailItemTableView.secitonDataArray.addObject(data)
+//        
+//        dispatch_async(dispatch_get_global_queue(0, 0)) { () -> Void in
+//            for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
+//                self.detailItemTableView.secitonDataArray.addObject(data)
+//            }
+//            
+//            if self.detailItemTableView.secitonDataArray.count == 0 {
+//                return
+//            }
+//            //self.detailItemTableView.secitonDataArray = NSMutableArray.init(array: MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable))
+//           
+//            for data in self.detailItemTableView.secitonDataArray {
+//               
+//                
+//                let data_ = data as! MUAccountDayDetailModel
+//                self.detailItemTableView.dataArray.append(MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable, date: data_.date))
+//                
+//            }
+//        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+//                
+//                self.detailItemTableView.reloadData()
+//                self.detailItemTableView.setNeedsDisplay()
+//                self.detailItemTableView.contentOffset = CGPointZero
+//                let data = self.detailItemTableView.secitonDataArray.firstObject as? MUAccountDayDetailModel
+//                
+//                self.topView.loadAccountTableSumarize(data!.month)
+//            }
+//            
+//        }
+       let group = dispatch_group_create()
+       dispatch_group_async(group, dispatch_get_global_queue(0, 0)) { () -> Void in
+        for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
+            self.detailItemTableView.secitonDataArray.addObject(data)
+        }
+
+        if self.detailItemTableView.secitonDataArray.count == 0 {
+            return
+        }
+        for data in self.detailItemTableView.secitonDataArray {
+
+
+            let data_ = data as! MUAccountDayDetailModel
+            self.detailItemTableView.dataArray.append(MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable, date: data_.date))
+        }
+
+        }
+        dispatch_group_async(group, dispatch_get_main_queue()) { () -> Void in
+            if(self.detailItemTableView.dataArray.isEmpty){
+               return
             }
-            
-            if self.detailItemTableView.secitonDataArray.count == 0 {
-                return
-            }
-            //self.detailItemTableView.secitonDataArray = NSMutableArray.init(array: MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable))
-           
-            for data in self.detailItemTableView.secitonDataArray {
-               
-                
-                let data_ = data as! MUAccountDayDetailModel
-                self.detailItemTableView.dataArray.append(MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable, date: data_.date))
-                
-            }
-        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-                
-                self.detailItemTableView.reloadData()
-                self.detailItemTableView.setNeedsDisplay()
-                self.detailItemTableView.contentOffset = CGPointZero
-                let data = self.detailItemTableView.secitonDataArray.firstObject as? MUAccountDayDetailModel
-                
-                self.topView.loadAccountTableSumarize(data!.month)
-            }
-            
+            self.detailItemTableView.reloadData()
+            self.detailItemTableView.setNeedsDisplay()
+            self.detailItemTableView.contentOffset = CGPointZero
+            let data = self.detailItemTableView.secitonDataArray.firstObject as? MUAccountDayDetailModel
+
+            self.topView.loadAccountTableSumarize(data!.month)
+        }
+        dispatch_group_notify(group, dispatch_get_global_queue(0, 0)) { () -> Void in
+            NSNotificationCenter.defaultCenter().postNotificationName(KNotificationEndLoadFMDBData, object: nil)
         }
      
     }

@@ -219,7 +219,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
     }
     private func successSaveAndDismiss() {
         self.dismissViewControllerAnimated(true, completion: { () -> Void in
-            NSNotificationCenter.defaultCenter().postNotificationName(KNotificationAddAccountDetail, object: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(KNotificationAddAccountDetail, object: self.firstData.time)
         })
     }
     //MARK: saveError

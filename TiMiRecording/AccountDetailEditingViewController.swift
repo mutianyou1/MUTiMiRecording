@@ -54,6 +54,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         
         self.collectionView.setCollectionViewBlock { [unowned self](data, layer,row,offSize) -> Void in
             
+            
             if(data.statusCode == MUAccountItemStatus.SHOW_EDIT.rawValue){
                 let vc = UIViewController.init()
                 vc.view.backgroundColor = KSkyColor
@@ -102,8 +103,10 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
            
             self.thumbImageAniLayer.frame = newRect
             self.thumbImageAniLayer.layer.addAnimation(groupAnimation, forKey: "layer")
-            self.firstData.moneyAmount = data.moneyAmount
-            self.firstData.thumbnailName = data.thumbnailName
+            self.firstData = data
+            if self.oldData != nil {
+               self.firstData.time = self.oldData!.time
+            }
             //self.firstData.time = data.time
             //print("move  ---x\(animation.toValue)")
             //print(offSize.x)
@@ -196,7 +199,6 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
             if(self.oldData?.moneyAmount > 0.0){
                 let moneyAmount = self.isPayment ?  (self.oldData?.moneyAmount)! * (-1.0) : self.oldData?.moneyAmount
                 self.firstData.moneyAmount = amount.isZero ? moneyAmount! : self.firstData.moneyAmount
-                
                  
                 if(MUFMDBManager.manager.updateData(self.firstData, time: (self.oldData?.time)!, tableName: KAccountCommontTable)){
                   self.successSaveAndDismiss()

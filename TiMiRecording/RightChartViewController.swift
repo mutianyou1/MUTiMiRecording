@@ -23,7 +23,8 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
     private var tableViewY : CGFloat = 0.0
     private let progressView = MUAccountProgressView.init(frame: CGRectMake(0, 0, 0, KHeight))
     
-    
+    var dayItem = [MUAccountDetailModel]()
+    var monthItem = [MUAccountDayDetailModel]()
     var monthData : MUAccountDetailModel?
     var monthCountData : MUAccountDayDetailModel?
     

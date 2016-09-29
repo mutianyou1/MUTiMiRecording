@@ -43,6 +43,7 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
         self.buttonsTableView.reloadData()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "accountDetailAdded:", name: KNotificationEndLoadFMDBData, object: nil)
         self.setUpUI()
+        self.view.addObserver(self, forKeyPath: "frame", options: NSKeyValueObservingOptions.New, context: nil)
     }
     private func setUpUI() {
         if(self.monthCountData == nil){
@@ -150,7 +151,7 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
         }else if(self.monthCountData!.allCount > 0 && !self.bugetAmount.isZero){
             self.judgeImageView.removeFromSuperview()
             self.tipsLabel.removeFromSuperview()
-            self.progressView.layer.borderWidth = 0.0
+            self.progressView.layer.borderWidth = 10.0
             self.progressView.layer.borderColor = UIColor.clearColor().CGColor
             if self.progressView.frame.size.width < 10 {
                 self.view.addSubview(progressView)
@@ -158,19 +159,18 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
             self.progressView.frame = CGRectMake(0, self.monthPaymentLabel.frame.origin.y + self.monthPaymentLabel.frame.size.height + KAccountItemWidthMargin, KWidth, KAccountItemWidthMargin * 4)
            
             
-            self.tableViewY = self.monthPaymentLabel.frame.origin.y + self.monthPaymentLabel.frame.size.height
+            self.tableViewY = self.progressView.frame.origin.y
             self.tableViewY += KAccountItemWidthMargin * 4
             self.progressView.totalAmount = self.bugetAmount
             self.progressView.paymentAmount = 100
             self.progressView.days = 8
             self.progressView.color = UIColor.greenColor()
             self.progressView.startUI()
-            self.progressView.startProgressAnimation()
+            //self.progressView.startProgressAnimation()
             
             let button  = self.view.viewWithTag(ViewsTag.EDITBUTTON.rawValue) as? UIButton
             if button != nil{
                 button?.removeFromSuperview()
-                
             }
             var lineView = self.view.viewWithTag(ViewsTag.LINEVIEW.rawValue)
             if lineView == nil{
@@ -180,7 +180,7 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
                 self.view.addSubview(lineView!)
                 self.view.addSubview(dayLabel)
             }
-            lineView?.frame.origin.y = self.tableViewY
+            lineView?.frame.origin.y = self.tableViewY + 1.0
             self.view.bringSubviewToFront(lineView!)
           
         }
@@ -203,6 +203,15 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
           self.setDetailUI()
         }
       
+    }
+    //MARK: Observe
+    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+        if object != nil {
+          let view = object! as? UIView
+            if view!.frame.origin.x.isZero {
+              self.progressView.startProgressAnimation()
+            }
+        }
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -265,6 +274,7 @@ extension RightChartViewController {
                  NSUserDefaults.standardUserDefaults().setValue(amount, forKey: "USERBUDGET")
                  self.bugetAmount = Double.init(amount!)!
                  self.setDetailUI()
+                 self.progressView.startProgressAnimation()
                 
               })
               setWindowType(windowType.alertWindow, rect: rect, controller: VC)

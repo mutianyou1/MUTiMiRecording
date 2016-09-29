@@ -62,7 +62,7 @@ class MUFMDBManager: NSObject {
     func selectDatas(tableName: String) -> [MUAccountDetailModel]{
         let statement = String.init(format: "select * from %@   order by time desc", arguments: [tableName])
         let set = self.dataBase.executeQuery(statement, withArgumentsInArray: [tableName])
-        let array = NSMutableArray()
+        var array = [MUAccountDetailModel]()
         while(set.next()){
             let data = MUAccountDetailModel()
              data.date = set.stringForColumn("date")
@@ -78,17 +78,17 @@ class MUFMDBManager: NSObject {
             }else{
                data.moneyAmount = set.doubleForColumn("expend")
             }
-             array.addObject(data)
+             array.append(data)
             
         }
         
-      return array.copy() as! [MUAccountDetailModel]
+      return array
     }
     func getDayItemsAccount(tableName:String , date : String)-> [MUAccountDetailModel] {
         let statement = String.init(format: "select * from %@ where date ='%@' order by time desc", arguments: [tableName,date])
         let set = self.dataBase.executeQuery(statement ,withArgumentsInArray: [tableName])
         
-        let dataArray = NSMutableArray()
+        var dataArray = [MUAccountDetailModel]()
         while(set.next()){
             let data = MUAccountDetailModel()
             data.date = set.stringForColumn("date")
@@ -104,24 +104,23 @@ class MUFMDBManager: NSObject {
             }else{
                 data.moneyAmount = set.doubleForColumn("expend")
             }
-            
-           dataArray.addObject(data)
+            dataArray.append(data)
         }
-        return dataArray.copy() as! [MUAccountDetailModel]
+        return dataArray
     }
     func getDayItemsAccount(tableName : String) -> [MUAccountDayDetailModel] {
       let statement = String.init(format: "SELECT date,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY time desc ", arguments: [tableName])
       let set = self.dataBase.executeQuery(statement ,withArgumentsInArray: [tableName])
       
-      let countArray = NSMutableArray()
+      var countArray = [MUAccountDayDetailModel]()
        while(set.next()){
            let data = MUAccountDayDetailModel()
                data.date = set.stringForColumn("date")
                data.allCount = set.intForColumn("count(expend)")
                data.payment = set.doubleForColumn("sum(expend)")
-               countArray.addObject(data)
+               countArray.append(data)
         }
-         return countArray.copy() as! [MUAccountDayDetailModel]
+         return countArray
     }
     //MARK: search amount
     func searchTotoalAccountBalance(tableName : String, month:String)-> [Double] {

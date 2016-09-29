@@ -114,6 +114,7 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
 //        }
        let group = dispatch_group_create()
        dispatch_group_async(group, dispatch_get_global_queue(0, 0)) { () -> Void in
+        
         for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
             self.detailItemTableView.secitonDataArray.addObject(data)
         }

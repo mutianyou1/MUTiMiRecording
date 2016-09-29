@@ -21,6 +21,7 @@
 		D25E4C981D79671000808EA6 /* AccountDetailItemTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E4C971D79671000808EA6 /* AccountDetailItemTableViewCell.swift */; };
 		D25E4C9B1D796B4400808EA6 /* AccountDetailItemTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E4C9A1D796B4400808EA6 /* AccountDetailItemTableView.swift */; };
 		D25E4C9D1D79799B00808EA6 /* AccountDetailTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D25E4C9C1D79799B00808EA6 /* AccountDetailTableHeaderView.swift */; };
+		D26283871D9B66EE0096E46B /* MUAccountProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D26283861D9B66EE0096E46B /* MUAccountProgressView.swift */; };
 		D27B93361D7D143300E94562 /* MUAccountDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B93351D7D143300E94562 /* MUAccountDataManager.swift */; };
 		D27B93391D7D3DAC00E94562 /* MUAccountEditCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */; };
 		D27B933B1D7D452A00E94562 /* MUAccountEditItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */; };
@@ -72,6 +73,7 @@
 		D25E4C971D79671000808EA6 /* AccountDetailItemTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDetailItemTableViewCell.swift; sourceTree = "<group>"; };
 		D25E4C9A1D796B4400808EA6 /* AccountDetailItemTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDetailItemTableView.swift; sourceTree = "<group>"; };
 		D25E4C9C1D79799B00808EA6 /* AccountDetailTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountDetailTableHeaderView.swift; sourceTree = "<group>"; };
+		D26283861D9B66EE0096E46B /* MUAccountProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountProgressView.swift; sourceTree = "<group>"; };
 		D27B93351D7D143300E94562 /* MUAccountDataManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountDataManager.swift; sourceTree = "<group>"; };
 		D27B93381D7D3DAC00E94562 /* MUAccountEditCollectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditCollectionView.swift; sourceTree = "<group>"; };
 		D27B933A1D7D452A00E94562 /* MUAccountEditItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MUAccountEditItemCell.swift; sourceTree = "<group>"; };
@@ -194,7 +196,7 @@
 			isa = PBXGroup;
 			children = (
 				D25BD6011D9511E900587757 /* RightChartViewController.swift */,
-				D29972951D951FE900F9AE94 /* MUPaymentAnlalyseChart.swift */,
+				D26283881D9B66F40096E46B /* View */,
 			);
 			name = RightAccountChart;
 			sourceTree = "<group>";
@@ -219,6 +221,15 @@
 				D20A82961D8015CE00350EB1 /* AccountItemEditing */,
 			);
 			name = ViewController;
+			sourceTree = "<group>";
+		};
+		D26283881D9B66F40096E46B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				D29972951D951FE900F9AE94 /* MUPaymentAnlalyseChart.swift */,
+				D26283861D9B66EE0096E46B /* MUAccountProgressView.swift */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 		D27B93371D7D3D2900E94562 /* AccountDetailEditing */ = {
@@ -498,6 +509,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D26283871D9B66EE0096E46B /* MUAccountProgressView.swift in Sources */,
 				D25E4C9D1D79799B00808EA6 /* AccountDetailTableHeaderView.swift in Sources */,
 				D25BD6021D9511E900587757 /* RightChartViewController.swift in Sources */,
 				D27B93361D7D143300E94562 /* MUAccountDataManager.swift in Sources */,

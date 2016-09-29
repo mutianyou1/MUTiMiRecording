@@ -43,7 +43,7 @@ class MUWindow: NSObject {
     var _type = windowType?()
     private var window : UIWindow?
     private var rect = CGRect()
-    private  var vc : UIViewController?
+    private var vc : UIViewController?
     private var bottomView : UIView?
     private override init() {
         

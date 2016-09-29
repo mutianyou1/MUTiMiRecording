@@ -10,11 +10,9 @@ import UIKit
 
 let KEmptyDataIndentifier = "KEmptyData"
 let KButtonsTableView = "accountButtonsCell"
-private enum ViewsTag : Int{case NODATAIMAGE = 10 ,EDITLABEL,EDITBUTTON,LINEVIEW}
+private enum ViewsTag : Int{case NODATAIMAGE = 10 ,EDITLABEL,EDITBUTTON,LINEVIEW,CHART1,CHART2,CHART3}
 class RightChartViewController: UIViewController,UITableViewDataSource,UITableViewDelegate {
     private let monthPaymentLabel = UILabel.init()
-    private let budgetLabel = UILabel.init()
-    private let remaindsLabel = UILabel.init()
     private let dayLabel = UILabel.init()
     private var bugetAmount = 0.0
     private lazy var buttonsTableView = UITableView.init(frame: CGRectZero, style: .Plain)
@@ -23,6 +21,9 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
     private let buttonsTitles = ["当月预算","全部收支汇总","收入及财务状况","历史支出状况"]
     private let buttonsImages = ["anlysis_budget_20x20_","anlysis_balance_20x20_","anlysis_income_20x20_","anlysis_expense_20x20_"]
     private var tableViewY : CGFloat = 0.0
+    private let progressView = MUAccountProgressView.init(frame: CGRectMake(0, 0, 0, KHeight))
+    
+    
     var monthData : MUAccountDetailModel?
     var monthCountData : MUAccountDayDetailModel?
     
@@ -51,7 +52,6 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
         
         
    
-       
        self.monthPaymentLabel.numberOfLines = 0
     
        self.view.addSubview(self.monthPaymentLabel)
@@ -79,10 +79,17 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
         self.monthPaymentLabel.attributedText = attributedStr
         let height = total.getStringHeight(KWidth * 0.5, content: attributedStr)
         self.monthPaymentLabel.frame = CGRectMake(KAccountItemWidthMargin * 0.5, 2 * KAccountItemWidthMargin, KWidth * 0.5, height)
+        self.tableViewY  = height + 2 * KAccountItemWidthMargin
     }
     private func setDetailUI() {
         
+       
         self.addAttributedString()
+        var amount = NSUserDefaults.standardUserDefaults().valueForKey("USERBUDGET") as? String
+        if amount == nil {
+          amount = "0.0"
+        }
+        self.bugetAmount = Double.init(amount!)!
         if(self.monthCountData?.allCount > 0 && self.bugetAmount.isZero){
             self.judgeImageView.removeFromSuperview()
             self.tipsLabel.removeFromSuperview()
@@ -104,6 +111,7 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
             if lineView == nil{
                lineView = UIView.init(frame: CGRectMake(0, 0, KWidth, 1))
                lineView?.backgroundColor = UIColor.lightGrayColor()
+               lineView?.tag = ViewsTag.LINEVIEW.rawValue
                self.view.addSubview(lineView!)
                self.view.addSubview(dayLabel)
             }
@@ -111,11 +119,12 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
             
             
         }else if(self.monthCountData?.allCount == 0){
-            self.judgeImageView.frame = CGRectMake(KWidth*0.5 - 40, 5 * KAccountItemWidthMargin, 80, 60)
+            self.tableViewY = self.monthPaymentLabel.frame.size.height + self.monthPaymentLabel.frame.origin.y
+            self.judgeImageView.frame = CGRectMake(KWidth*0.5 - 40, self.tableViewY + KAccountItemWidthMargin, 80, 60)
             self.judgeImageView.image = UIImage.init(named: "timi_noData_79x58_")
             self.view.addSubview(self.judgeImageView)
             
-            tipsLabel.frame = CGRectMake(KAccountItemWidthMargin, 5 * KAccountItemWidthMargin + 90, KWidth - 2 * KAccountItemWidthMargin, KAccountItemWidthMargin)
+            tipsLabel.frame = CGRectMake(KAccountItemWidthMargin, judgeImageView.frame.origin.y + 70, KWidth - 2 * KAccountItemWidthMargin, KAccountItemWidthMargin)
             tipsLabel.text = "还没有支出，去记录一笔支出吧！"
             self.view.addSubview(tipsLabel)
             
@@ -125,7 +134,7 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
             addButton.setTitleColor(UIColor.whiteColor(), forState: .Normal)
             addButton.titleLabel?.font = UIFont.systemFontOfSize(KTitleFont)
             addButton.addTarget(self, action: "addAccountDetail", forControlEvents: .TouchUpInside)
-            addButton.frame = CGRectMake(50 * KWidthScale, 6 * KAccountItemWidthMargin + 100, KWidth - 100, 40 * KHeightScale)
+            addButton.frame = CGRectMake(50 * KWidthScale, 6 * KAccountItemWidthMargin + 70, KWidth - 100, 40 * KHeightScale)
             addButton.layer.cornerRadius = 5
             addButton.tag = ViewsTag.EDITBUTTON.rawValue
             self.view.addSubview(addButton)
@@ -135,18 +144,51 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
             lineView.tag = ViewsTag.LINEVIEW.rawValue
             self.view.addSubview(lineView)
             self.tableViewY = lineView.frame.origin.y
-    
+            self.tableViewY = lineView.frame.origin.y
             
             self.view.addSubview(dayLabel)
         }else if(self.monthCountData!.allCount > 0 && !self.bugetAmount.isZero){
+            self.judgeImageView.removeFromSuperview()
+            self.tipsLabel.removeFromSuperview()
+            self.progressView.layer.borderWidth = 0.0
+            self.progressView.layer.borderColor = UIColor.clearColor().CGColor
+            if self.progressView.frame.size.width < 10 {
+                self.view.addSubview(progressView)
+            }
+            self.progressView.frame = CGRectMake(0, self.monthPaymentLabel.frame.origin.y + self.monthPaymentLabel.frame.size.height + KAccountItemWidthMargin, KWidth, KAccountItemWidthMargin * 4)
+           
             
+            self.tableViewY = self.monthPaymentLabel.frame.origin.y + self.monthPaymentLabel.frame.size.height
+            self.tableViewY += KAccountItemWidthMargin * 4
+            self.progressView.totalAmount = self.bugetAmount
+            self.progressView.paymentAmount = 100
+            self.progressView.days = 8
+            self.progressView.color = UIColor.greenColor()
+            self.progressView.startUI()
+            self.progressView.startProgressAnimation()
+            
+            let button  = self.view.viewWithTag(ViewsTag.EDITBUTTON.rawValue) as? UIButton
+            if button != nil{
+                button?.removeFromSuperview()
+                
+            }
+            var lineView = self.view.viewWithTag(ViewsTag.LINEVIEW.rawValue)
+            if lineView == nil{
+                lineView = UIView.init(frame: CGRectMake(0, 0, KWidth, 1))
+                lineView?.backgroundColor = UIColor.lightGrayColor()
+                lineView?.tag = ViewsTag.LINEVIEW.rawValue
+                self.view.addSubview(lineView!)
+                self.view.addSubview(dayLabel)
+            }
+            lineView?.frame.origin.y = self.tableViewY
+            self.view.bringSubviewToFront(lineView!)
+          
         }
         self.tableViewY += KAccountItemWidthMargin
         self.dayLabel.frame = CGRectMake(KAccountItemWidthMargin, self.tableViewY, KWidth - KAccountItemWidthMargin * 2, KAccountItemWidthMargin)
         self.dayLabel.text = "记账第一天么么哒～～"
         self.tableViewY += KAccountItemWidthMargin * 2
         self.buttonsTableView.frame = CGRectMake(KAccountItemWidthMargin * 0.5, self.tableViewY, KWidth - KAccountItemWidthMargin, 200 * KHeightScale)
-        
     }
     //MARK: Notification
     @objc
@@ -158,7 +200,7 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
        self.monthCountData = array.first
        self.monthCountData?.payment *= -1.0
        dispatch_async(dispatch_get_main_queue()) { () -> Void in
-         self.setDetailUI()
+          self.setDetailUI()
         }
       
     }
@@ -206,6 +248,39 @@ extension RightChartViewController {
     }
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return 40 * KHeightScale
+    }
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        switch indexPath.section {
+        case 0:
+            
+              let VC = MUPromtViewController()
+              let rect = CGRectMake(50 * KWidthScale, 200 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 460 * KHeightScale)
+               VC.contentView = MUAlertView.init(frame: rect)
+               VC.contentView._ViewType = viewType.alertView
+               VC.contentView.showTextView = true
+               VC.contentView.textViewKeyBoard = .DecimalPad
+               VC.contentView.message = "预算\n预算是衡量支出状况的重要指标！"
+              VC.contentView.setBlock({[unowned self] (object) -> Void in
+                 let amount = object as? String
+                 NSUserDefaults.standardUserDefaults().setValue(amount, forKey: "USERBUDGET")
+                 self.bugetAmount = Double.init(amount!)!
+                 self.setDetailUI()
+                
+              })
+              setWindowType(windowType.alertWindow, rect: rect, controller: VC)
+            
+            break
+        case 1:
+            break
+        case 2:
+            break
+        case 3:
+            break
+        default:
+            break
+        
+        
+        }
     }
 
 }

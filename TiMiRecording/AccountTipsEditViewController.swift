@@ -126,8 +126,7 @@ class AccountTipsEditViewController: UIViewController ,UITextViewDelegate{
         VC.contentView = MUAlertView.init(frame: rect)
         VC.contentView._ViewType = viewType.sheetView
         VC.contentView.sheetButtonTitles = ["拍照","本地图片","删除本图片","取消"]
-        VC.contentView.setSheetViewBlock { (tag) -> Void in
-            
+        VC.contentView.setBlock { (object) -> Void in
             
         }
         setWindowType(windowType.sheetWindow, rect: rect, controller: VC)

@@ -30,5 +30,13 @@ extension String {
         let rect = content.boundingRectWithSize(CGSizeMake( CGFloat.init(MAXFLOAT),stringHeight), options: NSStringDrawingOptions.UsesLineFragmentOrigin, context: nil)
         return rect.width
     }
+    func getStringWidth(stringHeight: CGFloat,size:CGFloat) -> CGFloat {
+        let content = NSAttributedString.init(string: self, attributes: [NSFontAttributeName:UIFont.systemFontOfSize(size)])
+        return self.getStringWidth(stringHeight, content: content)
+    }
+    func getStringHeight(stringWidth : CGFloat, size : CGFloat)->CGFloat {
+        let content = NSAttributedString.init(string: self, attributes: [NSFontAttributeName:UIFont.systemFontOfSize(size)])
+        return self.getStringHeight(stringWidth, content: content)
+    }
     
 }

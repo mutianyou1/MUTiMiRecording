@@ -52,20 +52,20 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
             controller.contentView._ViewType = viewType.alertView
             controller.contentView.ShowCancelButton = true
             let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
-            controller.contentView.setCertainBlock({ () -> Void in
-                NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
-               
-                
-                 MUFMDBManager.manager.removeData(data, tableName: KAccountCommontTable)
-                 //NSThread.sleepForTimeInterval(1.0)
-                 self.userDidAddAccountDetail()
-               
-               
-            })
-            controller.contentView.setCancelBlock({ () -> Void in
+            controller.contentView.setBlock({[unowned self] (object) -> Void in
+                let str = object as? String
+                if(str!.containsString("YES")){
+                    NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
+                    
+                    
+                    MUFMDBManager.manager.removeData(data, tableName: KAccountCommontTable)
+                    //NSThread.sleepForTimeInterval(1.0)
+                    self.userDidAddAccountDetail()
+                }else{
                  NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
+                }
             })
-            setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
+        setWindowType(.alertWindow, rect: CGRectMake(50.0 * KWidthScale , KHeight * 0.5 - height * 0.5, KWidth - 100 * KWidthScale, height), controller:controller)
         }else{
            let VC = AccountDetailEditingViewController()
             NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCellAnimationEnd, object: nil)
@@ -92,7 +92,7 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
 //            if self.detailItemTableView.secitonDataArray.count == 0 {
 //                return
 //            }
-//            //self.detailItemTableView.secitonDataArray = NSMutableArray.init(array: MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable))
+//
 //           
 //            for data in self.detailItemTableView.secitonDataArray {
 //               
@@ -117,32 +117,37 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
         for data in MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable) {
             self.detailItemTableView.secitonDataArray.addObject(data)
         }
-
+        
         if self.detailItemTableView.secitonDataArray.count == 0 {
-            return
+            //return
         }
+        
+        
         for data in self.detailItemTableView.secitonDataArray {
-
-
+            
+            
             let data_ = data as! MUAccountDayDetailModel
             self.detailItemTableView.dataArray.append(MUFMDBManager.manager.getDayItemsAccount(KAccountCommontTable, date: data_.date))
+            
         }
-
-        }
-        dispatch_group_async(group, dispatch_get_main_queue()) { () -> Void in
-            if(self.detailItemTableView.dataArray.isEmpty){
-               return
-            }
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            
             self.detailItemTableView.reloadData()
             self.detailItemTableView.setNeedsDisplay()
             self.detailItemTableView.contentOffset = CGPointZero
             let data = self.detailItemTableView.secitonDataArray.firstObject as? MUAccountDayDetailModel
-
+            if data != nil{
             self.topView.loadAccountTableSumarize(data!.month)
+            }
+            self.detailItemTableView.setNeedsDisplay()
         }
+
+        }
+
         dispatch_group_notify(group, dispatch_get_global_queue(0, 0)) { () -> Void in
             NSNotificationCenter.defaultCenter().postNotificationName(KNotificationEndLoadFMDBData, object: nil)
         }
+
      
     }
     //MARK: Notification
@@ -153,7 +158,7 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
     }
     func refreshTopViewMonthBalance(noti:NSNotification) {
         let date = noti.object as! String
-        self.topView.refreshMonthBalance(MUFMDBManager.manager.searchForAccountMonth(date, tableName: KAccountCommontTable))
+         self.topView.refreshMonthBalance(MUFMDBManager.manager.searchForAccountMonth(date, tableName: KAccountCommontTable))
        
     }
     override func didReceiveMemoryWarning() {
@@ -176,21 +181,21 @@ extension ViewController {
        VC.contentView = MUAlertView.init(frame: rect)
        VC.contentView._ViewType = viewType.sheetView
        VC.contentView.sheetButtonTitles = ["拍照","本地图片","取消"]
-       VC.contentView.setSheetViewBlock { [unowned self](tag) -> Void in
-        switch tag{
-            case 0:
+       VC.contentView.setBlock {[unowned self] (object) -> Void in
+           let tag = object as? Int
+        switch tag!{
+        case 0:
             self.topView.backImageName = "background12_375x155_"
             break
-            case 1:
-                self.topView.backImageName =  "background1_375x155_"
+        case 1:
+            self.topView.backImageName =  "background1_375x155_"
             break
-            case 2:
+        case 2:
             
             break
         default:
             break
         }
-        
         }
        setWindowType(windowType.sheetWindow, rect: rect, controller: VC)
     }

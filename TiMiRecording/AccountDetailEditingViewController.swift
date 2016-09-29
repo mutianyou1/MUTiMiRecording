@@ -237,7 +237,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         controller.contentView = MUAlertView.init(frame: CGRectMake(50.0 * KWidthScale , 200 * KHeightScale, KWidth - 100 * KWidthScale, KHeight - 400 * KHeightScale))
         controller.contentView.message = "提示\n输入金额必须大于0"
         controller.contentView._ViewType = viewType.alertView
-        controller.contentView.setCertainBlock({ [unowned self]() -> Void in
+        controller.contentView.setBlock({ [unowned self](object) -> Void in
             self.topView.performSelector("shakeAmountLabel", withObject: self.topView, afterDelay: 0.0)
             })
         let height = controller.contentView.getHeight() > KHeight * 0.2 ? controller.contentView.getHeight() : KHeight * 0.2
@@ -249,7 +249,7 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
         controller.contentView = MUAlertView.init(frame: rect)
         controller.contentView._ViewType = viewType.calendarView
        controller.contentView.date = NSDate.init(timeIntervalSince1970: self.firstData.time)
-        controller.contentView.setCertainBlock {[unowned self] () -> Void in
+        controller.contentView.setBlock {[unowned self] (object) -> Void in
             
             self.keyBoardView.setUpUI(self.firstData.time, hightlightedMessageButton: false, hightlightedDateButton: true)
            

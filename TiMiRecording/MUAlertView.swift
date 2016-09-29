@@ -17,13 +17,13 @@ class MUAlertView: UIView {
     private lazy var certainButton = UIButton.init(type: UIButtonType.System)
     private lazy var  inputTextView = UITextView.init()
     private lazy var  calendar = UIDatePicker.init()
-    private lazy var  certainBlock = {()->Void in}
-    private lazy var  cancelBlock = {() -> Void in}
-    private lazy var  sheetBlock = {(tag: Int) -> Void in}
+    private lazy var  block = {(object : AnyObject) -> Void in}
     lazy var date = NSDate.init(timeIntervalSinceNow: 0)
     var sheetButtonTitles :[String]?
     var ShowCancelButton = false
     var message = "abc"
+    var showTextView = false
+    var textViewKeyBoard = UIKeyboardType.Default
     var _ViewType = viewType.alertView{
         didSet{
             
@@ -59,8 +59,14 @@ class MUAlertView: UIView {
             inputTextView.layer.cornerRadius = 5
             inputTextView.layer.borderColor = UIColor.lightGrayColor().CGColor
             inputTextView.layer.borderWidth = 1
-            inputTextView.frame = CGRectMake(20, 150, self.bounds.size.width - 40, 120)
+            inputTextView.frame = CGRectMake(20, 20 * KHeightScale + height, self.bounds.size.width - 40, self.bounds.size.height - 70 * KHeightScale - height)
             inputTextView.delegate = self
+            inputTextView.keyboardType = self.textViewKeyBoard
+            self.inputTextView.font = UIFont.systemFontOfSize(KTitleFont)
+            if(self.showTextView){
+              self.addSubview(inputTextView)
+              inputTextView.text = NSUserDefaults.standardUserDefaults().valueForKey("USERBUDGET") as? String
+            }
            // self.addSubview(inputTextView)
             if self.ShowCancelButton {
                certainButton.frame = CGRectMake(-1, self.bounds.size.height - 40 * KHeightScale, self.bounds.size.width * 0.5 + 1, 40 * KHeightScale)
@@ -126,9 +132,26 @@ class MUAlertView: UIView {
         if(sender == self.certainButton){
         switch self._ViewType {
         case .alertView:
+            if self.textViewKeyBoard == .DecimalPad {
+                if(!Double.init(inputTextView.text)!.isZero){
+                    MUWindow.setWindowFinishBlock({ () -> Void in
+                        self.inputTextView.resignFirstResponder()
+                        self.block(self.inputTextView.text)
+                    })
+                }
+            }else{
+                MUWindow.setWindowFinishBlock({ () -> Void in
+                    self.block("YES")
+                    
+                })
+            }
+            
                break
         case .calendarView:
-              NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCurrentTime, object: self.calendar.date)
+              MUWindow.setWindowFinishBlock({ () -> Void in
+                 NSNotificationCenter.defaultCenter().postNotificationName(KNotificationCurrentTime, object: self.calendar.date)
+                self.block("YES")
+              })
                break
         case .rightView:
                break
@@ -137,9 +160,10 @@ class MUAlertView: UIView {
         case .upView:
                break
         }
-         MUWindow.setWindowFinishBlock(self.certainBlock)
         }else{
-          MUWindow.setWindowFinishBlock(self.cancelBlock)
+          MUWindow.setWindowFinishBlock({ () -> Void in
+            self.block("NO")
+          })
         }
         
         
@@ -147,21 +171,16 @@ class MUAlertView: UIView {
     @objc
     private func sheetViewButtonAction(sender : UIButton) {
          MUWindow.setWindowFinishBlock { () -> Void in
-            self.sheetBlock(sender.tag)
+            self.block(sender.tag)
         }
     }
     //MARK: set Block
-    func setCertainBlock( block : () -> Void) {
-         self.certainBlock = block
+    func setBlock(block :(object : AnyObject) -> Void) {
+          self.block = block
     }
-    func setCancelBlock( block : () -> Void) {
-         self.cancelBlock = block
-    }
+    //MARK: SetMethod
     func setCurrentDate(timeInterVal : NSTimeInterval) {
-         self.date = NSDate.init(timeIntervalSince1970: timeInterVal)
-    }
-    func setSheetViewBlock(block : (tag : Int) -> Void) {
-        self.sheetBlock = block
+        self.date = NSDate.init(timeIntervalSince1970: timeInterVal)
     }
     //MARK: datePicker
     func getPickedDateTimeInterval() -> NSTimeInterval {
@@ -192,17 +211,54 @@ extension MUAlertView :UITextViewDelegate{
     func textViewShouldBeginEditing(textView: UITextView) -> Bool {
         UIView.animateWithDuration(NSTimeInterval.init(0.35)) { () -> Void in
             var rect = self.superview?.frame
-            rect?.origin.y -= 50;
+            rect?.origin.y -= 60 * KHeightScale;
             self.superview?.frame = rect!
         }
         return true
     }
-
+    func textViewDidChange(textView: UITextView) {
+        if textView.keyboardType == .DecimalPad {
+           
+           let amount = Double.init(textView.text)
+          
+            if textView.text.isEmpty {
+               return
+            }
+            if amount == nil && !textView.text.isEmpty{
+               textView.text = textView.text.substringToIndex(textView.text.endIndex.advancedBy(-1))
+                return
+            }
+            if amount!.isZero {
+                if textView.text.containsString("."){
+                   textView.text = "0."
+                   return
+                }
+                textView.text = "0"
+                return
+            }
+            if textView.text.containsString(".") {
+                let length = Int(String(textView.text.endIndex))
+                if length > 4 {
+                  let subStr = textView.text.substringFromIndex(textView.text.endIndex.advancedBy(-3))
+                    if !subStr.containsString("."){
+                       textView.text = textView.text.substringToIndex(textView.text.endIndex.advancedBy(-1))
+                        return
+                    }
+                    return
+                }
+            }
+            if amount > 100000000 {
+                textView.text = textView.text.substringToIndex(textView.text.endIndex.advancedBy(-1))
+                return
+            }
+        }
+    }
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        
         if text.containsString("\n"){
             UIView.animateWithDuration(NSTimeInterval.init(0.35)) { () -> Void in
                 var rect = self.superview?.frame
-                rect?.origin.y += 50;
+                rect?.origin.y += 60 * KHeightScale
                 self.superview?.frame = rect!
             }
            textView.resignFirstResponder()

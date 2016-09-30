@@ -111,7 +111,6 @@ class AccountDetailItemTableView: UITableView,UITableViewDelegate,UITableViewDat
         }
         headView!.frame = CGRectMake(0, 0, KWidth, 40 * KHeightScale)
         let data = self.secitonDataArray.objectAtIndex(section-1) as! MUAccountDayDetailModel
-      
         headView!.setUpDateAndMoneyAmount(data.date, amount: String.init(format: "%.2lf", arguments: [data.payment * (-1.00)]))
         return headView
     }

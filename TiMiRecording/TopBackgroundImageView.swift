@@ -44,7 +44,7 @@ class TopBackgroundImageView: UIView {
         self.balanceButton.layer.cornerRadius = 10.0
         self.balanceButton.layer.borderWidth = 1.0
         self.balanceButton.layer.borderColor = UIColor.lightGrayColor().CGColor
-        self.balanceButton.setTitle("余额78000元", forState: .Normal)
+        self.balanceButton.setTitle("余额00元", forState: .Normal)
         self.balanceButton.titleLabel?.font = UIFont.systemFontOfSize(KMiddleFont)
         self.addSubview(balanceButton)
         self.balanceButton.addTarget(self, action: "changeTitle:", forControlEvents: .TouchUpInside)
@@ -66,7 +66,7 @@ class TopBackgroundImageView: UIView {
         self.addSubview(self.carmeraButto)
         self.carmeraButto.addTarget(self, action: "openCarmera", forControlEvents: .TouchUpInside)
         
-        self.monthIncomeLabel.text = "当月收入\n20000.0"
+        self.monthIncomeLabel.text = "当月收入\n00.0"
         self.monthIncomeLabel.numberOfLines = 0
         self.monthIncomeLabel.frame = CGRectMake(30.0,self.bounds.size.height - KMiddleViewAddButtonHeight * KHeightScale * 0.5, 100, 50 * KHeightScale)
         self.monthIncomeLabel.textColor = UIColor.lightGrayColor()
@@ -74,7 +74,7 @@ class TopBackgroundImageView: UIView {
         self.monthIncomeLabel.font = UIFont.systemFontOfSize(12 * KHeightScale)
         self.addSubview(self.monthIncomeLabel)
         
-        self.monthPaymentLabel.text = "当月支出\n2000.00"
+        self.monthPaymentLabel.text = "当月支出\n00.00"
         self.monthPaymentLabel.numberOfLines = 0
         self.monthPaymentLabel.frame = CGRectMake(self.bounds.size.width - 130, self.bounds.size.height - KMiddleViewAddButtonHeight * KHeightScale * 0.5, 100, 50 * KHeightScale)
         self.monthPaymentLabel.textColor = UIColor.lightGrayColor()
@@ -101,9 +101,12 @@ class TopBackgroundImageView: UIView {
     }
     func loadAccountTableSumarize(date : String) {
         
-        let balance = MUFMDBManager.manager.searchTotoalAccountBalance(self.accountTableName, month: "")[2]
-        let monthBalance = MUFMDBManager.manager.searchTotoalAccountBalance(self.accountTableName, month: date)
-        
+        var balance = 0.0
+        var monthBalance = [0.0,0.0]
+        if !date.isEmpty {
+            balance = MUFMDBManager.manager.searchTotoalAccountBalance(self.accountTableName, month: "")[2]
+            monthBalance = MUFMDBManager.manager.searchTotoalAccountBalance(self.accountTableName, month: date)
+        }
         let str = String.init(format: "余额%.2lf元", arguments: [balance])
         let strAttribute = NSAttributedString.init(string: str, attributes: [NSFontAttributeName:UIFont.systemFontOfSize(KMiddleFont)])
         self.balanceButton.setTitle(str, forState: .Normal)

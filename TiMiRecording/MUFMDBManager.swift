@@ -109,13 +109,14 @@ class MUFMDBManager: NSObject {
         return dataArray
     }
     func getDayItemsAccount(tableName : String) -> [MUAccountDayDetailModel] {
-      let statement = String.init(format: "SELECT date,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY time desc ", arguments: [tableName])
+      let statement = String.init(format: "SELECT date,month,sum(expend) , count(expend)  from %@ GROUP BY date  ORDER BY time desc ", arguments: [tableName])
       let set = self.dataBase.executeQuery(statement ,withArgumentsInArray: [tableName])
       
       var countArray = [MUAccountDayDetailModel]()
        while(set.next()){
            let data = MUAccountDayDetailModel()
                data.date = set.stringForColumn("date")
+               data.month = set.stringForColumn("month")
                data.allCount = set.intForColumn("count(expend)")
                data.payment = set.doubleForColumn("sum(expend)")
                countArray.append(data)
@@ -146,6 +147,27 @@ class MUFMDBManager: NSObject {
         }
         return "9月"
      
+    }
+    func searchTopThreePaymentAccountItemByMonth(month : String,tableName : String) -> [MUAccountDetailModel] {
+        let statement = String.init(format: "SELECT month,  accountTitleName ,thumbnailName,sum(expend)  from %@ where month ='%@'   GROUP BY accountTitleName ORDER BY sum(expend) asc ", arguments: [tableName,month])
+        let set = self.dataBase.executeQuery(statement ,withArgumentsInArray: [tableName])
+        
+        var dataArray = [MUAccountDetailModel]()
+        var number = 0
+        while(set.next()){
+            if number >= 3 {
+               break
+            }
+            let data = MUAccountDetailModel()
+            data.accountTitleName = set.stringForColumn("accountTitleName")
+            data.thumbnailName = set.stringForColumn("thumbnailName")
+            let income : Double = set.doubleForColumn("sum(expend)")
+
+            data.moneyAmount = income * -1.0
+            number += 1
+            dataArray.append(data)
+        }
+        return dataArray
     }
     //MARK: remove Data
     func removeData(data:MUAccountDetailModel,tableName: String)-> Bool {

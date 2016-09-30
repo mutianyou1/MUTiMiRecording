@@ -138,7 +138,9 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
             self.detailItemTableView.contentOffset = CGPointZero
             let data = self.detailItemTableView.secitonDataArray.firstObject as? MUAccountDayDetailModel
             if data != nil{
-            self.topView.loadAccountTableSumarize(data!.month)
+              self.topView.loadAccountTableSumarize(data!.month)
+            }else{
+              self.topView.loadAccountTableSumarize("")
             }
             self.detailItemTableView.setNeedsDisplay()
         }
@@ -146,7 +148,12 @@ class ViewController: UIViewController,TopBackgroundImageViewDelegate{
         }
 
         dispatch_group_notify(group, dispatch_get_global_queue(0, 0)) { () -> Void in
-            NSNotificationCenter.defaultCenter().postNotificationName(KNotificationEndLoadFMDBData, object: nil)
+            var data = self.detailItemTableView.secitonDataArray.firstObject as? MUAccountDayDetailModel
+            if data == nil {
+               data = MUAccountDayDetailModel()
+               data?.month = "当月"
+            }
+            NSNotificationCenter.defaultCenter().postNotificationName(KNotificationEndLoadFMDBData, object: data)
         }
 
      

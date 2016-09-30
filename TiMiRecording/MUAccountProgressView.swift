@@ -19,13 +19,14 @@ class MUAccountProgressView: UIView {
     private var coverViewFrame = CGRectZero
     private let lineView = UIView.init()
     private let shapeLayer = CAShapeLayer.init()
+    private let titleLabel = UILabel.init(frame: CGRectMake(KAccountItemWidthMargin * 0.5, KAccountItemWidthMargin * 0.5, 50 * KWidthScale, KAccountItemWidthMargin))
+    var isAnimtion = false
+    var isCompareBudget = true
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.whiteColor()
         
-        let titleLabel = UILabel.init(frame: CGRectMake(KAccountItemWidthMargin * 0.5, KAccountItemWidthMargin * 0.5, 50 * KWidthScale, KAccountItemWidthMargin))
         titleLabel.font = UIFont.systemFontOfSize(KMiddleFont)
-        titleLabel.text = "总预算"
         self.addSubview(titleLabel)
         
         
@@ -59,7 +60,13 @@ class MUAccountProgressView: UIView {
         let money = self.totalAmount > 10000.00 ? String.init(format: "%.2lf万元", arguments: [self.totalAmount/10000.00]) : String.init(format: "%.2lf", arguments: [self.totalAmount])
         
         let width = money.getStringWidth(KAccountItemWidthMargin, size: KMiddleFont)
-        let width_ = "总预算".getStringWidth(KAccountItemWidthMargin, size: KMiddleFont)
+        var width_ = "总预算".getStringWidth(KAccountItemWidthMargin, size: KMiddleFont)
+        titleLabel.text = "总预算"
+        if self.isCompareBudget == false {
+           width_ = "当前支出".getStringWidth(KAccountItemWidthMargin, size: KMiddleFont)
+           titleLabel.text = "当前支出"
+        }
+        self.titleLabel.frame.size.width = width_
         self.totalMoneyLabel.frame = CGRectMake(self.bounds.size.width - width - KAccountItemWidthMargin * 0.25, KAccountItemWidthMargin*0.5, width, KAccountItemWidthMargin)
         self.totalMoneyLabel.text = money
         self.progressView.frame = CGRectMake(KAccountItemWidthMargin * 0.75 + width_, KAccountItemWidthMargin*0.5, self.bounds.width - width - KAccountItemWidthMargin*1.25  - width_, KAccountItemWidthMargin)
@@ -77,12 +84,17 @@ class MUAccountProgressView: UIView {
         let balance = self.totalAmount - self.paymentAmount > 0 ? self.totalAmount - self.paymentAmount : self.paymentAmount - self.totalAmount
         let perday = balance/Double.init(self.days)
         self.tipsLabel.text = self.totalAmount - self.paymentAmount > 0 ? String.init(format: "还可以支出%.2lf元，日均%.2lf元", arguments: [balance,perday]) :String.init(format: "已经超支%.2lf元", arguments: [balance])
+        if self.isCompareBudget == false {
+           self.tipsLabel.text = self.totalAmount - self.paymentAmount > 0 ? String.init(format: "上月同期支出%.2lf元", arguments: [self.totalAmount]) :String.init(format: "对比同期已经超支%.2lf元", arguments: [balance])
+        }
         if self.totalAmount - self.paymentAmount <= 0.0 {
             self.color = UIColor.redColor()
         }
     }
     func startProgressAnimation() {
-
+        if self.isAnimtion == false {
+           return
+        }
         shapeLayer.removeFromSuperlayer()
         //绘制
         shapeLayer.lineCap = kCALineCapRound

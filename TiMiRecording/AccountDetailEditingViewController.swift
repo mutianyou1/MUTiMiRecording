@@ -107,6 +107,9 @@ class AccountDetailEditingViewController: UIViewController ,MUAccountKeyBoardVie
             if self.oldData != nil {
                self.firstData.time = self.oldData!.time
             }
+            if self.currentTime > 0.0 {
+               self.firstData.time = self.currentTime
+            }
             //self.firstData.time = data.time
             //print("move  ---x\(animation.toValue)")
             //print(offSize.x)

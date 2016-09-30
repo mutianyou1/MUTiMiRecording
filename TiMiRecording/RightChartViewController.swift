@@ -89,13 +89,13 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
             self.progressView.isAnimtion = true
             self.bugetAmount = 10
             self.chartView.subViewsType = MUAccountChartViewType.CURVEVIEW
-            print("是当月")
+            
         }else{
             month = self.monthCountData!.month
             self.progressView.isAnimtion = false
             self.bugetAmount = 0.0
             self.chartView.subViewsType = MUAccountChartViewType.CIRCLEVIEW
-            print("不是当月")
+           
         }
         let total = String.init(format: "%@支出%.2lf元\n", arguments: [month,(monthCountData!.payment)])
         let intcount = CGFloat.init(monthCountData!.allCount)
@@ -151,10 +151,10 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
             if self.chartView.subViewsType == MUAccountChartViewType.CURVEVIEW {
                 self.lineView.removeFromSuperview()
             }
-            self.chartView.frame = CGRectMake(0,self.tableViewY, KWidth, 90 * KHeightScale)
+            self.chartView.frame = CGRectMake(0,self.tableViewY, KWidth, KAccountChartViewHeight)
             self.chartView.isAnimtaion = true
             self.chartView.setUI()
-            self.tableViewY = self.chartView.frame.origin.y + 92 * KHeightScale
+            self.tableViewY = self.chartView.frame.origin.y + 2 * KHeightScale + KAccountChartViewHeight
             lineView.frame.origin.y = self.tableViewY
             
             

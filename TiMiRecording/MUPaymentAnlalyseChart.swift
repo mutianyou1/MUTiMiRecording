@@ -24,6 +24,9 @@ class MUPaymentAnlalyseChart: UIView {
         
     }
     func setUI() {
+        self.firstChartView.isCurveChart = true
+        self.secondChartView.isCurveChart = true
+        self.thirdChartView.isCurveChart = true
         if self.subViewsType == MUAccountChartViewType.CIRCLEVIEW || self.lastMonthDatas.isEmpty{
            self.firstChartView.isCurveChart = false
            self.secondChartView.isCurveChart = false
@@ -43,6 +46,7 @@ class MUPaymentAnlalyseChart: UIView {
             index += 1
             
         }
+        
         if self.subViewsType != MUAccountChartViewType.CIRCLEVIEW {
           
         

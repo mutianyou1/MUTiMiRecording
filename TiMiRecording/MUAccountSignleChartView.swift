@@ -28,6 +28,8 @@ class MUAccountSignleChartView: UIView {
         self.addSubview(titleLabel)
         self.titleLabel.textAlignment = .Center
         self.titleLabel.font = UIFont.systemFontOfSize(KLittleFont)
+        self.titleLabel.numberOfLines = 0
+        self.compareLabel.numberOfLines = 0
         self.compareLayer.lineCap = kCALineCapRound
         self.compareLayer.lineWidth = 10 * KHeightScale
         self.compareLayer.fillColor = UIColor.redColor().CGColor
@@ -43,16 +45,16 @@ class MUAccountSignleChartView: UIView {
         if self.isCurveChart == true {
             //rate
             let mark = self.payment / self.totalORlastMonthPayment > 1.0 ? "↑" : "↓"
-            let rate = self.payment / self.totalORlastMonthPayment >= 10.0 ? "+999%" :String.init(format: "%.0f%%", arguments: [self.payment * 100.0 / self.totalORlastMonthPayment])
+            let rate = self.payment / self.totalORlastMonthPayment >= 10.0 ? "+999%" :String.init(format: "%.0lf%%", arguments: [fabs(self.payment * 100.0 / self.totalORlastMonthPayment)])
             var compareRate = String.init(format: "对比上月\n%@%@", arguments: [mark,rate])
             if self.isEmptyChart {
                 compareRate = "对比上月\n0%"
             }
-            
             let attributedStr = self.getAttributedString(compareRate)
-            self.compareLabel.attributedText = attributedStr
+            
             self.compareLabel.frame = CGRectMake(KAccountItemWidthMargin * 0.5, 5 * KHeightScale, self.bounds.size.width - KAccountItemWidthMargin * 0.5, compareRate.getStringHeight(self.bounds.size.width - KAccountItemWidthMargin * 0.5, content: attributedStr))
-            self.compareLabel.backgroundColor = KSkyColor
+            self.compareLabel.attributedText = attributedStr
+            
             //amount
             let balanceAmount = self.payment - self.totalORlastMonthPayment
             var balanceString = "abc"
@@ -82,7 +84,7 @@ class MUAccountSignleChartView: UIView {
           self.compareLabel.textAlignment = .Center
           self.compareLabel.font = UIFont.systemFontOfSize(KLittleFont)
             
-          self.compareLabel.text = String.init(format: "%.0lf%", arguments: [compareRate])
+          self.compareLabel.text = String.init(format: "%.0lf%%", arguments: [compareRate])
           self.titleLabel.text = self.accountTitleName
           self.titleLabel.frame = CGRectMake(0, self.bounds.size.height - KAccountItemWidthMargin, self.bounds.size.width, KAccountItemWidthMargin)
           self.layer.borderWidth = 0.0
@@ -134,9 +136,9 @@ class MUAccountSignleChartView: UIView {
     private func getAttributedString(text : String) -> NSAttributedString {
         let attributeStr = NSMutableAttributedString.init(string: text)
         
-        attributeStr.addAttribute(NSFontAttributeName, value:UIFont.systemFontOfSize(KLittleFont) , range: NSRange.init(location: 0, length: Int(String(text.endIndex))!))
-        attributeStr.addAttribute(NSForegroundColorAttributeName, value:UIColor.lightGrayColor() , range: NSRange.init(location: 0, length: 4))
-        attributeStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange.init(location: 4, length: Int(String(text.endIndex))! - 5))
+        attributeStr.addAttribute(NSFontAttributeName, value:UIFont.systemFontOfSize(KLittleFont) , range: NSRange.init(location: 0, length: attributeStr.length))
+        attributeStr.addAttribute(NSForegroundColorAttributeName, value:UIColor.lightGrayColor() , range: NSRange.init(location: 0, length: 5))
+        attributeStr.addAttribute(NSForegroundColorAttributeName, value: UIColor.blackColor(), range: NSRange.init(location: 4, length: attributeStr.length - 5))
         return attributeStr
     }
     required init?(coder aDecoder: NSCoder) {

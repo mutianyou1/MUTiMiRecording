@@ -11,9 +11,9 @@ import UIKit
 class MUAccountSignleChartView: UIView {
     var isEmptyChart = false
     var isCurveChart =  true
-    var accountTitleName = ""
-    var payment = 0.0
-    var totalORlastMonthPayment = 0.0
+    var accountTitleName = "无分类"
+    var payment : Double = 0.0
+    var totalORlastMonthPayment : Double = 1.0
     var color = UIColor.greenColor()
     
     private let compareLabel = UILabel.init(frame: CGRectZero)
@@ -30,15 +30,13 @@ class MUAccountSignleChartView: UIView {
         self.titleLabel.font = UIFont.systemFontOfSize(KLittleFont)
         self.titleLabel.numberOfLines = 0
         self.compareLabel.numberOfLines = 0
-        self.compareLayer.lineCap = kCALineCapRound
-        self.compareLayer.lineWidth = 10 * KHeightScale
-        self.compareLayer.fillColor = UIColor.redColor().CGColor
+        self.compareLayer.lineWidth = 6 * KHeightScale
+        self.compareLayer.fillColor = UIColor.clearColor().CGColor
+        self.compareLayer.strokeColor = UIColor.redColor().CGColor
         
-        self.standardLayer.lineCap = kCALineCapRound
-        self.standardLayer.lineWidth = 10 * KHeightScale
-        self.standardLayer.backgroundColor = UIColor.lightGrayColor().CGColor
-        self.standardLayer.fillColor = UIColor.lightGrayColor().CGColor
-        self.standardLayer.strokeColor = UIColor.lightGrayColor().CGColor
+        self.standardLayer.lineWidth = 6 * KHeightScale
+        self.standardLayer.fillColor = UIColor.clearColor().CGColor
+        self.standardLayer.strokeColor = UIColor.init(red: 190/255.0, green: 190/255.0, blue: 190/255.0, alpha: 1.0).CGColor
     }
     
     func setUI() {
@@ -79,8 +77,15 @@ class MUAccountSignleChartView: UIView {
             
             
         }else {
+        
            self.compareLabel.frame = CGRectMake(0, self.bounds.size.height * 0.5 - KAccountItemWidthMargin * 0.5, self.bounds.size.width, KAccountItemWidthMargin)
-           let compareRate = self.payment * 100.00  / self.totalORlastMonthPayment
+           var compareRate = self.payment * 100.00  / self.totalORlastMonthPayment
+           if compareRate.isNaN {
+               compareRate = 0.0
+            }
+            if compareRate > 100.0 {
+               compareRate = 100.0
+            }
           self.compareLabel.textAlignment = .Center
           self.compareLabel.font = UIFont.systemFontOfSize(KLittleFont)
             
@@ -92,12 +97,12 @@ class MUAccountSignleChartView: UIView {
     }
    
     func startAnimtaion() {
-        
+      
         self.standardLayer.removeFromSuperlayer()
         self.compareLayer.removeFromSuperlayer()
         
         let bezierPath = UIBezierPath.init()
-        
+        let comparePath = UIBezierPath.init()
         self.layer.addSublayer(standardLayer)
         self.layer.addSublayer(compareLayer)
         
@@ -108,18 +113,24 @@ class MUAccountSignleChartView: UIView {
         
         }else{
            //standard
-          let rate = self.payment / self.totalORlastMonthPayment
-          bezierPath.addArcWithCenter(self.center, radius: 30 * KHeightScale, startAngle: CGFloat.init(M_1_PI * 3 / 2 ), endAngle: -CGFloat.init( M_1_PI  / 2 ), clockwise: true)
+          var rate = self.payment / self.totalORlastMonthPayment
+          if rate.isNaN {
+              rate = 0.0
+          }
+          if rate > 1.0 {
+              rate = 1.0
+          }
+          bezierPath.addArcWithCenter(self.center, radius: 30 * KHeightScale, startAngle: CGFloat.init(M_PI * -0.5), endAngle: CGFloat.init( M_PI  * 1.5 ), clockwise: true)
           standardLayer.path = bezierPath.CGPath
           bezierPath.stroke()
           
          //compare
-         bezierPath.addArcWithCenter(self.center, radius: 30 * KHeightScale, startAngle: CGFloat.init(M_1_PI * 3 / 2 ), endAngle: -CGFloat.init(rate * M_1_PI / 2 ), clockwise: true)
-         compareLayer.path = bezierPath.CGPath
+         comparePath.addArcWithCenter(self.center, radius: 30 * KHeightScale, startAngle: CGFloat.init(M_PI * -0.5 ), endAngle: CGFloat.init((rate - 0.25) * M_PI * 2), clockwise: true)
+         compareLayer.path = comparePath.CGPath
          bezierPath.stroke()
         
          let animation = CABasicAnimation.init(keyPath: "strokeEnd")
-        animation.duration = 0.5
+        animation.duration = 1.0
         animation.fromValue = 0.0
         animation.toValue = 1.0
         animation.timingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseInEaseOut)
@@ -128,9 +139,9 @@ class MUAccountSignleChartView: UIView {
           
           
            
-        UIGraphicsEndImageContext()
-        }
         
+        }
+       UIGraphicsEndImageContext() 
         
     }
     private func getAttributedString(text : String) -> NSAttributedString {

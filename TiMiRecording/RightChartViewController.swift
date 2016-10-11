@@ -89,13 +89,11 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
             self.progressView.isAnimtion = true
             self.bugetAmount = 10
             self.chartView.subViewsType = MUAccountChartViewType.CURVEVIEW
-            
         }else{
             month = self.monthCountData!.month
             self.progressView.isAnimtion = false
             self.bugetAmount = 0.0
             self.chartView.subViewsType = MUAccountChartViewType.CIRCLEVIEW
-           
         }
         let total = String.init(format: "%@支出%.2lf元\n", arguments: [month,(monthCountData!.payment)])
         let intcount = CGFloat.init(monthCountData!.allCount)
@@ -136,7 +134,7 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
                 self.progressView.removeFromSuperview()
                 self.tableViewY = self.monthPaymentLabel.frame.size.height + KAccountItemWidthMargin + self.monthPaymentLabel.frame.origin.y
                 self.progressView.isAnimtion = false
-                self.progressView.isCompareBudget = true
+                self.progressView.isCompareBudget = false
             }else{
             self.progressView.frame = CGRectMake(0, self.monthPaymentLabel.frame.origin.y + self.monthPaymentLabel.frame.size.height + KAccountItemWidthMargin, KWidth, 3 * KAccountItemWidthMargin)
             self.progressView.isCompareBudget = true
@@ -223,7 +221,7 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
             dispatch_async(dispatch_get_main_queue()) { () -> Void in
                 self.setDetailUI()
                 self.progressView.startProgressAnimation()
-                //self.chartView.startAnimations()
+                self.chartView.startAnimations()
             }
         }
        
@@ -236,7 +234,7 @@ class RightChartViewController: UIViewController,UITableViewDataSource,UITableVi
           let view = object! as? UIView
             if view!.frame.origin.x.isZero{
               self.progressView.startProgressAnimation()
-              //self.chartView.startAnimations()
+              self.chartView.startAnimations()
             }
         }
     }

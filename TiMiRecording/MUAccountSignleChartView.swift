@@ -120,12 +120,13 @@ class MUAccountSignleChartView: UIView {
           if rate > 1.0 {
               rate = 1.0
           }
-          bezierPath.addArcWithCenter(self.center, radius: 30 * KHeightScale, startAngle: CGFloat.init(M_PI * -0.5), endAngle: CGFloat.init( M_PI  * 1.5 ), clockwise: true)
+          let center = CGPointMake(self.bounds.size.width * 0.5, self.bounds.size.height * 0.5)
+          bezierPath.addArcWithCenter(center, radius: 30 * KHeightScale, startAngle: CGFloat.init(M_PI * -0.5), endAngle: CGFloat.init( M_PI  * 1.5 ), clockwise: true)
           standardLayer.path = bezierPath.CGPath
           bezierPath.stroke()
           
          //compare
-         comparePath.addArcWithCenter(self.center, radius: 30 * KHeightScale, startAngle: CGFloat.init(M_PI * -0.5 ), endAngle: CGFloat.init((rate - 0.25) * M_PI * 2), clockwise: true)
+         comparePath.addArcWithCenter(center, radius: 30 * KHeightScale, startAngle: CGFloat.init(M_PI * -0.5 ), endAngle: CGFloat.init((rate - 0.25) * M_PI * 2), clockwise: true)
          compareLayer.path = comparePath.CGPath
          bezierPath.stroke()
         
@@ -137,11 +138,10 @@ class MUAccountSignleChartView: UIView {
         compareLayer.addAnimation(animation, forKey: "circle")
         CATransaction.commit()
           
-          
            
         
         }
-       UIGraphicsEndImageContext() 
+       UIGraphicsEndImageContext()
         
     }
     private func getAttributedString(text : String) -> NSAttributedString {
